@@ -49,8 +49,8 @@ $config = [
     ],
     'params'     => $params,
     'modules'    => [
-        'home' => [
-            'class' => 'app\modules\home\homeModule',
+        'admin' => [
+            'class' => 'app\modules\admin\adminModule',
         ],
     ],
 ];
