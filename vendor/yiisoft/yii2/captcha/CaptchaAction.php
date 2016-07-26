@@ -105,7 +105,6 @@ class CaptchaAction extends Action
      */
     public $imageLibrary;
 
-
     /**
      * Initializes the action.
      * @throws InvalidConfigException if the font file does not exist.
@@ -125,14 +124,14 @@ class CaptchaAction extends Action
     {
         if (Yii::$app->request->getQueryParam(self::REFRESH_GET_VAR) !== null) {
             // AJAX request for regenerating code
-            $code = $this->getVerifyCode(true);
+            $code                       = $this->getVerifyCode(true);
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
                 'hash1' => $this->generateValidationHash($code),
                 'hash2' => $this->generateValidationHash(strtolower($code)),
                 // we add a random 'v' parameter so that FireFox can refresh the image
                 // when src attribute of image tag is changed
-                'url' => Url::to([$this->id, 'v' => uniqid()]),
+                'url'   => Url::to([$this->id, 'v' => uniqid()]),
             ];
         } else {
             $this->setHttpHeaders();
@@ -160,7 +159,7 @@ class CaptchaAction extends Action
      * @param boolean $regenerate whether the verification code should be regenerated.
      * @return string the verification code.
      */
-    public function getVerifyCode($regenerate = false)
+    public function getVerifyCode($regenerate = true)
     {
         if ($this->fixedVerifyCode !== null) {
             return $this->fixedVerifyCode;
@@ -170,7 +169,7 @@ class CaptchaAction extends Action
         $session->open();
         $name = $this->getSessionKey();
         if ($session[$name] === null || $regenerate) {
-            $session[$name] = $this->generateVerifyCode();
+            $session[$name]           = $this->generateVerifyCode();
             $session[$name . 'count'] = 1;
         }
 
@@ -185,11 +184,11 @@ class CaptchaAction extends Action
      */
     public function validate($input, $caseSensitive)
     {
-        $code = $this->getVerifyCode();
-        $valid = $caseSensitive ? ($input === $code) : strcasecmp($input, $code) === 0;
+        $code    = $this->getVerifyCode();
+        $valid   = $caseSensitive ? ($input === $code) : strcasecmp($input, $code) === 0;
         $session = Yii::$app->getSession();
         $session->open();
-        $name = $this->getSessionKey() . 'count';
+        $name           = $this->getSessionKey() . 'count';
         $session[$name] = $session[$name] + 1;
         if ($valid || $session[$name] > $this->testLimit && $this->testLimit > 0) {
             $this->getVerifyCode(true);
@@ -216,8 +215,8 @@ class CaptchaAction extends Action
         $length = mt_rand($this->minLength, $this->maxLength);
 
         $letters = 'bcdfghjklmnpqrstvwxyz';
-        $vowels = 'aeiou';
-        $code = '';
+        $vowels  = 'aeiou';
+        $code    = '';
         for ($i = 0; $i < $length; ++$i) {
             if ($i % 2 && mt_rand(0, 10) > 2 || !($i % 2) && mt_rand(0, 10) > 9) {
                 $code .= $vowels[mt_rand(0, 4)];
@@ -290,18 +289,18 @@ class CaptchaAction extends Action
         );
 
         $length = strlen($code);
-        $box = imagettfbbox(30, 0, $this->fontFile, $code);
-        $w = $box[4] - $box[0] + $this->offset * ($length - 1);
-        $h = $box[1] - $box[5];
-        $scale = min(($this->width - $this->padding * 2) / $w, ($this->height - $this->padding * 2) / $h);
-        $x = 10;
-        $y = round($this->height * 27 / 40);
+        $box    = imagettfbbox(30, 0, $this->fontFile, $code);
+        $w      = $box[4] - $box[0] + $this->offset * ($length - 1);
+        $h      = $box[1] - $box[5];
+        $scale  = min(($this->width - $this->padding * 2) / $w, ($this->height - $this->padding * 2) / $h);
+        $x      = 10;
+        $y      = round($this->height * 27 / 40);
         for ($i = 0; $i < $length; ++$i) {
             $fontSize = (int) (rand(26, 32) * $scale * 0.8);
-            $angle = rand(-10, 10);
-            $letter = $code[$i];
-            $box = imagettftext($image, $fontSize, $angle, $x, $y, $foreColor, $this->fontFile, $letter);
-            $x = $box[2] + $this->offset;
+            $angle    = rand(-10, 10);
+            $letter   = $code[$i];
+            $box      = imagettftext($image, $fontSize, $angle, $x, $y, $foreColor, $this->fontFile, $letter);
+            $x        = $box[2] + $this->offset;
         }
 
         imagecolordeallocate($image, $foreColor);
@@ -332,11 +331,11 @@ class CaptchaAction extends Action
         $fontMetrics = $image->queryFontMetrics($draw, $code);
 
         $length = strlen($code);
-        $w = (int) $fontMetrics['textWidth'] - 8 + $this->offset * ($length - 1);
-        $h = (int) $fontMetrics['textHeight'] - 8;
-        $scale = min(($this->width - $this->padding * 2) / $w, ($this->height - $this->padding * 2) / $h);
-        $x = 10;
-        $y = round($this->height * 27 / 40);
+        $w      = (int) $fontMetrics['textWidth'] - 8 + $this->offset * ($length - 1);
+        $h      = (int) $fontMetrics['textHeight'] - 8;
+        $scale  = min(($this->width - $this->padding * 2) / $w, ($this->height - $this->padding * 2) / $h);
+        $x      = 10;
+        $y      = round($this->height * 27 / 40);
         for ($i = 0; $i < $length; ++$i) {
             $draw = new \ImagickDraw();
             $draw->setFont($this->fontFile);

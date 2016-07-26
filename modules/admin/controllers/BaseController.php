@@ -5,12 +5,18 @@ namespace app\modules\admin\controllers;
 //use app\constants\Code;
 //use app\constants\Session as SessionConst;
 //use app\filters\AclFilter;
-//use Yii;
+use Yii;
 use yii\web\Controller;
 
 class BaseController extends Controller
 {
-    public $layout = false;
+    public $layout      = false;
+    protected $requests = null;
+    protected $isAjax   = null;
+    protected $isPost   = null;
+    protected $cache    = null;
+    protected $session  = null;
+    protected $cookies  = null;
 
     public function init()
     {
@@ -27,7 +33,19 @@ class BaseController extends Controller
         //die('未登录');
         }
         }*/
+        $this->initVars();
         parent::init();
+    }
+
+    //简化变量
+    private function initVars()
+    {
+        $this->requests = Yii::$app->request;
+        $this->isAjax   = Yii::$app->request->isAjax;
+        $this->isPost   = Yii::$app->request->isPost;
+        $this->cache    = Yii::$app->cache;
+        $this->session  = Yii::$app->session;
+        $this->cookies  = Yii::$app->request->cookies;
     }
 
     /**
