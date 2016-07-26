@@ -10,9 +10,7 @@ use yii\base\Exception;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 
-//use yii\web\Controller;
-
-class SiteController extends BaseController
+class SiteController extends FrontBaseController
 {
 
     //public $layout = false;

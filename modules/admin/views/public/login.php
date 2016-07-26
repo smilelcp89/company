@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>欢迎登录后台管理系统</title>
-<link href="<?=Yii::$app->params['domain'];?>admin/css/style.css" rel="stylesheet" type="text/css" />
-<script src="<?=Yii::$app->params['domain'];?>admin/js/jquery.js" type="text/javascript"></script>
-<script src="<?=Yii::$app->params['domain'];?>admin/js/cloud.js" type="text/javascript"></script>
+<link href="<?=Yii::$app->params['imgHost'];?>admin/css/style.css" rel="stylesheet" type="text/css" />
+<script src="<?=Yii::$app->params['imgHost'];?>admin/js/jquery.js" type="text/javascript"></script>
+<script src="<?=Yii::$app->params['imgHost'];?>admin/js/cloud.js" type="text/javascript"></script>
 
 <script language="javascript">
 $(function(){
@@ -18,7 +18,7 @@ $(function(){
 
 </head>
 
-<body style="background-color:#1c77ac; background-image:url(<?=Yii::$app->params['domain'];?>admin/images/light.png); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
+<body style="background-color:#1c77ac; background-image:url(<?=Yii::$app->params['imgHost'];?>admin/images/light.png); background-repeat:no-repeat; background-position:center top; overflow:hidden;">
 
 
 

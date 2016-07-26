@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
-<link href="<?=Yii::$app->params['domain'];?>admin/css/style.css" rel="stylesheet" type="text/css" />
-<script language="JavaScript" src="<?=Yii::$app->params['domain'];?>admin/js/jquery.js"></script>
+<link href="<?=Yii::$app->params['imgHost'];?>admin/css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="<?=Yii::$app->params['imgHost'];?>admin/js/jquery.js"></script>
 <script type="text/javascript">
 $(function(){	
 	//顶部导航切换
@@ -18,24 +18,24 @@ $(function(){
 
 </head>
 
-<body style="background:url(<?=Yii::$app->params['domain'];?>admin/images/topbg.gif) repeat-x;">
+<body style="background:url(<?=Yii::$app->params['imgHost'];?>admin/images/topbg.gif) repeat-x;">
 
     <div class="topleft">
-    <a href="main.html" target="_parent"><img src="<?=Yii::$app->params['domain'];?>admin/images/logo.png" title="系统首页" /></a>
+    <a href="main.html" target="_parent"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/logo.png" title="系统首页" /></a>
     </div>
         
     <ul class="nav">
-    <li><a href="default.html" target="rightFrame" class="selected"><img src="<?=Yii::$app->params['domain'];?>admin/images/icon01.png" title="工作台" /><h2>工作台</h2></a></li>
-    <li><a href="imgtable.html" target="rightFrame"><img src="<?=Yii::$app->params['domain'];?>admin/images/icon02.png" title="模型管理" /><h2>模型管理</h2></a></li>
-    <li><a href="imglist.html"  target="rightFrame"><img src="<?=Yii::$app->params['domain'];?>admin/images/icon03.png" title="模块设计" /><h2>模块设计</h2></a></li>
-    <li><a href="tools.html"  target="rightFrame"><img src="<?=Yii::$app->params['domain'];?>admin/images/icon04.png" title="常用工具" /><h2>常用工具</h2></a></li>
-    <li><a href="computer.html" target="rightFrame"><img src="<?=Yii::$app->params['domain'];?>admin/images/icon05.png" title="文件管理" /><h2>文件管理</h2></a></li>
-    <li><a href="tab.html"  target="rightFrame"><img src="<?=Yii::$app->params['domain'];?>admin/images/icon06.png" title="系统设置" /><h2>系统设置</h2></a></li>
+    <li><a href="default.html" target="rightFrame" class="selected"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/icon01.png" title="工作台" /><h2>工作台</h2></a></li>
+    <li><a href="imgtable.html" target="rightFrame"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/icon02.png" title="模型管理" /><h2>模型管理</h2></a></li>
+    <li><a href="imglist.html"  target="rightFrame"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/icon03.png" title="模块设计" /><h2>模块设计</h2></a></li>
+    <li><a href="tools.html"  target="rightFrame"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/icon04.png" title="常用工具" /><h2>常用工具</h2></a></li>
+    <li><a href="computer.html" target="rightFrame"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/icon05.png" title="文件管理" /><h2>文件管理</h2></a></li>
+    <li><a href="tab.html"  target="rightFrame"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/icon06.png" title="系统设置" /><h2>系统设置</h2></a></li>
     </ul>
             
     <div class="topright">    
     <ul>
-    <li><span><img src="<?=Yii::$app->params['domain'];?>admin/images/help.png" title="帮助"  class="helpimg"/></span><a href="#">帮助</a></li>
+    <li><span><img src="<?=Yii::$app->params['imgHost'];?>admin/images/help.png" title="帮助"  class="helpimg"/></span><a href="#">帮助</a></li>
     <li><a href="#">关于</a></li>
     <li><a href="login.html" target="_parent">退出</a></li>
     </ul>

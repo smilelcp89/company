@@ -25,4 +25,24 @@ class DefaultController extends BaseController
     {
         return $this->render('right');
     }
+
+    public function actionList()
+    {
+        return $this->render('list');
+    }
+
+    public function actionList2()
+    {
+        return $this->render('list2');
+    }
+
+    public function actionEdit()
+    {
+        return $this->render('edit');
+    }
+
+    public function actionTab()
+    {
+        return $this->render('tab');
+    }
 }

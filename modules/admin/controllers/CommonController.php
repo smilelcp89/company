@@ -20,4 +20,9 @@ class CommonController extends BaseController
     {
         return $this->render('left');
     }
+
+    public function actionError()
+    {
+        return $this->render('error');
+    }
 }

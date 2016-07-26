@@ -6,7 +6,7 @@ use yii\web\Controller;
 
 class FrontBaseController extends Controller
 {
-    public $layout = false;
+    //public $layout = false;
 
     public function init()
     {
