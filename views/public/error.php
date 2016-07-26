@@ -1,0 +1,1 @@
+<div class="banner" style="background-image:url(<?=Yii::$app->params['imgHost'];?>front/images/404.png);height:415px;"></div>

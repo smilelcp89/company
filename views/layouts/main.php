@@ -1,5 +1,5 @@
+<?php use yii\helpers\Url; ?>
 <?php $imgHost = Yii::$app->params['imgHost']; ?>
-
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
@@ -26,9 +26,9 @@
 	<div class="logo"><a href="http://company.local.com/" title="第一"><img src="<?=Yii::$app->params['domain'];?>front/images/128631859541c31c.png" alt="第一"></a></div>
 	<div class="right">
 		<nav class="top">
-			<a href="http://company.local.com/" title="第一">网站首页</a> | 
+			<a href="/" title="第一">网站首页</a> | 
 			<a href="javascript:add_fav('网站名称','<?=Yii::$app->params['imgHost'];?>');void(0);">收藏本页</a> | 
-			<a href="http://company.local.com/message.html">留言反馈</a>
+			<a href="<?=Url::to(['public/guestbook']);?>">留言反馈</a>
 		</nav>
 		<form method="post" class="search" action="/product/search" onsubmit="return top_search();">
 			<input name="keywords" value="" id="top_keywords" type="text" class="topsearch" placeholder="请输入关键字" />
@@ -39,11 +39,11 @@
 <nav class="menu">
 	<ul>
 		<li style="margin-left:4px;"><a href="/" title="首页" target="_self">首　页</a></li>
-		<li><a href="http://company.local.com/product.html" title="产品展示" target="_self">产品展示</a></li>
-		<li><a href="http://company.local.com/article.html" title="新闻资讯" target="_self">新闻资讯</a></li>
-		<li class="current"><a href="http://company.local.com/message.html" title="在线留言" target="_self">在线留言</a></li>
-		<li><a href="http://company.local.com/about-us.html" title="关于我们" target="_self">关于我们</a></li>
-		<li><a href="http://company.local.com/contact.html" title="联系我们" target="_self">联系我们</a></li>
+		<li><a href="<?=Url::to(['product/index']);?>" title="产品展示" target="_self">产品展示</a></li>
+		<li><a href="<?=Url::to(['news/index']);?>" title="新闻中心" target="_self">新闻中心</a></li>
+		<li class="current"><a href="<?=Url::to(['public/guestbook']);?>" title="留言反馈" target="_self">留言反馈</a></li>
+		<li><a href="<?=Url::to(['public/about']);?>" title="关于我们" target="_self">关于我们</a></li>
+		<li><a href="<?=Url::to(['public/contact']);?>" title="联系我们" target="_self">联系我们</a></li>
 	</ul>
 </nav>
 <?= $content ?>

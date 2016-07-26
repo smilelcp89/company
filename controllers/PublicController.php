@@ -29,4 +29,9 @@ class PublicController extends FrontBaseController
     {
         return $this->render('guestbook');
     }
+
+    public function actionError()
+    {
+        return $this->render('error');
+    }
 }
