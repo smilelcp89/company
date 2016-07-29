@@ -45,4 +45,5 @@ class DefaultController extends BaseController
     {
         return $this->render('tab');
     }
+
 }

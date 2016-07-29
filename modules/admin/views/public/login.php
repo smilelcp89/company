@@ -29,16 +29,17 @@ $(function(){
     <div class="loginbody">
         <span class="systemlogo"></span> 
         <div class="loginbox">
-            <form action="/admin/default/main" method="post">
+            <form action="/admin/public/login" method="post">
             <ul>
                 <li><input name="username" type="text" class="loginuser" placeholder="用户名"/></li>
                 <li><input name="password" type="password" class="loginpwd" placeholder="密码"/></li>
 				<li>
 					<input name="verifyCode" type="text" style='width:100px;border:2px solid #BAC7D2;height:40px;padding-left:10px;float:left;' placeholder="验证码"/>
-					<img src='/admin/public/captcha' style='width:100px;height:40x;float:left;' title='验证码'/>
+					<img src='/admin/public/captcha' style='width:100px;height:40x;float:left;' title='点击切换验证码' onclick="this.src=this.src+'?'+Math.random();"/>
 					<div style='clear:both;'></div>
 				</li>
                 <li>
+                	<input name="_csrf" type="hidden" id="_csrf" value="<?= Yii::$app->request->csrfToken ?>">
                     <input type="submit" class="loginbtn" value="登录"  />
                     <input type="reset" class="loginbtn" value="重置" />
                     <!--<label><input name="" type="checkbox" value="" checked="checked" />记住密码</label><label><a href="#">忘记密码？</a></label>-->

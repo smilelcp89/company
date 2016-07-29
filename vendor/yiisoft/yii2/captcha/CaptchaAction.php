@@ -136,7 +136,7 @@ class CaptchaAction extends Action
         } else {
             $this->setHttpHeaders();
             Yii::$app->response->format = Response::FORMAT_RAW;
-            return $this->renderImage($this->getVerifyCode());
+            return $this->renderImage($this->getVerifyCode(true));
         }
     }
 
@@ -159,7 +159,7 @@ class CaptchaAction extends Action
      * @param boolean $regenerate whether the verification code should be regenerated.
      * @return string the verification code.
      */
-    public function getVerifyCode($regenerate = true)
+    public function getVerifyCode($regenerate = false)
     {
         if ($this->fixedVerifyCode !== null) {
             return $this->fixedVerifyCode;

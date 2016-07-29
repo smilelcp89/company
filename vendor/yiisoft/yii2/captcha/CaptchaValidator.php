@@ -39,7 +39,6 @@ class CaptchaValidator extends Validator
      */
     public $captchaAction = 'site/captcha';
 
-
     /**
      * @inheritdoc
      */
@@ -57,7 +56,7 @@ class CaptchaValidator extends Validator
     protected function validateValue($value)
     {
         $captcha = $this->createCaptchaAction();
-        $valid = !is_array($value) && $captcha->validate($value, $this->caseSensitive);
+        $valid   = !is_array($value) && $captcha->validate($value, $this->caseSensitive);
 
         return $valid ? null : [$this->message, []];
     }
@@ -73,7 +72,7 @@ class CaptchaValidator extends Validator
         if ($ca !== false) {
             /* @var $controller \yii\base\Controller */
             list($controller, $actionID) = $ca;
-            $action = $controller->createAction($actionID);
+            $action                      = $controller->createAction($actionID);
             if ($action !== null) {
                 return $action;
             }
@@ -87,13 +86,13 @@ class CaptchaValidator extends Validator
     public function clientValidateAttribute($object, $attribute, $view)
     {
         $captcha = $this->createCaptchaAction();
-        $code = $captcha->getVerifyCode(false);
-        $hash = $captcha->generateValidationHash($this->caseSensitive ? $code : strtolower($code));
+        $code    = $captcha->getVerifyCode(false);
+        $hash    = $captcha->generateValidationHash($this->caseSensitive ? $code : strtolower($code));
         $options = [
-            'hash' => $hash,
-            'hashKey' => 'yiiCaptcha/' . $captcha->getUniqueId(),
+            'hash'          => $hash,
+            'hashKey'       => 'yiiCaptcha/' . $captcha->getUniqueId(),
             'caseSensitive' => $this->caseSensitive,
-            'message' => Yii::$app->getI18n()->format($this->message, [
+            'message'       => Yii::$app->getI18n()->format($this->message, [
                 'attribute' => $object->getAttributeLabel($attribute),
             ], Yii::$app->language),
         ];

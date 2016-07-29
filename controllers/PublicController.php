@@ -32,6 +32,7 @@ class PublicController extends FrontBaseController
 
     public function actionError()
     {
+        $this->layout = false;
         return $this->render('error');
     }
 }

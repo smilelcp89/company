@@ -53,36 +53,36 @@ class Validator extends Component
      * @var array list of built-in validators (name => class or configuration)
      */
     public static $builtInValidators = [
-        'boolean' => 'yii\validators\BooleanValidator',
-        'captcha' => 'yii\captcha\CaptchaValidator',
-        'compare' => 'yii\validators\CompareValidator',
-        'date' => 'yii\validators\DateValidator',
-        'default' => 'yii\validators\DefaultValueValidator',
-        'double' => 'yii\validators\NumberValidator',
-        'each' => 'yii\validators\EachValidator',
-        'email' => 'yii\validators\EmailValidator',
-        'exist' => 'yii\validators\ExistValidator',
-        'file' => 'yii\validators\FileValidator',
-        'filter' => 'yii\validators\FilterValidator',
-        'image' => 'yii\validators\ImageValidator',
-        'in' => 'yii\validators\RangeValidator',
-        'integer' => [
-            'class' => 'yii\validators\NumberValidator',
+        'boolean'  => 'yii\validators\BooleanValidator',
+        'captcha'  => 'yii\captcha\CaptchaValidator',
+        'compare'  => 'yii\validators\CompareValidator',
+        'date'     => 'yii\validators\DateValidator',
+        'default'  => 'yii\validators\DefaultValueValidator',
+        'double'   => 'yii\validators\NumberValidator',
+        'each'     => 'yii\validators\EachValidator',
+        'email'    => 'yii\validators\EmailValidator',
+        'exist'    => 'yii\validators\ExistValidator',
+        'file'     => 'yii\validators\FileValidator',
+        'filter'   => 'yii\validators\FilterValidator',
+        'image'    => 'yii\validators\ImageValidator',
+        'in'       => 'yii\validators\RangeValidator',
+        'integer'  => [
+            'class'       => 'yii\validators\NumberValidator',
             'integerOnly' => true,
         ],
-        'match' => 'yii\validators\RegularExpressionValidator',
-        'number' => 'yii\validators\NumberValidator',
+        'match'    => 'yii\validators\RegularExpressionValidator',
+        'number'   => 'yii\validators\NumberValidator',
         'required' => 'yii\validators\RequiredValidator',
-        'safe' => 'yii\validators\SafeValidator',
-        'string' => 'yii\validators\StringValidator',
-        'trim' => [
-            'class' => 'yii\validators\FilterValidator',
-            'filter' => 'trim',
+        'safe'     => 'yii\validators\SafeValidator',
+        'string'   => 'yii\validators\StringValidator',
+        'trim'     => [
+            'class'       => 'yii\validators\FilterValidator',
+            'filter'      => 'trim',
             'skipOnArray' => true,
         ],
-        'unique' => 'yii\validators\UniqueValidator',
-        'url' => 'yii\validators\UrlValidator',
-        'ip' => 'yii\validators\IpValidator',
+        'unique'   => 'yii\validators\UniqueValidator',
+        'url'      => 'yii\validators\UrlValidator',
+        'ip'       => 'yii\validators\IpValidator',
     ];
     /**
      * @var array|string attributes to be validated by this validator. For multiple attributes,
@@ -176,7 +176,6 @@ class Validator extends Component
      */
     public $whenClient;
 
-
     /**
      * Creates a validator object.
      * @param mixed $type the validator type. This can be a built-in validator name,
@@ -193,7 +192,7 @@ class Validator extends Component
 
         if ($type instanceof \Closure || $model->hasMethod($type)) {
             // method-based validator
-            $params['class'] = __NAMESPACE__ . '\InlineValidator';
+            $params['class']  = __NAMESPACE__ . '\InlineValidator';
             $params['method'] = $type;
         } else {
             if (isset(static::$builtInValidators[$type])) {
@@ -216,8 +215,8 @@ class Validator extends Component
     {
         parent::init();
         $this->attributes = (array) $this->attributes;
-        $this->on = (array) $this->on;
-        $this->except = (array) $this->except;
+        $this->on         = (array) $this->on;
+        $this->except     = (array) $this->except;
     }
 
     /**
@@ -246,7 +245,7 @@ class Validator extends Component
 
         foreach ($attributes as $attribute) {
             $skip = $this->skipOnError && $model->hasErrors($attribute)
-                || $this->skipOnEmpty && $this->isEmpty($model->$attribute);
+            || $this->skipOnEmpty && $this->isEmpty($model->$attribute);
             if (!$skip) {
                 if ($this->when === null || call_user_func($this->when, $model, $attribute)) {
                     $this->validateAttribute($model, $attribute);
@@ -284,7 +283,7 @@ class Validator extends Component
         }
 
         list($message, $params) = $result;
-        $params['attribute'] = Yii::t('yii', 'the input value');
+        $params['attribute']    = Yii::t('yii', 'the input value');
         if (is_array($value)) {
             $params['value'] = 'array()';
         } elseif (is_object($value)) {

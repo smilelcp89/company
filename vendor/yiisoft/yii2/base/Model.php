@@ -7,12 +7,12 @@
 
 namespace yii\base;
 
-use Yii;
 use ArrayAccess;
-use ArrayObject;
 use ArrayIterator;
-use ReflectionClass;
+use ArrayObject;
 use IteratorAggregate;
+use ReflectionClass;
+use Yii;
 use yii\helpers\Inflector;
 use yii\validators\RequiredValidator;
 use yii\validators\Validator;
@@ -82,7 +82,6 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
      * @var string current scenario
      */
     private $_scenario = self::SCENARIO_DEFAULT;
-
 
     /**
      * Returns the validation rules for attributes.
@@ -343,7 +342,7 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
         }
 
         $scenarios = $this->scenarios();
-        $scenario = $this->getScenario();
+        $scenario  = $this->getScenario();
         if (!isset($scenarios[$scenario])) {
             throw new InvalidParamException("Unknown scenario: $scenario");
         }
@@ -420,7 +419,7 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
     public function getActiveValidators($attribute = null)
     {
         $validators = [];
-        $scenario = $this->getScenario();
+        $scenario   = $this->getScenario();
         foreach ($this->getValidators() as $validator) {
             if ($validator->isActive($scenario) && ($attribute === null || in_array($attribute, $validator->attributes, true))) {
                 $validators[] = $validator;
@@ -747,7 +746,7 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
      */
     public function safeAttributes()
     {
-        $scenario = $this->getScenario();
+        $scenario  = $this->getScenario();
         $scenarios = $this->scenarios();
         if (!isset($scenarios[$scenario])) {
             return [];
@@ -768,7 +767,7 @@ class Model extends Component implements IteratorAggregate, ArrayAccess, Arrayab
      */
     public function activeAttributes()
     {
-        $scenario = $this->getScenario();
+        $scenario  = $this->getScenario();
         $scenarios = $this->scenarios();
         if (!isset($scenarios[$scenario])) {
             return [];
