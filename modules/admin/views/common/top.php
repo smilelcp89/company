@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
-<link href="<?=Yii::$app->params['imgHost'];?>admin/css/style.css" rel="stylesheet" type="text/css" />
-<script language="JavaScript" src="<?=Yii::$app->params['imgHost'];?>admin/js/jquery.js"></script>
+<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
 <script type="text/javascript">
 $(function(){	
 	//顶部导航切换
@@ -18,14 +18,14 @@ $(function(){
 
 </head>
 
-<body style="background:url(<?=Yii::$app->params['imgHost'];?>admin/images/topbg.gif) repeat-x;">
+<body style="background:url(<?=Yii::$app->params['imgHost'];?>backend/images/topbg.gif) repeat-x;">
 
     <div class="topleft">
-    <a href="/admin" target="_parent"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/logo.png" title="系统首页" /></a>
+    <a href="/admin" target="_parent"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/logo.png" title="系统首页" /></a>
     </div>
         
     <ul class="nav">
-    <li><a href="/admin/default" target="rightFrame" class="selected"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/icon01.png" title="后台首页" /><h2>后台首页</h2></a></li>
+    <li><a href="/admin/default" target="rightFrame" class="selected"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/icon01.png" title="后台首页" /><h2>后台首页</h2></a></li>
     </ul>
             
     <div class="topright">    

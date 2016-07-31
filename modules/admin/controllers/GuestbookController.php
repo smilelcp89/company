@@ -5,9 +5,9 @@ namespace app\modules\admin\controllers;
 use app\models\User;
 
 /**
- * 用户控制器
+ * 反馈留言控制器
  */
-class UserController extends BaseController
+class GuestbookController extends BaseController
 {
 
     public function init()

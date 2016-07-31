@@ -3,12 +3,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
-<link href="<?=Yii::$app->params['imgHost'];?>admin/css/style.css" rel="stylesheet" type="text/css" />
-<link href="<?=Yii::$app->params['imgHost'];?>admin/css/select.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>admin/js/jquery.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>admin/js/jquery.idTabs.min.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>admin/js/select-ui.min.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>admin/editor/kindeditor.js"></script>
+<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?=Yii::$app->params['imgHost'];?>backend/css/select.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.idTabs.min.js"></script>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/select-ui.min.js"></script>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/editor/kindeditor.js"></script>
 
 <script type="text/javascript">
     KE.show({
@@ -177,7 +177,7 @@ $(document).ready(function(e) {
     	<thead>
     	<tr>
         <th><input name="" type="checkbox" value="" checked="checked"/></th>
-        <th>编号<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>admin/images/px.gif" /></i></th>
+        <th>编号<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i></th>
         <th>标题</th>
         <th>用户</th>
         <th>籍贯</th>

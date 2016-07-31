@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
-<link href="<?=Yii::$app->params['imgHost'];?>admin/css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>

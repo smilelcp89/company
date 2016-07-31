@@ -5,9 +5,9 @@ namespace app\modules\admin\controllers;
 use app\models\User;
 
 /**
- * 用户控制器
+ * 网站配置控制器
  */
-class UserController extends BaseController
+class ConfigController extends BaseController
 {
 
     public function init()

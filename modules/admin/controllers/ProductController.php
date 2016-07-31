@@ -7,7 +7,7 @@ use app\models\User;
 /**
  * 用户控制器
  */
-class UserController extends BaseController
+class ProductController extends BaseController
 {
 
     public function init()

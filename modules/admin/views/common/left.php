@@ -3,8 +3,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
-<link href="<?=Yii::$app->params['imgHost'];?>admin/css/style.css" rel="stylesheet" type="text/css" />
-<script language="JavaScript" src="<?=Yii::$app->params['imgHost'];?>admin/js/jquery.js"></script>
+<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
 
 <script type="text/javascript">
 $(function(){	
@@ -32,10 +32,10 @@ $(function(){
     <dl class="leftmenu">  
     <dd>
     <div class="title">
-    <span><img src="<?=Yii::$app->params['imgHost'];?>admin/images/leftico01.png" /></span>管理信息
+    <span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>管理信息
     </div>
     	<ul class="menuson">
-        <li class="active"><cite></cite><a href="/admin/default/index" target="rightFrame">首页模版</a><i></i></li>
+        <li class="active"><cite></cite><a href="/admin/default/right" target="rightFrame">首页模版</a><i></i></li>
         <li><cite></cite><a href="/admin/default/list" target="rightFrame">数据列表</a><i></i></li>
         <li><cite></cite><a href="/admin/default/list2" target="rightFrame">图片数据表</a><i></i></li>
         <li><cite></cite><a href="/admin/default/edit" target="rightFrame">添加编辑</a><i></i></li>
@@ -45,35 +45,42 @@ $(function(){
     </dd>
         
     
-    <dd>
-    <div class="title">
-    <span><img src="<?=Yii::$app->params['imgHost'];?>admin/images/leftico02.png" /></span>网站设置
-    </div>
+    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>网站设置</div>
     <ul class="menuson">
-        <li><cite></cite><a href="#" target="rightFrame">编辑内容</a><i></i></li>
-        <li><cite></cite><a href="#" target="rightFrame">发布信息</a><i></i></li>
-        <li><cite></cite><a href="#" target="rightFrame">档案列表显示</a><i></i></li>
-        </ul>     
-    </dd> 
+        <li><cite></cite><a href="/admin/config/index" target="rightFrame">设置列表</a><i></i></li>
+        <li><cite></cite><a href="/admin/config/create" target="rightFrame">添加设置</a><i></i></li>
+    </ul>    
+    </dd>   
     
     
-    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>admin/images/leftico03.png" /></span>用户管理</div>
+    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>用户管理</div>
     <ul class="menuson">
-        <li><cite></cite><a href="#" target="rightFrame">用户列表</a><i></i></li>
-        <li><cite></cite><a href="/admin/user/add" target="rightFrame">添加用户</a><i></i></li>
+        <li><cite></cite><a href="/admin/user/index" target="rightFrame">用户列表</a><i></i></li>
+        <li><cite></cite><a href="/admin/user/create" target="rightFrame">添加用户</a><i></i></li>
     </ul>    
     </dd>  
-    
-    
-    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>admin/images/leftico04.png" /></span>日期管理</div>
+
+    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>产品管理</div>
     <ul class="menuson">
-        <li><cite></cite><a href="#" target="rightFrame">自定义</a><i></i></li>
-        <li><cite></cite><a href="#" target="rightFrame">常用资料</a><i></i></li>
-        <li><cite></cite><a href="#" target="rightFrame">信息列表</a><i></i></li>
-        <li><cite></cite><a href="#" target="rightFrame">其他</a><i></i></li>
-    </ul>
-    
-    </dd>   
+        <li><cite></cite><a href="/admin/product/index" target="rightFrame">产品列表</a><i></i></li>
+        <li><cite></cite><a href="/admin/product/create" target="rightFrame">发布产品</a><i></i></li>
+    </ul>    
+    </dd>
+
+    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>新闻管理</div>
+    <ul class="menuson">
+        <li><cite></cite><a href="/admin/news/index" target="rightFrame">新闻列表</a><i></i></li>
+        <li><cite></cite><a href="/admin/news/create" target="rightFrame">发布新闻</a><i></i></li>
+    </ul>    
+    </dd>
+
+
+    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>留言管理</div>
+    <ul class="menuson">
+        <li><cite></cite><a href="/admin/guestbook/index" target="rightFrame">留言列表</a><i></i></li>
+    </ul>    
+    </dd>
+
     
     </dl>
     

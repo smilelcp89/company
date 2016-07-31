@@ -4,9 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
 <link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
+<link href="<?=Yii::$app->params['imgHost'];?>backend/css/select.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/select-ui.min.js"></script>
+
 
 <script type="text/javascript">
+
+
 $(document).ready(function(){
   $(".click").click(function(){
   $(".tip").fadeIn(200);
@@ -27,6 +32,21 @@ $(document).ready(function(){
 });
 </script>
 
+<script type="text/javascript">
+    
+    $(document).ready(function(e) {
+    $(".select1").uedSelect({
+        width : 345           
+    });
+    $(".select2").uedSelect({
+        width : 167  
+    });
+    $(".select3").uedSelect({
+        width : 100
+    });
+});
+</script>
+
 
 </head>
 
@@ -37,8 +57,8 @@ $(document).ready(function(){
     <span>位置：</span>
     <ul class="placeul">
     <li><a href="#">首页</a></li>
-    <li><a href="#">数据表</a></li>
-    <li><a href="#">基本内容</a></li>
+    <li><a href="#">用户管理</a></li>
+    <li><a href="#">用户列表</a></li>
     </ul>
     </div>
     
@@ -47,20 +67,44 @@ $(document).ready(function(){
     <div class="tools">
     
     	<ul class="toolbar">
-        <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t01.png" /></span>添加</li>
-        <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t02.png" /></span>修改</li>
-        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t03.png" /></span>删除</li>
-        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t04.png" /></span>统计</li>
+            <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t01.png" /></span>添加用户</li>
         </ul>
-        
-        
-        <ul class="toolbar1">
-        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t05.png" /></span>设置</li>
-        </ul>
-    
     </div>
     
     
+    <ul class="seachform">
+    
+    <li><label>综合查询</label><input name="" type="text" class="scinput" /></li>
+    <li><label>指派</label>  
+    <div class="vocation">
+    <select class="select3">
+    <option>全部</option>
+    <option>其他</option>
+    </select>
+    </div>
+    </li>
+    
+    <li><label>重点客户</label>  
+    <div class="vocation">
+    <select class="select3">
+    <option>全部</option>
+    <option>其他</option>
+    </select>
+    </div>
+    </li>
+    
+    <li><label>客户状态</label>  
+    <div class="vocation">
+    <select class="select3">
+    <option>全部</option>
+    <option>其他</option>
+    </select>
+    </div>
+    </li>
+    
+    <li><label>&nbsp;</label><input name="" type="button" class="scbtn" value="查询"/></li>
+    
+    </ul>
     <table class="tablelist">
     	<thead>
     	<tr>
