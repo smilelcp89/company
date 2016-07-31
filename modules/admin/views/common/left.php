@@ -74,6 +74,20 @@ $(function(){
     </ul>    
     </dd>
 
+    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>友情链接管理</div>
+    <ul class="menuson">
+        <li><cite></cite><a href="/admin/friendlink/index" target="rightFrame">友情链接列表</a><i></i></li>
+        <li><cite></cite><a href="/admin/friendlink/create" target="rightFrame">添加友情链接</a><i></i></li>
+    </ul>    
+    </dd>
+
+    <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>客服管理</div>
+    <ul class="menuson">
+        <li><cite></cite><a href="/admin/customer/index" target="rightFrame">客服列表</a><i></i></li>
+        <li><cite></cite><a href="/admin/customer/create" target="rightFrame">添加客服</a><i></i></li>
+    </ul>    
+    </dd>
+
 
     <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>留言管理</div>
     <ul class="menuson">
