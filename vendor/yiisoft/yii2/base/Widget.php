@@ -7,8 +7,8 @@
 
 namespace yii\base;
 
-use Yii;
 use ReflectionClass;
+use Yii;
 
 /**
  * Widget is the base class for widgets.
@@ -41,7 +41,6 @@ class Widget extends Component implements ViewContextInterface
      */
     public static $stack = [];
 
-
     /**
      * Begins a widget.
      * This method creates an instance of the calling class. It will apply the configuration
@@ -56,7 +55,7 @@ class Widget extends Component implements ViewContextInterface
     {
         $config['class'] = get_called_class();
         /* @var $widget Widget */
-        $widget = Yii::createObject($config);
+        $widget          = Yii::createObject($config);
         static::$stack[] = $widget;
 
         return $widget;
@@ -98,8 +97,8 @@ class Widget extends Component implements ViewContextInterface
         try {
             /* @var $widget Widget */
             $config['class'] = get_called_class();
-            $widget = Yii::createObject($config);
-            $out = $widget->run();
+            $widget          = Yii::createObject($config);
+            $out             = $widget->run();
         } catch (\Exception $e) {
             // close the output buffer opened above if it has not been closed already
             if (ob_get_level() > 0) {

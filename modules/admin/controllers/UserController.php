@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\models\User;
+use yii\data\Pagination;
 
 /**
  * 用户控制器
@@ -17,7 +18,22 @@ class UserController extends BaseController
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $query      = User::find();
+        $pagination = new Pagination([
+            'defaultPageSize' => 1,
+            'totalCount'      => $query->count(),
+        ]);
+        $data = $query->select(['id', 'username', 'mobile', 'email'])
+            ->orderBy('id desc')
+            ->limit($pagination->limit)
+            ->offset($pagination->offset)
+            ->asArray()
+            ->all();
+        //Common::dump($pagination);die;
+        return $this->render('index', [
+            'data'       => $data,
+            'pagination' => $pagination,
+        ]);
     }
 
     public function actionCreate()

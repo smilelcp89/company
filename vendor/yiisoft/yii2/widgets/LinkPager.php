@@ -9,9 +9,9 @@ namespace yii\widgets;
 
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\helpers\Html;
 use yii\base\Widget;
 use yii\data\Pagination;
+use yii\helpers\Html;
 
 /**
  * LinkPager displays a list of hyperlinks that lead to different pages of target.
@@ -110,7 +110,6 @@ class LinkPager extends Widget
      */
     public $hideOnSinglePage = true;
 
-
     /**
      * Initializes the pager.
      */
@@ -157,7 +156,7 @@ class LinkPager extends Widget
             return '';
         }
 
-        $buttons = [];
+        $buttons     = [];
         $currentPage = $this->pagination->getPage();
 
         // first page
@@ -218,7 +217,7 @@ class LinkPager extends Widget
 
             return Html::tag('li', Html::tag('span', $label), $options);
         }
-        $linkOptions = $this->linkOptions;
+        $linkOptions              = $this->linkOptions;
         $linkOptions['data-page'] = $page;
 
         return Html::tag('li', Html::a($label, $this->pagination->createUrl($page), $linkOptions), $options);
@@ -230,11 +229,11 @@ class LinkPager extends Widget
     protected function getPageRange()
     {
         $currentPage = $this->pagination->getPage();
-        $pageCount = $this->pagination->getPageCount();
+        $pageCount   = $this->pagination->getPageCount();
 
         $beginPage = max(0, $currentPage - (int) ($this->maxButtonCount / 2));
         if (($endPage = $beginPage + $this->maxButtonCount - 1) >= $pageCount) {
-            $endPage = $pageCount - 1;
+            $endPage   = $pageCount - 1;
             $beginPage = max(0, $endPage - $this->maxButtonCount + 1);
         }
 
