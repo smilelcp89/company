@@ -16,10 +16,10 @@ $config = [
         'cache'        => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user'         => [
+        /*'user'         => [
             'identityClass'   => 'app\models\User',
             'enableAutoLogin' => true,
-        ],
+        ],*/
         'errorHandler' => [
             'errorAction' => 'public/error',
         ],
@@ -60,7 +60,7 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][]    = 'gii';
     $config['modules']['gii'] = [
         'class'      => 'yii\gii\Module',
-        'allowedIPs' => ['192.168.109.*'], // 按需调整这里
+        'allowedIPs' => ['192.168.109.*','127.0.0.1'], // 按需调整这里
     ];
 }
 

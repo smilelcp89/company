@@ -429,6 +429,7 @@ class ActiveRecord extends BaseActiveRecord
 
         $transaction = static::getDb()->beginTransaction();
         try {
+            var_dump($attributes);die;
             $result = $this->insertInternal($attributes);
             if ($result === false) {
                 $transaction->rollBack();

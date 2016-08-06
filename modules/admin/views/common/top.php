@@ -32,7 +32,7 @@ $(function(){
     <ul>
         <li><a href="javascript:;" onclick="window.parent['rightFrame'].location.reload()">刷新</a></li>
         <li><a href="javascript:;"></a></li>
-        <li><a href="login.html" target="_parent">退出</a></li>
+        <li><a href="/admin/public/logout" target="_parent">退出</a></li>
     </ul>
     
     <!-- 

@@ -3,6 +3,8 @@
 namespace app\components;
 
 //公共方法类
+use app\constants\Session;
+
 class Common
 {
     /**
@@ -10,6 +12,7 @@ class Common
      */
     public static function message($type, $content, $url = '')
     {
+        $click = $url ? $url : 'javascript:history.back()';
         $html = <<<EOT
 			<!DOCTYPE html>
 			<html lang="zh-hans">
@@ -29,30 +32,27 @@ class Common
 					<div style="padding:30px 15px;text-align:center;" class="cloum mb0 $type">
 						<!--<div class="cloum-title"><h3>提示信息：</h3></div>-->
 						<h1 style="padding: 0 0 10px;font-size: 20px;" class="block">$content</h1>
-						<p>系统自动跳转在  <span class="time" id="time">3</span>  秒后，如果不想等待，<a style="color:#29a2da;text-decoration:none;" href="$url">点击这里跳转</a></p>
+						<p>系统自动跳转，如果不想等待，<a style="color:#29a2da;text-decoration:none;" href="$click">点击这里跳转</a></p>
 					</div>
 				</div>
 			</div>
 			<script type="text/javascript">
-				function delayURL(url) {
-					var delay = document.getElementById("time").innerHTML;
-					if(delay > 0){
-						delay--;
-						document.getElementById("time").innerHTML = delay;
-					} else {
-						if(!url){
-							history.back();
-						}
-						window.location.href = url;
-					}
-					setTimeout("delayURL(\'" + url + "\')", 1000);
-				}
-				delayURL("$url");
+			    
+			    var url = "$url";
+			    setTimeout(function(){
+			        if(url){
+			            window.location.href = url;
+			        }else{
+			            history.back();
+			        }
+			    }, 3000);
+			    
 			</script>
 			</body>
 			</html>
 EOT;
         echo $html;
+        exit();
 
     }
 
@@ -82,5 +82,15 @@ EOT;
         } else {
             return $output;
         }
+    }
+
+    //是否登陆，如果是返回登陆信息
+    public static function isLogin()
+    {
+        $loginUserInfo = \Yii::$app->session->get(Session::LOGIN_USER_INFO);
+        if(empty($loginUserInfo)){
+            return false;
+        }
+        return $loginUserInfo;
     }
 }

@@ -1,232 +1,97 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/select.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/select-ui.min.js"></script>
-
-
 <script type="text/javascript">
+$(function(){
+    $(".click").click(function(){
+        //$(".tip").fadeIn(200);
+		location.href = '/admin/user/create';
+    });
 
+    $(".uedselect").uedSelect({
+        width : 150
+    });
 
-$(document).ready(function(){
-  $(".click").click(function(){
-  $(".tip").fadeIn(200);
-  });
-  
-  $(".tiptop a").click(function(){
-  $(".tip").fadeOut(200);
-});
-
-  $(".sure").click(function(){
-  $(".tip").fadeOut(100);
-});
-
-  $(".cancel").click(function(){
-  $(".tip").fadeOut(100);
-});
+    $('.tablelist tbody tr:odd').addClass('odd');
 
 });
 </script>
-
-<script type="text/javascript">
-    
-    $(document).ready(function(e) {
-    $(".select1").uedSelect({
-        width : 345           
-    });
-    $(".select2").uedSelect({
-        width : 167  
-    });
-    $(".select3").uedSelect({
-        width : 100
-    });
-});
-</script>
-
-
-</head>
-
-
-<body>
 
 	<div class="place">
-    <span>位置：</span>
-    <ul class="placeul">
-    <li><a href="#">首页</a></li>
-    <li><a href="#">用户管理</a></li>
-    <li><a href="#">用户列表</a></li>
-    </ul>
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin">首页</a></li>
+            <li><a href="/admin/user">用户管理</a></li>
+            <li><a href="javascript;">用户列表</a></li>
+        </ul>
     </div>
-    
+
     <div class="rightinfo">
-    
+
     <div class="tools">
-    
+
     	<ul class="toolbar">
             <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t01.png" /></span>添加用户</li>
         </ul>
     </div>
-    
-    
+
+	<form>
     <ul class="seachform">
-    
-    <li><label>综合查询</label><input name="" type="text" class="scinput" /></li>
-    <li><label>指派</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
-    
-    <li><label>重点客户</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
-    
-    <li><label>客户状态</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
-    
-    <li><label>&nbsp;</label><input name="" type="button" class="scbtn" value="查询"/></li>
-    
+        <li><label>用户名</label><input name="username" type="text" class="scinput" /></li>
+        <li><label>手机号码</label><input name="mobile" type="text" class="scinput" /></li>
+        <li><label>邮箱</label><input name="email" type="text" class="scinput" /></li>
+        <li>
+            <label>用户状态</label>
+            <div class="vocation">
+                <select class="uedselect" name="status">
+                    <option>全部</option>
+                    <option value="1">正常</option>
+                    <option value="2">禁用</option>
+                </select>
+            </div>
+        </li>
+        <li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
     </ul>
+	</form>
     <table class="tablelist">
     	<thead>
     	<tr>
-        <th><input name="" type="checkbox" value="" checked="checked"/></th>
-        <th>编号<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i></th>
-        <th>标题</th>
-        <th>用户</th>
-        <th>籍贯</th>
-        <th>发布时间</th>
-        <th>是否审核</th>
-        <th>操作</th>
+            <th><input name="" type="checkbox" value="" checked="checked"/></th>
+            <th>序号<!--<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i>--></th>
+            <th>用户名</th>
+            <th>手机号码</th>
+            <th>邮箱</th>
+            <th>用户状态</th>
+            <th>最后登陆时间</th>
+            <th>最后登陆IP</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
+        <?php if(!empty($data)):?>
+        <?php foreach($data as $key => $row):?>
         <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130908</td>
-        <td>王金平幕僚：马英九声明字字见血 人活着没意思</td>
-        <td>admin</td>
-        <td>江苏南京</td>
-        <td>2013-09-09 15:05</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink"> 删除</a></td>
-        </tr> 
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130907</td>
-        <td>温州19名小学生中毒流鼻血续：周边部分企业关停</td>
-        <td>uimaker</td>
-        <td>山东济南</td>
-        <td>2013-09-08 14:02</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
+            <td><input name="" type="checkbox" value="" /></td>
+            <td><?=($pageSize*($pageIndex-1)+$key+1)?></td>
+            <td><?=$row['username'];?></td>
+            <td><?=$row['mobile'];?></td>
+            <td><?=$row['email'];?></td>
+            <td><?=($row['status']==\app\models\User::NORMAL_STATUS ? '正常' : '禁用');?></td>
+            <td><?=$row['last_login_time'] ? date('Y-m-d H:i:s',$row['last_login_time']) : '暂无';?></td>
+            <td><?=$row['last_login_ip'];?></td>
+            <td>
+                <a href="<?=\yii\helpers\Url::to(['user/edit?id='.$row['id']])?>" class="tablelink">编辑</a>
+                <a href="javascript;" class="tablelink"> 删除</a>
+            </td>
         </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130906</td>
-        <td>社科院:电子商务促进了农村经济结构和社会转型</td>
-        <td>user</td>
-        <td>江苏无锡</td>
-        <td>2013-09-07 13:16</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130905</td>
-        <td>江西&quot;局长违规建豪宅&quot;：局长检讨</td>
-        <td>admin</td>
-        <td>北京市</td>
-        <td>2013-09-06 10:36</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130904</td>
-        <td>中国2020年或迈入高收入国家行列</td>
-        <td>uimaker</td>
-        <td>江苏南京</td>
-        <td>2013-09-05 13:25</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130903</td>
-        <td>深圳地铁车门因乘客拉闸打开 3人被挤入隧道</td>
-        <td>user</td>
-        <td>广东深圳</td>
-        <td>2013-09-04 12:00</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130902</td>
-        <td>33次地表塌陷 村民不敢下地劳作(图)</td>
-        <td>admin</td>
-        <td>湖南长沙</td>
-        <td>2013-09-03 00:05</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130901</td>
-        <td>医患关系：医生在替改革不彻底背黑锅</td>
-        <td>admin</td>
-        <td>江苏南京</td>
-        <td>2013-09-02 15:05</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130900</td>
-        <td>山东章丘公车进饭店景点将自动向监控系统报警</td>
-        <td>uimaker</td>
-        <td>山东滨州</td>
-        <td>2013-09-01 10:26</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>        
+        <?php endforeach;?>
+        <?php else:?>
+        <tr><td colspan="9">数据为空</td></tr>
+        <?php endif;?>
         </tbody>
     </table>
-    
-   
     <?=\app\widgets\BackendLinkPager::widget(['pagination' => $pagination]) ?>
-    
-    
+
     <div class="tip">
     	<div class="tiptop"><span>提示信息</span><a></a></div>
-        
+
       <div class="tipinfo">
         <span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/ticon.png" /></span>
         <div class="tipright">
@@ -234,23 +99,11 @@ $(document).ready(function(){
         <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
         </div>
         </div>
-        
+
         <div class="tipbtn">
         <input name="" type="button"  class="sure" value="确定" />&nbsp;
         <input name="" type="button"  class="cancel" value="取消" />
         </div>
-    
-    </div>
-    
-    
-    
-    
-    </div>
-    
-    <script type="text/javascript">
-	$('.tablelist tbody tr:odd').addClass('odd');
-	</script>
 
-</body>
-
-</html>
+    </div>
+    </div>

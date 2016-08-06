@@ -16,8 +16,10 @@ class DefaultController extends BaseController
         return $this->render('main');
     }
 
+    /*后台首页*/
     public function actionIndex()
     {
+        $this->layout = false;
         return $this->render('index');
     }
 

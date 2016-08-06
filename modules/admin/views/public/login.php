@@ -12,6 +12,7 @@ $(function(){
 	$(window).resize(function(){  
 		$('.loginbox').css({'position':'absolute','left':($(window).width()-692)/2});
     });  
+	$("#verifyCode").attr("src","/admin/public/captcha");
 });  
 </script> 
 </head>
@@ -35,7 +36,7 @@ $(function(){
                 <li><input name="password" type="password" class="loginpwd" placeholder="密码"/></li>
 				<li>
 					<input name="verifyCode" type="text" style='width:100px;border:2px solid #BAC7D2;height:40px;padding-left:10px;float:left;' placeholder="验证码"/>
-					<img src='/admin/public/captcha' style='width:100px;height:40x;float:left;' title='点击切换验证码' onclick="this.src=this.src+'?'+Math.random();"/>
+					<img id="verifyCode" src='' style='width:100px;height:40x;float:left;' title='点击切换验证码' onclick="this.src=this.src+'?'+Math.random();"/>
 					<div style='clear:both;'></div>
 				</li>
                 <li>
@@ -48,6 +49,6 @@ $(function(){
             </form>
         </div>
     </div>
-    <div class="loginbm">版权所有  2013  <a href="http://www.uimaker.com">uimaker.com</a>  仅供学习交流，勿用于任何商业用途</div> 
+    <div class="loginbm"></div> 
 </body>
 </html>

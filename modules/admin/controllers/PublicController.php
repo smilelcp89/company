@@ -5,16 +5,16 @@ namespace app\modules\admin\controllers;
 use app\models\LoginForm;
 use Yii;
 use yii\helpers\Html;
+use app\components\Common;
+use app\constants\Session as SessionConst;
+use yii\web\Controller;
 
 /**
  * Public controller for the `admin` module
  */
-class PublicController extends BaseController
+class PublicController extends Controller
 {
-    public function init()
-    {
-        parent::init();
-    }
+  public $layout = false;
 
     /**
      * @inheritdoc
@@ -37,40 +37,45 @@ class PublicController extends BaseController
      */
     public function actionLogin()
     {
-        if ($this->isPost) {
-            $username   = Html::encode($this->requests->post('username', ''));
-            $password   = Html::encode($this->requests->post('password', ''));
-            $verifyCode = Html::encode($this->requests->post('verifyCode', ''));
-            if (empty($username) || empty($password)) {
-                echo 'error';die;
-            }
+        if (Yii::$app->request->isPost) {
+            $username   = Html::encode(Yii::$app->request->post('username', ''));
+            $password   = Html::encode(Yii::$app->request->post('password', ''));
+            $verifyCode = Html::encode(Yii::$app->request->post('verifyCode', ''));
             //校验数据
-            $model             = new LoginForm();
-            $model->username   = $username;
-            $model->password   = $password;
-            $model->verifyCode = $verifyCode;
-            if (!$model->validate()) {
-                foreach ($model->errors as $error) {
-                    Yii::$app->getSession()->setFlash('error', $error[0]);
-                    return $this->render('tips');
+            $loginForm             = new LoginForm();
+            $loginForm->username   = $username;
+            $loginForm->password   = $password;
+            $loginForm->verifyCode = $verifyCode;
+            if (!$loginForm->validate()) {
+                foreach ($loginForm->errors as $error) {
+                    Common::message('error',$error[0]);
                 }
-                //echo '<pre>';print_r($model->errors);die;
             } else {
-                echo 'success';
+                //更新登陆的ip地址和时间
+                $user = new \app\models\User();
+                $updateData = ['last_login_ip' => Yii::$app->request->userIP,'last_login_time' => time()];
+                $user::updateAll($updateData,['id' => $loginForm->loginUserInfo['id']]);
+                //登陆成功，设置会话信息
+                Yii::$app->session->set(SessionConst::LOGIN_USER_INFO,array_merge($loginForm->loginUserInfo,$updateData));
+                $this->redirect(['default/index']);
             }
 
         } else {
+
+            if(Common::isLogin()){
+                $this->redirect(['default/index']);
+            }
             return $this->render('login');
         }
     }
 
     /**
-     * 信息提示页
+     * 退出登录
      */
-    public function actionMsg()
+    public function actionLogout()
     {
-        \app\components\Common::message('success', '注册成功');
-        //return $this->render('msg', ['url' => 'http://company.local.com/', 'content' => '恭喜您注册成功！']);
+        Yii::$app->session->removeAll();
+        $this->redirect('login');
     }
 
 }
