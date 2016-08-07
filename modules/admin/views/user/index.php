@@ -1,16 +1,27 @@
 <script type="text/javascript">
 $(function(){
-    $(".click").click(function(){
-        //$(".tip").fadeIn(200);
-		location.href = '/admin/user/create';
+    $(".changeStatus").click(function(){
+		var status = parseInt($(this).attr("data-status"));
+		if(status != 1 && status != 2){
+			$.dialog.alert("无效状态属性值");return;
+		}
+		var message = status == 1 ? '启用' : '禁用';
+		var length = $(".checkbox_opt:checked").length;
+		if(length <= 0){
+			$.dialog.alert("请选择要"+message+"的项");return;
+		}
+		//获取值
+		var data = [];
+		$(".checkbox_opt:checked").each(function(){
+			data.push($(this).val());
+		});		
+		updateByIds(url,{ids: data.join(","),status: status},'确定要'+message+'已选择的项吗');
     });
 
     $(".uedselect").uedSelect({
         width : 150
     });
-
     $('.tablelist tbody tr:odd').addClass('odd');
-
 });
 </script>
 
@@ -19,41 +30,40 @@ $(function(){
         <ul class="placeul">
             <li><a href="/admin">首页</a></li>
             <li><a href="/admin/user">用户管理</a></li>
-            <li><a href="javascript;">用户列表</a></li>
+            <li><a href="javascript:;">用户列表</a></li>
         </ul>
     </div>
 
     <div class="rightinfo">
-
-    <div class="tools">
-
-    	<ul class="toolbar">
-            <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t01.png" /></span>添加用户</li>
-        </ul>
-    </div>
-
 	<form>
     <ul class="seachform">
-        <li><label>用户名</label><input name="username" type="text" class="scinput" /></li>
-        <li><label>手机号码</label><input name="mobile" type="text" class="scinput" /></li>
-        <li><label>邮箱</label><input name="email" type="text" class="scinput" /></li>
+        <li><label>用户名</label><input name="username" value="<?=$params['username']?>" type="text" class="scinput" /></li>
+        <li><label>手机号码</label><input name="mobile" value="<?=$params['mobile']?>" type="text" class="scinput" /></li>
+        <li><label>邮箱</label><input name="email" value="<?=$params['email']?>" type="text" class="scinput" /></li>
         <li>
             <label>用户状态</label>
             <div class="vocation">
                 <select class="uedselect" name="status">
                     <option>全部</option>
-                    <option value="1">正常</option>
-                    <option value="2">禁用</option>
+                    <option value="1" <?php if($params['status'] == 1) echo "selected";?>>正常</option>
+                    <option value="2"  <?php if($params['status'] == 2) echo "selected";?>>禁用</option>
                 </select>
             </div>
         </li>
         <li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
     </ul>
 	</form>
+	<div class="tools">
+    	<ul class="toolbar">
+            <li class="click changeStatus" data-status="1"><span></span>启用</li>
+			<li class="click changeStatus" data-status="2"><span></span>禁用</li>
+			<li class="click delete"><span></span>删除</li>
+        </ul>
+    </div>
     <table class="tablelist">
     	<thead>
     	<tr>
-            <th><input name="" type="checkbox" value="" checked="checked"/></th>
+            <th><input onclick="selectAll(this,'checkbox_opt');" type="checkbox"/></th>
             <th>序号<!--<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i>--></th>
             <th>用户名</th>
             <th>手机号码</th>
@@ -68,7 +78,7 @@ $(function(){
         <?php if(!empty($data)):?>
         <?php foreach($data as $key => $row):?>
         <tr>
-            <td><input name="" type="checkbox" value="" /></td>
+            <td><input class="checkbox_opt" name="data[]" type="checkbox" value="<?=$row['id'];?>" /></td>
             <td><?=($pageSize*($pageIndex-1)+$key+1)?></td>
             <td><?=$row['username'];?></td>
             <td><?=$row['mobile'];?></td>
@@ -78,7 +88,13 @@ $(function(){
             <td><?=$row['last_login_ip'];?></td>
             <td>
                 <a href="<?=\yii\helpers\Url::to(['user/edit?id='.$row['id']])?>" class="tablelink">编辑</a>
-                <a href="javascript;" class="tablelink"> 删除</a>
+				<?php if($row['status'] == \app\models\User::NORMAL_STATUS):?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/user/changestatus',{status:2,ids:<?=$row['id']?>},'确定禁用该账号吗？')">　禁用</a>
+				<?php else:?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/user/changestatus',{status:1,ids:<?=$row['id']?>},'确定启用该账号吗？')">　启用</a>
+				<?php endif;?>	
+
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/user/delete',{ids:<?=$row['id']?>},'确定删除该账号吗？')">　删除</a>
             </td>
         </tr>
         <?php endforeach;?>
@@ -88,22 +104,3 @@ $(function(){
         </tbody>
     </table>
     <?=\app\widgets\BackendLinkPager::widget(['pagination' => $pagination]) ?>
-
-    <div class="tip">
-    	<div class="tiptop"><span>提示信息</span><a></a></div>
-
-      <div class="tipinfo">
-        <span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/ticon.png" /></span>
-        <div class="tipright">
-        <p>是否确认对信息的修改 ？</p>
-        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-        </div>
-        </div>
-
-        <div class="tipbtn">
-        <input name="" type="button"  class="sure" value="确定" />&nbsp;
-        <input name="" type="button"  class="cancel" value="取消" />
-        </div>
-
-    </div>
-    </div>

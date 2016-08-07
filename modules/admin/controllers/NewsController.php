@@ -2,7 +2,10 @@
 
 namespace app\modules\admin\controllers;
 
-use app\models\User;
+use app\models\News;
+use Yii;
+use yii\helpers\Html;
+use yii\data\Pagination;
 
 /**
  * 新闻控制器
@@ -17,14 +20,41 @@ class NewsController extends BaseController
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $intro = trim(Html::encode($this->requests->get('intro')));
+        $flag = trim(Html::encode($this->requests->get('flag')));
+
+        $pageSize = 10;
+        $query = News::find();
+        if($intro){
+            $query->andWhere(['like','intro',$intro]);
+        }
+        if($flag){
+            $query->andWhere(['like','intro',$flag]);
+        }
+        //分页
+        $pagination = new Pagination([
+            'defaultPageSize' => $pageSize,
+            'totalCount' => $query->count(),
+        ]);
+        $data = $query->select('*')
+            ->orderBy('id desc')
+            ->limit($pagination->limit)
+            ->offset($pagination->offset)
+            ->asArray()
+            ->all();
+        return $this->render('index', [
+            'data' => $data,
+            'pagination' => $pagination,
+            'pageIndex' => $pagination->getPage() + 1,
+            'pageSize' => $pageSize,
+        ]);
     }
 
     public function actionCreate()
     {
-        $model = new User();
+        $model = new News();
         if ($this->isPost) {
-            $model->attributes = $this->requests->post('User');
+            $model->attributes = $this->requests->post('News');
 
             if ($model->validate()) {
                 echo 'okok';
@@ -38,7 +68,7 @@ class NewsController extends BaseController
 
     public function actionUpdate()
     {
-        $model = new User();
+        $model = new News();
         return $this->render('edit', ['model' => $model]);
     }
 }

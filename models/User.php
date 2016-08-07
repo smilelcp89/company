@@ -47,6 +47,7 @@ class User extends ActiveRecord
             'mobile' => '手机号码',
             'email' => '邮箱',
             'status' => '用户状态',
+            'is_delete' => '是否删除',
             'last_login_time' => '最后登录时间',
             'last_login_ip' => '最后登录IP',
             'create_time' => '创建时间',

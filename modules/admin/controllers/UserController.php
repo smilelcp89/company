@@ -3,7 +3,6 @@
 namespace app\modules\admin\controllers;
 
 use app\components\Common;
-use app\models\News;
 use app\models\User;
 use yii\data\Pagination;
 use Yii;
@@ -32,8 +31,9 @@ class UserController extends BaseController
 
         $pageSize = 10;
         $query = User::find();
+        $query->where(['=','is_delete',0]);
         if($username){
-            $query->where(['like','username',$username]);
+            $query->andWhere(['like','username',$username]);
         }
         if($email){
             $query->andWhere(['=','email',$email]);
@@ -60,6 +60,7 @@ class UserController extends BaseController
             'pagination' => $pagination,
             'pageIndex' => $pagination->getPage() + 1,
             'pageSize' => $pageSize,
+            'params' => Yii::$app->request->get()
         ]);
     }
 
@@ -113,7 +114,7 @@ class UserController extends BaseController
                     Common::message('error', '修改失败');
                 }
             } else {
-                return $this->render('edit', ['model' => $model]);
+                return $this->render('edit', ['model' => $user]);
             }
         } else {
             $data = $model->findOne(['id' => $userId ]);
@@ -121,6 +122,43 @@ class UserController extends BaseController
                 Common::message('error', '用户不存在');
             }
             return $this->render('edit', ['data' => $data,'model' => $model]);
+        }
+    }
+
+    /*
+     * 删除用户
+     */
+    public function actionDelete()
+    {
+        $userIds = $this->requests->post('ids');
+        if(empty($userIds)){
+            Common::echoJson(1001,'无效参数');
+        }
+        //更新的数据
+        $data = [ 'is_delete' => 1, 'status' => User::FORBIDDEN_STATUS ];
+        if (User::updateAll($data,'id in ('.$userIds.')') != false) {
+            Common::echoJson(1000,'删除成功');
+        } else {
+            Common::echoJson(1002,'删除失败');
+        }
+    }
+
+    /*
+     * 改变用户状态
+     */
+    public function actionChangestatus()
+    {
+        $userIds = $this->requests->post('ids');
+        $status = (int)$this->requests->post('status');
+        if(empty($userIds) || !in_array($status,[User::FORBIDDEN_STATUS,User::NORMAL_STATUS])){
+            Common::echoJson(1001,'无效参数');
+        }
+        //更新的数据
+        $data = [ 'status' => $status ];
+        if (User::updateAll($data,'id in ('.$userIds.')') != false) {
+            Common::echoJson(1000,'操作成功');
+        } else {
+            Common::echoJson(1002,'操作失败');
         }
     }
 }

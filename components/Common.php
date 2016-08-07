@@ -93,4 +93,28 @@ EOT;
         }
         return $loginUserInfo;
     }
+
+    //获取登陆用户信息
+    public static function getLoginUserInfo($field = '')
+    {
+        $loginUserInfo = \Yii::$app->session->get(Session::LOGIN_USER_INFO);
+        if($field && isset($loginUserInfo[$field])){
+            return $loginUserInfo[$field];
+        }
+        return $loginUserInfo;
+    }
+
+    //输入json
+    public static function echoJson($code,$message,$content = [],$return = false)
+    {
+        $result = json_encode([
+            'code' => $code,
+            'message' => $message,
+            'content' => $content,
+        ]);
+        if($return){
+            return $result;
+        }
+        exit($result);
+    }
 }
