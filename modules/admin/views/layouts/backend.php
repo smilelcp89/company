@@ -11,7 +11,7 @@
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/select-ui.min.js"></script>
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.artdialog.js"></script>
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/public.js"></script>
-<script type="text/javascript">
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/public.js">
 	var csrfToken = "<?= Yii::$app->request->csrfToken ?>";
 </script>
 </head>

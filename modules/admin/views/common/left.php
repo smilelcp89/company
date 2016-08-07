@@ -1,12 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
-<script language="JavaScript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
-
-<script type="text/javascript">
+﻿<script type="text/javascript">
 $(function(){	
 	//导航切换
 	$(".menuson li").click(function(){
@@ -25,7 +17,6 @@ $(function(){
 	});
 })	
 </script>
-</head>
 
 <body style="background:#f0f9fd;">
 	<div class="lefttop"><span></span>功能模块</div>
@@ -99,4 +90,4 @@ $(function(){
     </dl>
     
 </body>
-</html>
+
