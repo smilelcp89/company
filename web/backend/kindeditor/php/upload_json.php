@@ -24,7 +24,7 @@ $ext_arr = array(
 	'file' => array('doc', 'docx', 'xls', 'xlsx', 'ppt', 'htm', 'html', 'txt', 'zip', 'rar', 'gz', 'bz2'),
 );
 //最大文件大小
-$max_size = 1000000;
+$max_size = 5000000;
 
 $save_path = realpath($save_path) . '/';
 
@@ -85,7 +85,7 @@ if (empty($_FILES) === false) {
 	}
 	//检查文件大小
 	if ($file_size > $max_size) {
-		alert("上传文件大小超过限制。");
+		alert("上传文件大小超过5M");
 	}
 	//检查目录名
 	$dir_name = empty($_GET['dir']) ? 'image' : trim($_GET['dir']);

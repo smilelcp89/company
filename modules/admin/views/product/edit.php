@@ -1,22 +1,31 @@
 <link href="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/themes/default/default.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="<?=Yii::$app->params['imgHost'];?>backend/diyUpload/css/webuploader.css">
-<link rel="stylesheet" type="text/css" href="<?=Yii::$app->params['imgHost'];?>backend/diyUpload/css/diyUpload.css">
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/kindeditor-min.js"></script>
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/lang/zh_CN.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/diyUpload/js/webuploader.html5only.min.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/diyUpload/js/diyUpload.js"></script>
-<style>
-    #uploadImagesDiv{width:540px; min-height:200px; background:#EDF6FA;display: inline-block;}
-    ul.fileBoxUl li{float:left;}
-</style>
 <script type="text/javascript">
     var editor;
+	var uploadUrl = '<?=Yii::$app->params['domain'];?>backend/kindeditor/php/upload_json.php';
     KindEditor.ready(function(K) {
         editor = K.create('#content', {
             allowFileManager : true,
-            uploadJson : '<?=Yii::$app->params['domain'];?>backend/kindeditor/php/upload_json.php',
+            uploadJson : uploadUrl,
             fileManagerJson : '<?=Yii::$app->params['domain'];?>backend/kindeditor/php/file_manager_json.php',
         });
+
+		var uploadbutton = K.uploadbutton({
+			button : K('#file_upload')[0],
+			fieldName : 'imgFile',
+			url : uploadUrl,
+			afterUpload : function(data) {
+				if (data.error === 0) {
+					alert(data.url);
+				} else {
+					alert(data.message);
+				}
+			}
+		});
+		uploadbutton.fileBox.change(function(e) {
+			uploadbutton.submit();
+		});
     });
 </script>
   
@@ -32,25 +41,7 @@ $(function(e) {
 		width : 100
 	});
 
-    //上传图片
-    $('#imageList').diyUpload({
-        url:'/admin/upload',
-        success:function( data ) {
-            console.info( data );
-        },
-        error:function( err ) {
-            console.info( err );    
-        },
-        buttonText : '选择上传图片',
-        chunked:true,
-        // 分片大小
-        chunkSize:512 * 1024,
-        //最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
-        fileNumLimit:50,
-        fileSizeLimit:500000 * 1024,
-        fileSingleSizeLimit:50000 * 1024,
-        accept: {}
-    });
+    
 });
 </script>
 
@@ -79,9 +70,7 @@ $(function(e) {
         </li>
         <li>
             <label>上传图片<b>*</b></label>
-            <div id="uploadImagesDiv">
-                <div id="imageList"></div>
-            </div>
+			<input type="button" name="file_upload" id="file_upload" value="浏览文件" />
         </li>
         <li style="width:600px;">
             <label>薪资待遇<b>*</b></label>
