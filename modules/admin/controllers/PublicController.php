@@ -2,11 +2,11 @@
 
 namespace app\modules\admin\controllers;
 
+use app\components\Common;
+use app\constants\Session as SessionConst;
 use app\models\LoginForm;
 use Yii;
 use yii\helpers\Html;
-use app\components\Common;
-use app\constants\Session as SessionConst;
 use yii\web\Controller;
 
 /**
@@ -14,7 +14,7 @@ use yii\web\Controller;
  */
 class PublicController extends Controller
 {
-  public $layout = false;
+    public $layout = false;
 
     /**
      * @inheritdoc
@@ -48,21 +48,21 @@ class PublicController extends Controller
             $loginForm->verifyCode = $verifyCode;
             if (!$loginForm->validate()) {
                 foreach ($loginForm->errors as $error) {
-                    Common::message('error',$error[0]);
+                    Common::message('error', $error[0]);
                 }
             } else {
                 //更新登陆的ip地址和时间
-                $user = new \app\models\User();
-                $updateData = ['last_login_ip' => Yii::$app->request->userIP,'last_login_time' => time()];
-                $user::updateAll($updateData,['id' => $loginForm->loginUserInfo['id']]);
+                $user       = new \app\models\User();
+                $updateData = ['last_login_ip' => Yii::$app->request->userIP, 'last_login_time' => time()];
+                $user::updateAll($updateData, ['id' => $loginForm->loginUserInfo['id']]);
                 //登陆成功，设置会话信息
-                Yii::$app->session->set(SessionConst::LOGIN_USER_INFO,array_merge($loginForm->loginUserInfo,$updateData));
+                Yii::$app->session->set(SessionConst::LOGIN_USER_INFO, array_merge($loginForm->loginUserInfo, $updateData));
                 $this->redirect(['default/index']);
             }
 
         } else {
 
-            if(Common::isLogin()){
+            if (Common::isLogin()) {
                 $this->redirect(['default/index']);
             }
             return $this->render('login');

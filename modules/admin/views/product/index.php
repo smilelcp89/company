@@ -4,14 +4,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>无标题文档</title>
 <link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/select.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/select-ui.min.js"></script>
-
-
+<script language="javascript">
+$(function(){	
+	//导航切换
+	$(".imglist li").click(function(){
+		$(".imglist li.selected").removeClass("selected")
+		$(this).addClass("selected");
+	})	
+})	
+</script>
 <script type="text/javascript">
-
-
 $(document).ready(function(){
   $(".click").click(function(){
   $(".tip").fadeIn(200);
@@ -31,23 +34,6 @@ $(document).ready(function(){
 
 });
 </script>
-
-<script type="text/javascript">
-    
-    $(document).ready(function(e) {
-    $(".select1").uedSelect({
-        width : 345           
-    });
-    $(".select2").uedSelect({
-        width : 167  
-    });
-    $(".select3").uedSelect({
-        width : 100
-    });
-});
-</script>
-
-
 </head>
 
 
@@ -57,8 +43,7 @@ $(document).ready(function(){
     <span>位置：</span>
     <ul class="placeul">
     <li><a href="#">首页</a></li>
-    <li><a href="#">用户管理</a></li>
-    <li><a href="#">用户列表</a></li>
+    <li><a href="#">图片列表</a></li>
     </ul>
     </div>
     
@@ -67,158 +52,93 @@ $(document).ready(function(){
     <div class="tools">
     
     	<ul class="toolbar">
-            <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t01.png" /></span>添加用户</li>
+        <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t01.png" /></span>添加</li>
+        <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t02.png" /></span>修改</li>
+        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t03.png" /></span>删除</li>
+        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t04.png" /></span>统计</li>
         </ul>
+        
+        
+        <ul class="toolbar1">
+        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t05.png" /></span>设置</li>
+        </ul>
+    
     </div>
     
     
-    <ul class="seachform">
+    <table class="imgtable">
     
-    <li><label>综合查询</label><input name="" type="text" class="scinput" /></li>
-    <li><label>指派</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
+    <thead>
+    <tr>
+    <th width="100px;">缩略图</th>
+    <th>标题</th>
+    <th>栏目</th>
+    <th>权限</th>
+    <th>发布人</th>
+    <th>是否审核</th>
+    <th>点击</th>
+    </tr>
+    </thead>
     
-    <li><label>重点客户</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
+    <tbody>
     
-    <li><label>客户状态</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
+    <tr>
+    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img11.png" /></td>
+    <td><a href="#">非常不错的国外后台模板，支持HTML5</a><p>发布时间：2013-10-12 09:25:18</p></td>
+    <td>后台界面<p>ID: 82122</p></td>
+    <td>开放浏览</td>
+    <td>admin</td>
+    <td>已审核</td>
+    <td>128</td>
+    </tr>
     
-    <li><label>&nbsp;</label><input name="" type="button" class="scbtn" value="查询"/></li>
+    <tr>
+    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img12.png" /></td>
+    <td><a href="#">一套简约形状图标UI下载</a><p>发布时间：2013-10-12 09:25:18</p></td>
+    <td>图标设计<p>ID: 82122</p></td>
+    <td>开放浏览</td>
+    <td>uimaker</td>
+    <td><i>未审核</i></td>
+    <td>235</td>
+    </tr>
     
-    </ul>
-    <table class="tablelist">
-    	<thead>
-    	<tr>
-        <th><input name="" type="checkbox" value="" checked="checked"/></th>
-        <th>编号<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i></th>
-        <th>标题</th>
-        <th>用户</th>
-        <th>籍贯</th>
-        <th>发布时间</th>
-        <th>是否审核</th>
-        <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130908</td>
-        <td>王金平幕僚：马英九声明字字见血 人活着没意思</td>
-        <td>admin</td>
-        <td>江苏南京</td>
-        <td>2013-09-09 15:05</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink"> 删除</a></td>
-        </tr> 
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130907</td>
-        <td>温州19名小学生中毒流鼻血续：周边部分企业关停</td>
-        <td>uimaker</td>
-        <td>山东济南</td>
-        <td>2013-09-08 14:02</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130906</td>
-        <td>社科院:电子商务促进了农村经济结构和社会转型</td>
-        <td>user</td>
-        <td>江苏无锡</td>
-        <td>2013-09-07 13:16</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130905</td>
-        <td>江西&quot;局长违规建豪宅&quot;：局长检讨</td>
-        <td>admin</td>
-        <td>北京市</td>
-        <td>2013-09-06 10:36</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130904</td>
-        <td>中国2020年或迈入高收入国家行列</td>
-        <td>uimaker</td>
-        <td>江苏南京</td>
-        <td>2013-09-05 13:25</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130903</td>
-        <td>深圳地铁车门因乘客拉闸打开 3人被挤入隧道</td>
-        <td>user</td>
-        <td>广东深圳</td>
-        <td>2013-09-04 12:00</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130902</td>
-        <td>33次地表塌陷 村民不敢下地劳作(图)</td>
-        <td>admin</td>
-        <td>湖南长沙</td>
-        <td>2013-09-03 00:05</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130901</td>
-        <td>医患关系：医生在替改革不彻底背黑锅</td>
-        <td>admin</td>
-        <td>江苏南京</td>
-        <td>2013-09-02 15:05</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130900</td>
-        <td>山东章丘公车进饭店景点将自动向监控系统报警</td>
-        <td>uimaker</td>
-        <td>山东滨州</td>
-        <td>2013-09-01 10:26</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>        
-        </tbody>
+    <tr>
+    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img13.png" /></td>
+    <td><a href="#">配色软件界面设计PSD下载</a><p>发布时间：2013-10-12 09:25:18</p></td>
+    <td>软件界面<p>ID: 82122</p></td>
+    <td>开放浏览</td>
+    <td>admin</td>
+    <td>已审核</td>
+    <td>100</td>
+    </tr>
+    
+    <tr>
+    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img14.png" /></td>
+    <td><a href="#">uimaker.com分享-123张switch界面UI设计</a><p>发布时间：2013-10-12 09:25:18</p></td>
+    <td>图标设计<p>ID: 82122</p></td>
+    <td>开放浏览</td>
+    <td>user</td>
+    <td>已审核</td>
+    <td>96</td>
+    </tr>
+    
+    <tr>
+    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img15.png" /></td>
+    <td><a href="#">章鱼图标PSD源文件下载</a><p>发布时间：2013-10-12 09:25:18</p></td>
+    <td>界面设计<p>ID: 82122</p></td>
+    <td>开放浏览</td>
+    <td>admin</td>
+    <td>已审核</td>
+    <td>45</td>
+    </tr>
+    
+    </tbody>
+    
     </table>
+    
+    
+    
+    
     
    
     <div class="pagin">
@@ -260,10 +180,28 @@ $(document).ready(function(){
     
     </div>
     
-    <script type="text/javascript">
-	$('.tablelist tbody tr:odd').addClass('odd');
+    <div class="tip">
+    	<div class="tiptop"><span>提示信息</span><a></a></div>
+        
+      <div class="tipinfo">
+        <span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/ticon.png" /></span>
+        <div class="tipright">
+        <p>是否确认对信息的修改 ？</p>
+        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
+        </div>
+        </div>
+        
+        <div class="tipbtn">
+        <input name="" type="button"  class="sure" value="确定" />&nbsp;
+        <input name="" type="button"  class="cancel" value="取消" />
+        </div>
+    
+    </div>
+    
+<script type="text/javascript">
+	$('.imgtable tbody tr:odd').addClass('odd');
 	</script>
-
+    
 </body>
 
 </html>
