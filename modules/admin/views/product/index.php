@@ -1,207 +1,165 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
-<script language="javascript">
-$(function(){	
-	//导航切换
-	$(".imglist li").click(function(){
-		$(".imglist li.selected").removeClass("selected")
-		$(this).addClass("selected");
-	})	
-})	
-</script>
 <script type="text/javascript">
-$(document).ready(function(){
-  $(".click").click(function(){
-  $(".tip").fadeIn(200);
-  });
-  
-  $(".tiptop a").click(function(){
-  $(".tip").fadeOut(200);
-});
+$(function(){
+    $(".changeStatus").click(function(){
+		var status = parseInt($(this).attr("data-status"));
+		if(status != 1 && status != 2){
+			$.dialog.alert("无效状态属性值");return;
+		}
+		var message = status == 1 ? '上架' : '下架';
+		var length = $(".checkbox_opt:checked").length;
+		if(length <= 0){
+			$.dialog.alert("请选择要"+message+"的项");return;
+		}
+		//获取值
+		var data = [];
+		$(".checkbox_opt:checked").each(function(){
+			data.push($(this).val());
+		});		
+		updateByIds('/admin/product/changestatus',{ids: data.join(","),status: status},'确定要'+message+'已选择的项吗');
+    });
 
-  $(".sure").click(function(){
-  $(".tip").fadeOut(100);
-});
+	$(".isRecommend").click(function(){
+		var status = parseInt($(this).attr("data-status"));
+		if(status != 1 && status != 2){
+			$.dialog.alert("无效属性值");return;
+		}
+		var message = status == 1 ? '推荐' : '取消推荐';
+		var length = $(".checkbox_opt:checked").length;
+		if(length <= 0){
+			$.dialog.alert("请选择要"+message+"的项");return;
+		}
+		//获取值
+		var data = [];
+		$(".checkbox_opt:checked").each(function(){
+			data.push($(this).val());
+		});		
+		updateByIds('/admin/product/isrecommend',{ids: data.join(","),isRecommend: status},'确定要'+message+'已选择的项吗');
+    });
 
-  $(".cancel").click(function(){
-  $(".tip").fadeOut(100);
-});
+	$(".delete").click(function(){
+		var length = $(".checkbox_opt:checked").length;
+		if(length <= 0){
+			$.dialog.alert("请选择要删除的项");return;
+		}
+		//获取值
+		var data = [];
+		$(".checkbox_opt:checked").each(function(){
+			data.push($(this).val());
+		});		
+		updateByIds('/admin/user/delete',{ids: data.join(","),status: status},'确定要删除已选择的项吗');
+    });
 
+    $(".uedselect").uedSelect({
+        width : 150
+    });
+    $('.tablelist tbody tr:odd').addClass('odd');
 });
 </script>
-</head>
-
-
-<body>
 
 	<div class="place">
-    <span>位置：</span>
-    <ul class="placeul">
-    <li><a href="#">首页</a></li>
-    <li><a href="#">图片列表</a></li>
-    </ul>
-    </div>
-    
-    <div class="rightinfo">
-    
-    <div class="tools">
-    
-    	<ul class="toolbar">
-        <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t01.png" /></span>添加</li>
-        <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t02.png" /></span>修改</li>
-        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t03.png" /></span>删除</li>
-        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t04.png" /></span>统计</li>
-        </ul>
-        
-        
-        <ul class="toolbar1">
-        <li><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t05.png" /></span>设置</li>
-        </ul>
-    
-    </div>
-    
-    
-    <table class="imgtable">
-    
-    <thead>
-    <tr>
-    <th width="100px;">缩略图</th>
-    <th>标题</th>
-    <th>栏目</th>
-    <th>权限</th>
-    <th>发布人</th>
-    <th>是否审核</th>
-    <th>点击</th>
-    </tr>
-    </thead>
-    
-    <tbody>
-    
-    <tr>
-    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img11.png" /></td>
-    <td><a href="#">非常不错的国外后台模板，支持HTML5</a><p>发布时间：2013-10-12 09:25:18</p></td>
-    <td>后台界面<p>ID: 82122</p></td>
-    <td>开放浏览</td>
-    <td>admin</td>
-    <td>已审核</td>
-    <td>128</td>
-    </tr>
-    
-    <tr>
-    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img12.png" /></td>
-    <td><a href="#">一套简约形状图标UI下载</a><p>发布时间：2013-10-12 09:25:18</p></td>
-    <td>图标设计<p>ID: 82122</p></td>
-    <td>开放浏览</td>
-    <td>uimaker</td>
-    <td><i>未审核</i></td>
-    <td>235</td>
-    </tr>
-    
-    <tr>
-    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img13.png" /></td>
-    <td><a href="#">配色软件界面设计PSD下载</a><p>发布时间：2013-10-12 09:25:18</p></td>
-    <td>软件界面<p>ID: 82122</p></td>
-    <td>开放浏览</td>
-    <td>admin</td>
-    <td>已审核</td>
-    <td>100</td>
-    </tr>
-    
-    <tr>
-    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img14.png" /></td>
-    <td><a href="#">uimaker.com分享-123张switch界面UI设计</a><p>发布时间：2013-10-12 09:25:18</p></td>
-    <td>图标设计<p>ID: 82122</p></td>
-    <td>开放浏览</td>
-    <td>user</td>
-    <td>已审核</td>
-    <td>96</td>
-    </tr>
-    
-    <tr>
-    <td class="imgtd"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/img15.png" /></td>
-    <td><a href="#">章鱼图标PSD源文件下载</a><p>发布时间：2013-10-12 09:25:18</p></td>
-    <td>界面设计<p>ID: 82122</p></td>
-    <td>开放浏览</td>
-    <td>admin</td>
-    <td>已审核</td>
-    <td>45</td>
-    </tr>
-    
-    </tbody>
-    
-    </table>
-    
-    
-    
-    
-    
-   
-    <div class="pagin">
-    	<div class="message">共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页</div>
-        <ul class="paginList">
-        <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
-        <li class="paginItem"><a href="javascript:;">1</a></li>
-        <li class="paginItem current"><a href="javascript:;">2</a></li>
-        <li class="paginItem"><a href="javascript:;">3</a></li>
-        <li class="paginItem"><a href="javascript:;">4</a></li>
-        <li class="paginItem"><a href="javascript:;">5</a></li>
-        <li class="paginItem more"><a href="javascript:;">...</a></li>
-        <li class="paginItem"><a href="javascript:;">10</a></li>
-        <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin">首页</a></li>
+            <li><a href="/admin/product">产品管理</a></li>
+            <li><a href="javascript:;">产品列表</a></li>
         </ul>
     </div>
-    
-    
-    <div class="tip">
-    	<div class="tiptop"><span>提示信息</span><a></a></div>
-        
-      <div class="tipinfo">
-        <span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/ticon.png" /></span>
-        <div class="tipright">
-        <p>是否确认对信息的修改 ？</p>
-        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-        </div>
-        </div>
-        
-        <div class="tipbtn">
-        <input name="" type="button"  class="sure" value="确定" />&nbsp;
-        <input name="" type="button"  class="cancel" value="取消" />
-        </div>
-    
-    </div>
-    
-    
-    
-    
-    </div>
-    
-    <div class="tip">
-    	<div class="tiptop"><span>提示信息</span><a></a></div>
-        
-      <div class="tipinfo">
-        <span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/ticon.png" /></span>
-        <div class="tipright">
-        <p>是否确认对信息的修改 ？</p>
-        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-        </div>
-        </div>
-        
-        <div class="tipbtn">
-        <input name="" type="button"  class="sure" value="确定" />&nbsp;
-        <input name="" type="button"  class="cancel" value="取消" />
-        </div>
-    
-    </div>
-    
-<script type="text/javascript">
-	$('.imgtable tbody tr:odd').addClass('odd');
-	</script>
-    
-</body>
 
-</html>
+    <div class="rightinfo">
+	<form>
+    <ul class="seachform">
+        <li><label>产品名</label><input name="title" value="<?=$params['title']?>" type="text" class="scinput" /></li>
+		<li>
+            <label>是否下架</label>
+            <div class="vocation">
+                <select class="uedselect" name="status">
+                    <option>全部</option>
+                    <option value="1" <?php if($params['status'] == 1) echo "selected";?>>上架</option>
+                    <option value="2"  <?php if($params['status'] == 2) echo "selected";?>>下架</option>
+                </select>
+            </div>
+        </li>
+		<li>
+            <label>是否推荐</label>
+            <div class="vocation">
+                <select class="uedselect" name="isRecommend">
+                    <option>全部</option>
+                    <option value="1" <?php if($params['isRecommend'] == 1) echo "selected";?>>是</option>
+                    <option value="2"  <?php if($params['isRecommend'] == 2) echo "selected";?>>否</option>
+                </select>
+            </div>
+        </li>
+        <li>
+            <label>产品分类</label>
+            <div class="vocation">
+                <select class="uedselect" name="cateId">
+                    <option>全部</option>
+                    <option value="1" <?php if($params['cateId'] == 1) echo "selected";?>>分类1</option>
+                    <option value="2"  <?php if($params['cateId'] == 2) echo "selected";?>>分类2</option>
+                </select>
+            </div>
+        </li>
+        <li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
+    </ul>
+	</form>
+	<div class="tools">
+    	<ul class="toolbar">
+            <li class="click changeStatus" data-status="1"><span></span>上架</li>
+			<li class="click changeStatus" data-status="2"><span></span>下架</li>
+			<li class="click isRecommend" data-status="1"><span></span>推荐</li>
+			<li class="click isRecommend" data-status="2"><span></span>取消推荐</li>
+			<li class="click delete"><span></span>删除</li>
+        </ul>
+    </div>
+    <table class="tablelist">
+    	<thead>
+    	<tr>
+            <th><input onclick="selectAll(this,'checkbox_opt');" type="checkbox"/></th>
+            <th>序号<!--<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i>--></th>
+			<th>产品logo</th>
+            <th>产品名称</th>
+            <th>产品价格</th>
+            <th>产品分类</th>
+            <th>是否上架</th>
+            <th>是否推荐</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(!empty($data)):?>
+        <?php foreach($data as $key => $row):?>
+        <tr>
+            <td><input class="checkbox_opt" name="data[]" type="checkbox" value="<?=$row['id'];?>" /></td>
+            <td><?=($pageSize*($pageIndex-1)+$key+1)?></td>
+            <td><img style='margin:5px;' src="<?=$row['logo'];?>" width="80" height="80"/></td>
+            <td><?=$row['title'];?></td>
+            <td>￥<?=$row['sale_price'];?></td>
+            <td><?=$row['catet_id'];?></td>
+            <td><?=($row['status']==1 ? '上架' : '下架');?></td>
+            <td><?=($row['is_recommend']==1 ? '是' : '否');?></td>
+            <td>
+                <a href="<?=\yii\helpers\Url::to(['product/edit?id='.$row['id']])?>" class="tablelink">编辑</a>
+				<?php if($row['status'] == 1):?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/product/changestatus',{status:2,ids:<?=$row['id']?>},'确定下架【<?=$row['title'];?>】吗？')">　下架</a>
+				<?php else:?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/product/changestatus',{status:1,ids:<?=$row['id']?>},'确定上架【<?=$row['title'];?>】吗？')">　上架</a>
+				<?php endif;?>	
+
+				<?php if($row['is_recommend'] == 1):?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/product/isrecommend',{isRecommend:2,ids:<?=$row['id']?>},'确定取消推荐【<?=$row['title'];?>】吗？')">　取消推荐</a>
+				<?php else:?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/product/isrecommend',{isRecommend:1,ids:<?=$row['id']?>},'确定推荐【<?=$row['title'];?>】吗？')">　推荐</a>
+				<?php endif;?>	
+
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/product/delete',{ids:<?=$row['id']?>},'确定删除【<?=$row['title'];?>】吗？')">　删除</a>
+            </td>
+        </tr>
+        <?php endforeach;?>
+        <?php else:?>
+        <tr><td colspan="9">数据为空</td></tr>
+        <?php endif;?>
+        </tbody>
+    </table>
+    <?=\app\widgets\BackendLinkPager::widget(['pagination' => $pagination]) ?>
+	<br/>
+	<br/>

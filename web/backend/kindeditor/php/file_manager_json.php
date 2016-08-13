@@ -10,12 +10,13 @@
 require_once 'JSON.php';
 
 $php_path = $_SERVER['DOCUMENT_ROOT'] . '/';
-$php_url = 'http://' . $_SERVER['HTTP_HOST'] . '/';
+$params = require_once($php_path.'../config/params.php');
+$php_url = $params['imgHost'] ? $params['imgHost'] : ('http://' . $_SERVER['HTTP_HOST'] . '/');
 
 //文件保存目录路径
-$root_path = $php_path . '/uploads/attached/';
+$root_path = $php_path . 'uploads/attached/';
 //文件保存目录URL
-$root_url = $php_url . '/uploads/attached/';
+$root_url = $php_url . 'uploads/attached/';
 
 //图片扩展名
 $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');

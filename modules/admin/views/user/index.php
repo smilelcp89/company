@@ -15,7 +15,20 @@ $(function(){
 		$(".checkbox_opt:checked").each(function(){
 			data.push($(this).val());
 		});		
-		updateByIds(url,{ids: data.join(","),status: status},'确定要'+message+'已选择的项吗');
+		updateByIds('/admin/user/changestatus',{ids: data.join(","),status: status},'确定要'+message+'已选择的项吗');
+    });
+
+	$(".delete").click(function(){
+		var length = $(".checkbox_opt:checked").length;
+		if(length <= 0){
+			$.dialog.alert("请选择要删除的项");return;
+		}
+		//获取值
+		var data = [];
+		$(".checkbox_opt:checked").each(function(){
+			data.push($(this).val());
+		});		
+		updateByIds('/admin/user/delete',{ids: data.join(","),status: status},'确定要删除已选择的项吗');
     });
 
     $(".uedselect").uedSelect({

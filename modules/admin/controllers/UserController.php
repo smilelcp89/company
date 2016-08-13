@@ -118,7 +118,7 @@ class UserController extends BaseController
             }
         } else {
             $data = $model->findOne(['id' => $userId ]);
-            if(empty($data)){
+            if(empty($data) || $data['is_delete'] == 1){
                 Common::message('error', '用户不存在');
             }
             return $this->render('edit', ['data' => $data,'model' => $model]);
@@ -136,7 +136,7 @@ class UserController extends BaseController
         }
         //更新的数据
         $data = [ 'is_delete' => 1, 'status' => User::FORBIDDEN_STATUS ];
-        if (User::updateAll($data,'id in ('.$userIds.')') != false) {
+        if (User::updateAll($data,'id in ('.$userIds.')') !== false) {
             Common::echoJson(1000,'删除成功');
         } else {
             Common::echoJson(1002,'删除失败');
@@ -155,7 +155,7 @@ class UserController extends BaseController
         }
         //更新的数据
         $data = [ 'status' => $status ];
-        if (User::updateAll($data,'id in ('.$userIds.')') != false) {
+        if (User::updateAll($data,'id in ('.$userIds.')') !== false) {
             Common::echoJson(1000,'操作成功');
         } else {
             Common::echoJson(1002,'操作失败');

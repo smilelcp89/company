@@ -24,22 +24,22 @@ class ProductController extends BaseController
      */
     public function actionIndex()
     {
-        $username = trim(Html::encode($this->requests->get('username')));
-        $email    = trim(Html::encode($this->requests->get('email')));
-        $mobile   = trim(Html::encode($this->requests->get('mobile')));
+        $title = trim(Html::encode($this->requests->get('title')));
+        $isRecommend   = trim(Html::encode($this->requests->get('isRecommend')));
+        $cateId   = intval($this->requests->get('cateId', 0));
         $status   = intval($this->requests->get('status', 0));
 
         $pageSize = 10;
         $query    = Product::find();
         $query->where(['=', 'is_delete', 0]);
-        if ($username) {
-            $query->andWhere(['like', 'username', $username]);
+        if ($title) {
+            $query->andWhere(['like', 'title', $title]);
         }
-        if ($email) {
-            $query->andWhere(['=', 'email', $email]);
+        if ($isRecommend) {
+            $query->andWhere(['=', 'is_recommend', $isRecommend]);
         }
-        if ($mobile) {
-            $query->andWhere(['=', 'mobile', $mobile]);
+        if ($cateId) {
+            $query->andWhere(['=', 'cate_id', $cateId]);
         }
         if ($status) {
             $query->andWhere(['=', 'status', $status]);
@@ -49,7 +49,7 @@ class ProductController extends BaseController
             'defaultPageSize' => $pageSize,
             'totalCount'      => $query->count(),
         ]);
-        $data = $query->select('id,username,mobile,email,status,last_login_ip,last_login_time')
+        $data = $query->select('id,title,logo,sale_price,status,cate_id,is_recommend')
             ->orderBy('id desc')
             ->limit($pagination->limit)
             ->offset($pagination->offset)
@@ -71,8 +71,15 @@ class ProductController extends BaseController
     {
         $model = new Product();
         if ($this->isPost) {
-            $model->scenario   = 'create';
-            $model->attributes = $this->requests->post('Product');
+            $productImgs = $this->requests->post('productImgs');
+            if(empty($productImgs)){
+                Common::message('error', '产品图片必须上传');
+            }
+            $product = $this->requests->post('Product');
+            $model->attributes = $product;
+            $model->images_list = implode(',',$productImgs);
+            $model->logo = $productImgs[0]; //第一张图片作为logo
+            $model->intro = Html::encode($product['intro']);
             if ($model->validate()) {
                 if ($model->save()) {
                     Common::message('success', '保存成功');
@@ -99,27 +106,26 @@ class ProductController extends BaseController
         $model = new Product();
         if ($this->isPost) {
             $form = $this->requests->post('Product');
-            $user = $model->findOne(['id' => $userId]);
-            if (!empty($form['password'])) {
-                $user->password = $form['password'];
-            }
-            $user->email    = $form['email'];
-            $user->mobile   = $form['mobile'];
-            $user->status   = $form['status'];
-            $user->scenario = 'update';
-            if ($user->validate()) {
-                if ($user->save()) {
+            $product = $model->findOne(['id' => $userId]);
+            $product->attributes = $form;
+            if ($product->validate()) {
+                if ($product->save()) {
                     Common::message('success', '修改成功');
                 } else {
                     Common::message('error', '修改失败');
                 }
             } else {
-                return $this->render('edit', ['model' => $user]);
+                return $this->render('edit', ['model' => $product]);
             }
         } else {
             $data = $model->findOne(['id' => $userId]);
-            if (empty($data)) {
+            if (empty($data) || $data['is_delete'] == 1) {
                 Common::message('error', '产品不存在');
+            }
+            if(!empty($data['images_list'])){
+                $data['images_list'] = explode(',',$data['images_list']);
+            }else{
+                $data['images_list'] = [$data['logo']];
             }
             return $this->render('edit', ['data' => $data, 'model' => $model]);
         }
@@ -130,13 +136,13 @@ class ProductController extends BaseController
      */
     public function actionDelete()
     {
-        $userIds = $this->requests->post('ids');
-        if (empty($userIds)) {
+        $ids = $this->requests->post('ids');
+        if (empty($ids)) {
             Common::echoJson(1001, '无效参数');
         }
         //更新的数据
-        $data = ['is_delete' => 1, 'status' => Product::FORBIDDEN_STATUS];
-        if (Product::updateAll($data, 'id in (' . $userIds . ')') != false) {
+        $data = ['is_delete' => 1, 'status' => 1];
+        if (Product::updateAll($data, 'id in (' . $ids . ')') !== false) {
             Common::echoJson(1000, '删除成功');
         } else {
             Common::echoJson(1002, '删除失败');
@@ -144,18 +150,37 @@ class ProductController extends BaseController
     }
 
     /*
-     * 改变产品状态
+     * 改变产品上下架状态
      */
     public function actionChangestatus()
     {
-        $userIds = $this->requests->post('ids');
+        $ids = $this->requests->post('ids');
         $status  = (int) $this->requests->post('status');
-        if (empty($userIds) || !in_array($status, [Product::FORBIDDEN_STATUS, Product::NORMAL_STATUS])) {
+        if (empty($ids) || !in_array($status, [1, 2])) {
             Common::echoJson(1001, '无效参数');
         }
         //更新的数据
         $data = ['status' => $status];
-        if (Product::updateAll($data, 'id in (' . $userIds . ')') != false) {
+        if (Product::updateAll($data, 'id in (' . $ids . ')') !== false) {
+            Common::echoJson(1000, '操作成功');
+        } else {
+            Common::echoJson(1002, '操作失败');
+        }
+    }
+
+    /*
+     * 改变产品推荐状态
+     */
+    public function actionIsrecommend()
+    {
+        $ids = $this->requests->post('ids');
+        $isRecommend  = (int) $this->requests->post('isRecommend');
+        if (empty($ids) || !in_array($isRecommend, [1, 2])) {
+            Common::echoJson(1001, '无效参数');
+        }
+        //更新的数据
+        $data = ['is_recommend' => $isRecommend];
+        if (Product::updateAll($data, 'id in (' . $ids . ')') !== false) {
             Common::echoJson(1000, '操作成功');
         } else {
             Common::echoJson(1002, '操作失败');

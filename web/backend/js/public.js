@@ -25,7 +25,7 @@ function updateByIds(url,params,message){
 				 dataType: "json",
 				 success: function(data){
 					$.dialog.alert(data.message);
-					if(data.code = '1000'){
+					if(data.code == '1000'){
 						location.reload();
 					}
 				 }

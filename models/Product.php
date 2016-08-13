@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\Common;
 use Yii;
 
 /**
@@ -13,7 +14,7 @@ use Yii;
  * @property string $market_price
  * @property string $sale_price
  * @property integer $cate_id
- * @property string $images
+ * @property string $images_list
  * @property string $intro
  * @property integer $is_recommend
  * @property integer $status
@@ -43,12 +44,9 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['market_price', 'sale_price'], 'number'],
-            [['cate_id', 'is_recommend', 'status', 'start_time', 'end_time', 'create_time', 'update_time'], 'integer'],
-            [['images', 'intro'], 'required'],
-            [['images', 'intro'], 'string'],
-            [['title', 'logo', 'seo_title', 'seo_keywords', 'seo_descpition'], 'string', 'max' => 255],
-            [['create_user', 'update_user'], 'string', 'max' => 64],
+            [['title','sale_price','intro'], 'required','message' => '必须填写'],
+            ['sale_price', 'number','message' => '产品价格必须为数字'],
+            [['title', 'logo', 'seo_title', 'seo_keywords', 'seo_descpition'], 'string', 'max' => 255,'message' => '输入不能超过255个字符'],
         ];
     }
 
@@ -64,7 +62,7 @@ class Product extends \yii\db\ActiveRecord
             'market_price' => 'Market Price',
             'sale_price' => 'Sale Price',
             'cate_id' => 'Cate ID',
-            'images' => 'Images',
+            'images_list' => 'Images',
             'intro' => 'Intro',
             'is_recommend' => 'Is Recommend',
             'status' => 'Status',
@@ -78,5 +76,21 @@ class Product extends \yii\db\ActiveRecord
             'update_user' => 'Update User',
             'update_time' => 'Update Time',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $now = time();
+            if($this->isNewRecord) {
+                $this->create_user = Common::getLoginUserInfo('username');
+                $this->create_time = $now;
+            }
+            $this->update_user = Common::getLoginUserInfo('username');
+            $this->update_time = $now;
+            return true;
+        } else {
+            return false;
+        }
     }
 }
