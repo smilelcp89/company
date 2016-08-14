@@ -4,6 +4,7 @@ namespace app\modules\admin\controllers;
 
 use app\components\Common;
 use app\models\Product;
+use app\models\ProductCategory;
 use Yii;
 use yii\data\Pagination;
 use yii\helpers\Html;
@@ -55,11 +56,20 @@ class ProductController extends BaseController
             ->offset($pagination->offset)
             ->asArray()
             ->all();
+        //获取产品分类
+        $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
+        $cateArr = [];
+        if(!empty($cateList)){
+            foreach ($cateList as $cate){
+                $cateArr[$cate['id']] = $cate['title'];
+            }
+        }
         return $this->render('index', [
             'data'       => $data,
             'pagination' => $pagination,
             'pageIndex'  => $pagination->getPage() + 1,
             'pageSize'   => $pageSize,
+            'cateList'   => $cateList,
             'params'     => Yii::$app->request->get(),
         ]);
     }
@@ -90,7 +100,15 @@ class ProductController extends BaseController
                 return $this->render('edit', ['model' => $model]);
             }
         } else {
-            return $this->render('edit', ['model' => $model]);
+            //获取产品分类
+            $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
+            $cateArr = [];
+            if(!empty($cateList)){
+                foreach ($cateList as $cate){
+                    $cateArr[$cate['id']] = $cate['title'];
+                }
+            }
+            return $this->render('edit', ['model' => $model,'cateArr' => $cateArr]);
         }
     }
 
@@ -127,7 +145,9 @@ class ProductController extends BaseController
             }else{
                 $data['images_list'] = [$data['logo']];
             }
-            return $this->render('edit', ['data' => $data, 'model' => $model]);
+            //获取产品分类
+            $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
+            return $this->render('edit', ['data' => $data, 'model' => $model,'cateList' => $cateList]);
         }
     }
 

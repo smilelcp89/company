@@ -57,6 +57,12 @@ $(function(){
         <li><cite></cite><a href="/admin/product/create" target="rightFrame">发布产品</a><i></i></li>
     </ul>    
     </dd>
+	<dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>产品分类管理</div>
+    <ul class="menuson">
+        <li><cite></cite><a href="/admin/product-category/index" target="rightFrame">产品分类列表</a><i></i></li>
+        <li><cite></cite><a href="/admin/product-category/create" target="rightFrame">添加产品分类</a><i></i></li>
+    </ul>    
+    </dd>
 
     <dd><div class="title"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>新闻管理</div>
     <ul class="menuson">

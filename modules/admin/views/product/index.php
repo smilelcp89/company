@@ -94,8 +94,11 @@ $(function(){
             <div class="vocation">
                 <select class="uedselect" name="cateId">
                     <option>全部</option>
-                    <option value="1" <?php if($params['cateId'] == 1) echo "selected";?>>分类1</option>
-                    <option value="2"  <?php if($params['cateId'] == 2) echo "selected";?>>分类2</option>
+					<?php if(!empty($cateList)):?>
+					<?php foreach($cateList as $cate):?>
+						<option value="<?=$cate['id']?>" <?php if($params['cateId'] == $cate['id']) echo "selected";?>><?=$cate['title']?></option>
+					<?php endforeach;?>
+					<?php endif;?>
                 </select>
             </div>
         </li>
