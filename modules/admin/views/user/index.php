@@ -57,7 +57,7 @@ $(function(){
             <label>用户状态</label>
             <div class="vocation">
                 <select class="uedselect" name="status">
-                    <option>全部</option>
+                    <option value='0'>全部</option>
                     <option value="1" <?php if($params['status'] == 1) echo "selected";?>>正常</option>
                     <option value="2"  <?php if($params['status'] == 2) echo "selected";?>>禁用</option>
                 </select>

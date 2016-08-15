@@ -1,269 +1,115 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>无标题文档</title>
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/select.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/select-ui.min.js"></script>
-
-
 <script type="text/javascript">
+$(function(){
+    $(".changeStatus").click(function(){
+		var status = parseInt($(this).attr("data-status"));
+		if(status != 1 && status != 2){
+			$.dialog.alert("无效状态属性值");return;
+		}
+		var message = status == 1 ? '启用' : '禁用';
+		var length = $(".checkbox_opt:checked").length;
+		if(length <= 0){
+			$.dialog.alert("请选择要"+message+"的项");return;
+		}
+		//获取值
+		var data = [];
+		$(".checkbox_opt:checked").each(function(){
+			data.push($(this).val());
+		});		
+		updateByIds('/admin/friendlink/changestatus',{ids: data.join(","),status: status},'确定要'+message+'已选择的项吗');
+    });
 
+	$(".delete").click(function(){
+		var length = $(".checkbox_opt:checked").length;
+		if(length <= 0){
+			$.dialog.alert("请选择要删除的项");return;
+		}
+		//获取值
+		var data = [];
+		$(".checkbox_opt:checked").each(function(){
+			data.push($(this).val());
+		});		
+		updateByIds('/admin/friendlink/delete',{ids: data.join(","),status: status},'确定要删除已选择的项吗');
+    });
 
-$(document).ready(function(){
-  $(".click").click(function(){
-  $(".tip").fadeIn(200);
-  });
-  
-  $(".tiptop a").click(function(){
-  $(".tip").fadeOut(200);
-});
-
-  $(".sure").click(function(){
-  $(".tip").fadeOut(100);
-});
-
-  $(".cancel").click(function(){
-  $(".tip").fadeOut(100);
-});
-
+    $(".uedselect").uedSelect({
+        width : 150
+    });
+    $('.tablelist tbody tr:odd').addClass('odd');
 });
 </script>
-
-<script type="text/javascript">
-    
-    $(document).ready(function(e) {
-    $(".select1").uedSelect({
-        width : 345           
-    });
-    $(".select2").uedSelect({
-        width : 167  
-    });
-    $(".select3").uedSelect({
-        width : 100
-    });
-});
-</script>
-
-
-</head>
-
-
-<body>
 
 	<div class="place">
-    <span>位置：</span>
-    <ul class="placeul">
-    <li><a href="#">首页</a></li>
-    <li><a href="#">用户管理</a></li>
-    <li><a href="#">用户列表</a></li>
-    </ul>
-    </div>
-    
-    <div class="rightinfo">
-    
-    <div class="tools">
-    
-    	<ul class="toolbar">
-            <li class="click"><span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/t01.png" /></span>添加用户</li>
+        <span>位置：</span>
+        <ul class="placeul">
+            <li><a href="/admin">首页</a></li>
+            <li><a href="/admin/friendlink">友情链接管理</a></li>
+            <li><a href="javascript:;">友情链接列表</a></li>
         </ul>
     </div>
-    
-    
+
+    <div class="rightinfo">
+	<form>
     <ul class="seachform">
-    
-    <li><label>综合查询</label><input name="" type="text" class="scinput" /></li>
-    <li><label>指派</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
-    
-    <li><label>重点客户</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
-    
-    <li><label>客户状态</label>  
-    <div class="vocation">
-    <select class="select3">
-    <option>全部</option>
-    <option>其他</option>
-    </select>
-    </div>
-    </li>
-    
-    <li><label>&nbsp;</label><input name="" type="button" class="scbtn" value="查询"/></li>
-    
+        <li><label>友情链接名</label><input name="title" value="<?=$params['title']?>" type="text" class="scinput" /></li>
+        <li>
+            <label>是否启用</label>
+            <div class="vocation">
+                <select class="uedselect" name="status">
+                    <option value='0'>全部</option>
+                    <option value="1" <?php if($params['status'] == 1) echo "selected";?>>是</option>
+                    <option value="2"  <?php if($params['status'] == 2) echo "selected";?>>否</option>
+                </select>
+            </div>
+        </li>
+        <li><label>&nbsp;</label><input type="submit" class="scbtn" value="查询"/></li>
     </ul>
+	</form>
+	<div class="tools">
+    	<ul class="toolbar">
+            <li class="click changeStatus" data-status="1"><span></span>启用</li>
+			<li class="click changeStatus" data-status="2"><span></span>不启用</li>
+			<li class="click delete"><span></span>删除</li>
+        </ul>
+    </div>
     <table class="tablelist">
     	<thead>
     	<tr>
-        <th><input name="" type="checkbox" value="" checked="checked"/></th>
-        <th>编号<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i></th>
-        <th>标题</th>
-        <th>用户</th>
-        <th>籍贯</th>
-        <th>发布时间</th>
-        <th>是否审核</th>
-        <th>操作</th>
+            <th><input onclick="selectAll(this,'checkbox_opt');" type="checkbox"/></th>
+            <th>序号<!--<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i>--></th>
+            <th>友情链接名</th>
+            <th>链接地址</th>
+            <th>友链状态</th>
+            <th>创建者</th>
+            <th>创建时间</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
+        <?php if(!empty($data)):?>
+        <?php foreach($data as $key => $row):?>
         <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130908</td>
-        <td>王金平幕僚：马英九声明字字见血 人活着没意思</td>
-        <td>admin</td>
-        <td>江苏南京</td>
-        <td>2013-09-09 15:05</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink"> 删除</a></td>
-        </tr> 
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130907</td>
-        <td>温州19名小学生中毒流鼻血续：周边部分企业关停</td>
-        <td>uimaker</td>
-        <td>山东济南</td>
-        <td>2013-09-08 14:02</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
+            <td><input class="checkbox_opt" name="data[]" type="checkbox" value="<?=$row['id'];?>" /></td>
+            <td><?=($pageSize*($pageIndex-1)+$key+1)?></td>
+            <td><?=$row['title'];?></td>
+            <td><?=$row['url'];?></td>
+            <td><?=($row['status']==\app\models\User::NORMAL_STATUS ? '启用' : '不启用');?></td>
+            <td><?=$row['create_user'];?></td>
+            <td><?=$row['create_time'] ? date('Y-m-d H:i:s',$row['create_time']) : '暂无';?></td>
+            <td>
+                <a href="<?=\yii\helpers\Url::to(['friendlink/edit?id='.$row['id']])?>" class="tablelink">编辑</a>
+				<?php if($row['status'] == \app\models\User::NORMAL_STATUS):?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/friendlink/changestatus',{status:2,ids:<?=$row['id']?>},'确定不启用【<?=$row['title'];?>】吗？')">　不启用</a>
+				<?php else:?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/friendlink/changestatus',{status:1,ids:<?=$row['id']?>},'确定启用【<?=$row['title'];?>】吗？')">　启用</a>
+				<?php endif;?>	
+
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/friendlink/delete',{ids:<?=$row['id']?>},'确定删除【<?=$row['title'];?>】吗？')">　删除</a>
+            </td>
         </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130906</td>
-        <td>社科院:电子商务促进了农村经济结构和社会转型</td>
-        <td>user</td>
-        <td>江苏无锡</td>
-        <td>2013-09-07 13:16</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130905</td>
-        <td>江西&quot;局长违规建豪宅&quot;：局长检讨</td>
-        <td>admin</td>
-        <td>北京市</td>
-        <td>2013-09-06 10:36</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130904</td>
-        <td>中国2020年或迈入高收入国家行列</td>
-        <td>uimaker</td>
-        <td>江苏南京</td>
-        <td>2013-09-05 13:25</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130903</td>
-        <td>深圳地铁车门因乘客拉闸打开 3人被挤入隧道</td>
-        <td>user</td>
-        <td>广东深圳</td>
-        <td>2013-09-04 12:00</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130902</td>
-        <td>33次地表塌陷 村民不敢下地劳作(图)</td>
-        <td>admin</td>
-        <td>湖南长沙</td>
-        <td>2013-09-03 00:05</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130901</td>
-        <td>医患关系：医生在替改革不彻底背黑锅</td>
-        <td>admin</td>
-        <td>江苏南京</td>
-        <td>2013-09-02 15:05</td>
-        <td>未审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>
-        
-        <tr>
-        <td><input name="" type="checkbox" value="" /></td>
-        <td>20130900</td>
-        <td>山东章丘公车进饭店景点将自动向监控系统报警</td>
-        <td>uimaker</td>
-        <td>山东滨州</td>
-        <td>2013-09-01 10:26</td>
-        <td>已审核</td>
-        <td><a href="#" class="tablelink">查看</a>     <a href="#" class="tablelink">删除</a></td>
-        </tr>        
+        <?php endforeach;?>
+        <?php else:?>
+        <tr><td colspan="8">数据为空</td></tr>
+        <?php endif;?>
         </tbody>
     </table>
-    
-   
-    <div class="pagin">
-    	<div class="message">共<i class="blue">1256</i>条记录，当前显示第&nbsp;<i class="blue">2&nbsp;</i>页</div>
-        <ul class="paginList">
-        <li class="paginItem"><a href="javascript:;"><span class="pagepre"></span></a></li>
-        <li class="paginItem"><a href="javascript:;">1</a></li>
-        <li class="paginItem current"><a href="javascript:;">2</a></li>
-        <li class="paginItem"><a href="javascript:;">3</a></li>
-        <li class="paginItem"><a href="javascript:;">4</a></li>
-        <li class="paginItem"><a href="javascript:;">5</a></li>
-        <li class="paginItem more"><a href="javascript:;">...</a></li>
-        <li class="paginItem"><a href="javascript:;">10</a></li>
-        <li class="paginItem"><a href="javascript:;"><span class="pagenxt"></span></a></li>
-        </ul>
-    </div>
-    
-    
-    <div class="tip">
-    	<div class="tiptop"><span>提示信息</span><a></a></div>
-        
-      <div class="tipinfo">
-        <span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/ticon.png" /></span>
-        <div class="tipright">
-        <p>是否确认对信息的修改 ？</p>
-        <cite>如果是请点击确定按钮 ，否则请点取消。</cite>
-        </div>
-        </div>
-        
-        <div class="tipbtn">
-        <input name="" type="button"  class="sure" value="确定" />&nbsp;
-        <input name="" type="button"  class="cancel" value="取消" />
-        </div>
-    
-    </div>
-    
-    
-    
-    
-    </div>
-    
-    <script type="text/javascript">
-	$('.tablelist tbody tr:odd').addClass('odd');
-	</script>
-
-</body>
-
-</html>
+    <?=\app\widgets\BackendLinkPager::widget(['pagination' => $pagination]) ?>

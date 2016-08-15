@@ -2,6 +2,13 @@
 use \yii\helpers\Html;
 use \yii\widgets\ActiveForm;
 ?>
+<script type="text/javascript">
+$(function(e) {
+    $(".select1").uedSelect({
+		width : 150			  
+	});
+});
+</script>
 <div class="place">
 	<span>位置：</span>
 	<ul class="placeul">

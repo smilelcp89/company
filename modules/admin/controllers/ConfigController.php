@@ -5,8 +5,8 @@ namespace app\modules\admin\controllers;
 use app\components\Common;
 use app\models\Config;
 use Yii;
-use yii\helpers\Html;
 use yii\data\Pagination;
+use yii\helpers\Html;
 
 /**
  * 网站配置控制器
@@ -19,23 +19,26 @@ class ConfigController extends BaseController
         parent::init();
     }
 
+    /*
+     * 列表
+     */
     public function actionIndex()
     {
-        $intro = trim(Html::encode($this->requests->get('intro')));
-        $flag = trim(Html::encode($this->requests->get('flag')));
-
         $pageSize = 10;
-        $query = Config::find();
-        if($intro){
-            $query->andWhere(['like','intro',$intro]);
+        $query    = Config::find();
+        $query->where(['=', 'is_delete', 0]);
+        $flag = trim(Html::encode($this->requests->get('flag')));
+        if ($flag) {
+            $query->andWhere(['like', 'flag', $flag]);
         }
-        if($flag){
-            $query->andWhere(['like','intro',$flag]);
+        $intro = trim(Html::encode($this->requests->get('intro')));
+        if ($intro) {
+            $query->andWhere(['like', 'intro', $intro]);
         }
         //分页
         $pagination = new Pagination([
             'defaultPageSize' => $pageSize,
-            'totalCount' => $query->count(),
+            'totalCount'      => $query->count(),
         ]);
         $data = $query->select('*')
             ->orderBy('id desc')
@@ -44,21 +47,23 @@ class ConfigController extends BaseController
             ->asArray()
             ->all();
         return $this->render('index', [
-            'data' => $data,
+            'data'       => $data,
             'pagination' => $pagination,
-            'pageIndex' => $pagination->getPage() + 1,
-            'pageSize' => $pageSize,
-            'params' => Yii::$app->request->get()
+            'pageIndex'  => $pagination->getPage() + 1,
+            'pageSize'   => $pageSize,
+            'params'     => Yii::$app->request->get(),
         ]);
     }
 
+    /*
+     * 添加配置
+     */
     public function actionCreate()
     {
         $model = new Config();
         if ($this->isPost) {
             $model->scenario = 'create';
             $model->attributes = $this->requests->post('Config');
-            //Common::dump($this->requests->post('Config'));die;
             if ($model->validate()) {
                 if ($model->save()) {
                     Common::message('success', '保存成功');
@@ -74,36 +79,53 @@ class ConfigController extends BaseController
     }
 
     /*
-      * 更新用户
-      */
+     * 更新配置
+     */
     public function actionEdit()
     {
-        $configId = (int)$this->requests->get('id');
-        if ($configId <= 0) {
-            Common::message('', '无效配置ID');
+        $id = (int) $this->requests->get('id');
+        if ($id <= 0) {
+            Common::message('', '无效ID');
         }
         $model = new Config();
         if ($this->isPost) {
             $form = $this->requests->post('Config');
-            $config = $model->findOne(['id' => $configId]);
-            $config->content = $form['content'];
-            $config->intro = $form['intro'];
-            $config->scenario = 'update';
-            if ($config->validate()) {
-                if ($config->save()) {
+            $product = $model->findOne(['id' => $id]);
+            $product->scenario = 'update';
+            $product->attributes = $form;
+            if ($product->validate()) {
+                if ($product->save()) {
                     Common::message('success', '修改成功');
                 } else {
                     Common::message('error', '修改失败');
                 }
             } else {
-                return $this->render('edit', ['model' => $config]);
+                return $this->render('edit', ['model' => $product]);
             }
         } else {
-            $data = $model->findOne(['id' => $configId]);
-            if (empty($data)) {
-                Common::message('error', '配置不存在');
+            $data = $model->findOne(['id' => $id]);
+            if (empty($data) || $data['is_delete'] == 1) {
+                Common::message('error', '记录不存在');
             }
             return $this->render('edit', ['data' => $data, 'model' => $model]);
+        }
+    }
+
+    /*
+     * 删除配置
+     */
+    public function actionDelete()
+    {
+        $ids = $this->requests->post('ids');
+        if (empty($ids)) {
+            Common::echoJson(1001, '无效参数');
+        }
+        //更新的数据
+        $data = ['is_delete' => 1];
+        if (Config::updateAll($data, 'id in (' . $ids . ')') !== false) {
+            Common::echoJson(1000, '删除成功');
+        } else {
+            Common::echoJson(1002, '删除失败');
         }
     }
 }

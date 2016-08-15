@@ -73,7 +73,7 @@ $(function(){
             <label>是否下架</label>
             <div class="vocation">
                 <select class="uedselect" name="status">
-                    <option>全部</option>
+                    <option value='0'>全部</option>
                     <option value="1" <?php if($params['status'] == 1) echo "selected";?>>上架</option>
                     <option value="2"  <?php if($params['status'] == 2) echo "selected";?>>下架</option>
                 </select>
@@ -83,7 +83,7 @@ $(function(){
             <label>是否推荐</label>
             <div class="vocation">
                 <select class="uedselect" name="isRecommend">
-                    <option>全部</option>
+                    <option value='0'>全部</option>
                     <option value="1" <?php if($params['isRecommend'] == 1) echo "selected";?>>是</option>
                     <option value="2"  <?php if($params['isRecommend'] == 2) echo "selected";?>>否</option>
                 </select>

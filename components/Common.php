@@ -12,7 +12,8 @@ class Common
      */
     public static function message($type, $content, $url = '')
     {
-        $click = $url ? $url : 'javascript:history.back()';
+        $referer = \Yii::$app->request->getReferrer();
+        $click = $url ? $url : ($referer ? $referer : 'javascript:history.back()');
         $html = <<<EOT
 			<!DOCTYPE html>
 			<html lang="zh-hans">
