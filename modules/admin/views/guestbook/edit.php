@@ -2,49 +2,100 @@
 use \yii\helpers\Html;
 use \yii\widgets\ActiveForm;
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>添加用户</title>
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
-<link href="<?=Yii::$app->params['imgHost'];?>backend/css/select.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/select-ui.min.js"></script>
-</head>
-
-<body>
-	<div class="place">
-        <span>位置：</span>
-        <ul class="placeul">
-            <li><a href="/admin">首页</a></li>
-            <li><a href="javascript:void(0);">添加用户</a></li>
-        </ul>
-    </div>
-    <div class="formbody">
-        <div class="formtitle"><span>用户信息</span></div>
-        <?php $form = ActiveForm::begin(['id' => 'user-form', 'options' => ['method' => 'post']]);?>
-        <ul class="forminfo">
-            <li><label>用户名：</label><?=$form->field($model, 'username')->textInput(['class' => 'dfinput'])->label(false);?><!--<i>不能修改</i>--></li>
-            <li><label>密　码：</label><?=$form->field($model, 'password')->passwordInput(['class' => 'dfinput'])->label(false);?></li>
-            <li><label>邮　箱：</label><?=$form->field($model, 'email')->textInput(['class' => 'dfinput'])->label(false);?></li>
-            <li><label>手机号：</label><?=$form->field($model, 'mobile')->textInput(['class' => 'dfinput'])->label(false);?></li>
-            <li>
-                <label>状　态：</label>
-                <div class="vocation">
-					<?=$form->field($model, 'status')->dropDownList(['1' => '正常', '2' => '禁用'], ['class' => 'select1'])->label(false);?>
-                </div>
-            </li>
-            <li><label>&nbsp;</label><?=Html::submitButton('保存', ['class' => 'btn', 'name' => 'submit-button']);?></li>
-        </ul>
-        <?php ActiveForm::end();?>
-    </div>
-</body>
+<link href="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/themes/default/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/kindeditor-min.js"></script>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/lang/zh_CN.js"></script>
 <script type="text/javascript">
-    $(document).ready(function(e) {
-        $(".select1").uedSelect({
-            width : 100
+    var editor;
+	var uploadUrl = '<?=Yii::$app->params['domain'];?>backend/kindeditor/php/upload_json.php';
+    KindEditor.ready(function(K) {
+        editor = K.create('#content', {
+            allowFileManager : true,
+            uploadJson : uploadUrl,
+            fileManagerJson : '<?=Yii::$app->params['domain'];?>backend/kindeditor/php/file_manager_json.php',
         });
+
+		var uploadbutton = K.uploadbutton({
+			button : K('#file_upload')[0],
+			fieldName : 'imgFile',
+			url : uploadUrl,
+			afterUpload : function(data) {
+				if (data.error === 0) {
+					var imgContent = '<p><img src="'+data.url+'" width="150" height="150"/><input type="hidden" value="'+data.url+'" name="productImgs[]" /><input type="button" class="ibtn" value="删除" onclick="deleteImg(this)" /></p>';
+					$(".upload-pic").append(imgContent);
+				} else {
+					$.dialog.alert(data.message);
+				}
+			}
+		});
+		uploadbutton.fileBox.change(function(e) {
+			uploadbutton.submit();
+		});
     });
 </script>
-</html>
+  
+<script type="text/javascript">
+$(function(e) {
+    $(".select1").uedSelect({
+		width : 150			  
+	});
+});
+function deleteImg(obj){
+	$(obj).parent().remove();
+}
+</script>
+
+<style type="text/css">
+	.upload-pic{
+		margin-left:85px;padding-bottom:10px;width:550px;
+	}
+	.upload-pic p{
+		margin-top:10px;
+		margin-bottom:10px;
+		margin-right:15px;
+		width:160px;
+		height:190px;
+		float:left;
+	}
+	.upload-pic p img{
+		margin-bottom:5px;
+	}
+	.price{
+		width:150px;
+	}
+	.intro{
+		width:700px;height:250px;visibility:hidden;
+	}
+</style>
+
+<div class="place">
+    <span>位置：</span>
+    <ul class="placeul">
+        <li><a href="/admin">首页</a></li>
+        <li><a href="/admin/product">产品管理</a></li>
+        <li><a href="javascript:void(0);"><?=$data['id'] ? '编辑' : '添加';?>产品分类</a></li>
+    </ul>
+</div>
+
+<div class="formbody">
+<div id="usual1" class="usual">
+<div class="itab">
+  	<ul> 
+        <li><a href="#tab1" class="selected"><?=$data['id'] ? '编辑' : '添加';?>产品分类</a></a></li> 
+  	</ul>
+</div> 
+<div id="tab1" class="tabson">
+	<?php $form = ActiveForm::begin(['id' => 'product-form', 'options' => ['method' => 'post']]);?>
+    <ul class="forminfo">
+		<li>
+			<label>分类名称：<b>*</b></label>
+			<?=$form->field($model, 'title')->textInput(['class' => 'dfinput','value'=>$data['title'],'maxlength' => 255])->label(false);?>
+		</li>
+        <li>
+            <?=$form->field($model, 'id')->hiddenInput(['value'=>$data['id']])->label(false);?>
+            <label>&nbsp;</label><?=Html::submitButton('保存', ['class' => 'btn', 'name' => 'submit-button']);?>
+		</li>
+    </ul>
+	<?php ActiveForm::end();?>
+    </div> 
+</div> 
