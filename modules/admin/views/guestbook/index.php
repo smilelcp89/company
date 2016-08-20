@@ -105,7 +105,7 @@ $(function(){
         </tr>
         <?php endforeach;?>
         <?php else:?>
-        <tr><td colspan="6">数据为空</td></tr>
+        <tr><td colspan="11">数据为空</td></tr>
         <?php endif;?>
         </tbody>
     </table>

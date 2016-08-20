@@ -59,10 +59,11 @@ class ProductCategoryController extends BaseController
     {
         $model = new ProductCategory();
         if ($this->isPost) {
-            $model->attributes = $this->requests->post('ProductCategory');
+            $model->attributes          = $this->requests->post('ProductCategory');
+            $model->attributes['title'] = trim($model->attributes['title']);
             if ($model->validate()) {
                 if ($model->save()) {
-                    Common::message('success', '保存成功');
+                    Common::message('success', '保存成功', '/admin/product-category/index');
                 } else {
                     Common::message('error', '保存失败');
                 }
@@ -85,12 +86,12 @@ class ProductCategoryController extends BaseController
         }
         $model = new ProductCategory();
         if ($this->isPost) {
-            $form = $this->requests->post('ProductCategory');
-            $product = $model->findOne(['id' => $id]);
+            $form                = $this->requests->post('ProductCategory');
+            $product             = $model->findOne(['id' => $id]);
             $product->attributes = $form;
             if ($product->validate()) {
                 if ($product->save()) {
-                    Common::message('success', '修改成功');
+                    Common::message('success', '修改成功', '/admin/product-category/index');
                 } else {
                     Common::message('error', '修改失败');
                 }

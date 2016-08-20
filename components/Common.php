@@ -13,8 +13,8 @@ class Common
     public static function message($type, $content, $url = '')
     {
         $referer = \Yii::$app->request->getReferrer();
-        $click = $url ? $url : ($referer ? $referer : 'javascript:history.back()');
-        $html = <<<EOT
+        $click   = $url ? $url : ($referer ? $referer : 'javascript:history.back()');
+        $html    = <<<EOT
 			<!DOCTYPE html>
 			<html lang="zh-hans">
 			<head>
@@ -38,7 +38,7 @@ class Common
 				</div>
 			</div>
 			<script type="text/javascript">
-			    
+
 			    var url = "$url";
 			    setTimeout(function(){
 			        if(url){
@@ -46,8 +46,8 @@ class Common
 			        }else{
 			            history.back();
 			        }
-			    }, 3000);
-			    
+			    }, 2000);
+
 			</script>
 			</body>
 			</html>
@@ -85,11 +85,19 @@ EOT;
         }
     }
 
+    //打印信息
+    public static function p($var)
+    {
+        echo '<pre>';
+        print_r($var);
+        echo '</pre>';
+    }
+
     //是否登陆，如果是返回登陆信息
     public static function isLogin()
     {
         $loginUserInfo = \Yii::$app->session->get(Session::LOGIN_USER_INFO);
-        if(empty($loginUserInfo)){
+        if (empty($loginUserInfo)) {
             return false;
         }
         return $loginUserInfo;
@@ -99,21 +107,21 @@ EOT;
     public static function getLoginUserInfo($field = '')
     {
         $loginUserInfo = \Yii::$app->session->get(Session::LOGIN_USER_INFO);
-        if($field && isset($loginUserInfo[$field])){
+        if ($field && isset($loginUserInfo[$field])) {
             return $loginUserInfo[$field];
         }
         return $loginUserInfo;
     }
 
     //输入json
-    public static function echoJson($code,$message,$content = [],$return = false)
+    public static function echoJson($code, $message, $content = [], $return = false)
     {
         $result = json_encode([
-            'code' => $code,
+            'code'    => $code,
             'message' => $message,
             'content' => $content,
         ]);
-        if($return){
+        if ($return) {
             return $result;
         }
         exit($result);

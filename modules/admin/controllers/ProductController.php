@@ -25,10 +25,10 @@ class ProductController extends BaseController
      */
     public function actionIndex()
     {
-        $title = trim(Html::encode($this->requests->get('title')));
-        $isRecommend   = trim(Html::encode($this->requests->get('isRecommend')));
-        $cateId   = intval($this->requests->get('cateId', 0));
-        $status   = intval($this->requests->get('status', 0));
+        $title       = trim(Html::encode($this->requests->get('title')));
+        $isRecommend = trim(Html::encode($this->requests->get('isRecommend')));
+        $cateId      = intval($this->requests->get('cateId', 0));
+        $status      = intval($this->requests->get('status', 0));
 
         $pageSize = 10;
         $query    = Product::find();
@@ -57,13 +57,7 @@ class ProductController extends BaseController
             ->asArray()
             ->all();
         //获取产品分类
-        $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
-        $cateArr = [];
-        if(!empty($cateList)){
-            foreach ($cateList as $cate){
-                $cateArr[$cate['id']] = $cate['title'];
-            }
-        }
+        $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->indexBy('id')->asArray()->all();
         return $this->render('index', [
             'data'       => $data,
             'pagination' => $pagination,
@@ -82,17 +76,17 @@ class ProductController extends BaseController
         $model = new Product();
         if ($this->isPost) {
             $productImgs = $this->requests->post('productImgs');
-            if(empty($productImgs)){
+            if (empty($productImgs)) {
                 Common::message('error', '产品图片必须上传');
             }
-            $product = $this->requests->post('Product');
-            $model->attributes = $product;
-            $model->images_list = implode(',',$productImgs);
-            $model->logo = $productImgs[0]; //第一张图片作为logo
-            $model->intro = Html::encode($product['intro']);
+            $product            = $this->requests->post('Product');
+            $model->attributes  = $product;
+            $model->images_list = implode(',', $productImgs);
+            $model->logo        = $productImgs[0]; //第一张图片作为logo
+            $model->intro       = Html::encode($product['intro']);
             if ($model->validate()) {
                 if ($model->save()) {
-                    Common::message('success', '保存成功');
+                    Common::message('success', '保存成功', '/admin/product/index');
                 } else {
                     Common::message('error', '保存失败');
                 }
@@ -102,13 +96,13 @@ class ProductController extends BaseController
         } else {
             //获取产品分类
             $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
-            $cateArr = [];
-            if(!empty($cateList)){
-                foreach ($cateList as $cate){
+            $cateArr  = [];
+            if (!empty($cateList)) {
+                foreach ($cateList as $cate) {
                     $cateArr[$cate['id']] = $cate['title'];
                 }
             }
-            return $this->render('edit', ['model' => $model,'cateArr' => $cateArr]);
+            return $this->render('edit', ['model' => $model, 'cateArr' => $cateArr]);
         }
     }
 
@@ -123,12 +117,12 @@ class ProductController extends BaseController
         }
         $model = new Product();
         if ($this->isPost) {
-            $form = $this->requests->post('Product');
-            $product = $model->findOne(['id' => $userId]);
+            $form                = $this->requests->post('Product');
+            $product             = $model->findOne(['id' => $userId]);
             $product->attributes = $form;
             if ($product->validate()) {
                 if ($product->save()) {
-                    Common::message('success', '修改成功');
+                    Common::message('success', '修改成功', '/admin/product/index');
                 } else {
                     Common::message('error', '修改失败');
                 }
@@ -140,14 +134,20 @@ class ProductController extends BaseController
             if (empty($data) || $data['is_delete'] == 1) {
                 Common::message('error', '产品不存在');
             }
-            if(!empty($data['images_list'])){
-                $data['images_list'] = explode(',',$data['images_list']);
-            }else{
+            if (!empty($data['images_list'])) {
+                $data['images_list'] = explode(',', $data['images_list']);
+            } else {
                 $data['images_list'] = [$data['logo']];
             }
             //获取产品分类
             $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
-            return $this->render('edit', ['data' => $data, 'model' => $model,'cateList' => $cateList]);
+            $cateArr  = [];
+            if (!empty($cateList)) {
+                foreach ($cateList as $cate) {
+                    $cateArr[$cate['id']] = $cate['title'];
+                }
+            }
+            return $this->render('edit', ['data' => $data, 'model' => $model, 'cateArr' => $cateArr]);
         }
     }
 
@@ -174,8 +174,8 @@ class ProductController extends BaseController
      */
     public function actionChangestatus()
     {
-        $ids = $this->requests->post('ids');
-        $status  = (int) $this->requests->post('status');
+        $ids    = $this->requests->post('ids');
+        $status = (int) $this->requests->post('status');
         if (empty($ids) || !in_array($status, [1, 2])) {
             Common::echoJson(1001, '无效参数');
         }
@@ -193,8 +193,8 @@ class ProductController extends BaseController
      */
     public function actionIsrecommend()
     {
-        $ids = $this->requests->post('ids');
-        $isRecommend  = (int) $this->requests->post('isRecommend');
+        $ids         = $this->requests->post('ids');
+        $isRecommend = (int) $this->requests->post('isRecommend');
         if (empty($ids) || !in_array($isRecommend, [1, 2])) {
             Common::echoJson(1001, '无效参数');
         }

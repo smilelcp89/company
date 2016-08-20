@@ -44,9 +44,10 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title','sale_price','intro'], 'required','message' => '必须填写'],
-            ['sale_price', 'number','message' => '产品价格必须为数字'],
-            [['title', 'logo', 'seo_title', 'seo_keywords', 'seo_descpition'], 'string', 'max' => 255,'message' => '输入不能超过255个字符'],
+            [['title', 'sale_price', 'intro'], 'required', 'message' => '必须填写'],
+            ['sale_price', 'number', 'message' => '产品价格必须为数字'],
+            [['title', 'logo', 'seo_title', 'seo_keywords', 'seo_descpition'], 'string', 'max' => 255, 'message' => '输入不能超过255个字符'],
+            [['is_recommend', 'cate_id', 'status'], 'safe'],
         ];
     }
 
@@ -56,25 +57,25 @@ class Product extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'logo' => 'Logo',
-            'market_price' => 'Market Price',
-            'sale_price' => 'Sale Price',
-            'cate_id' => 'Cate ID',
-            'images_list' => 'Images',
-            'intro' => 'Intro',
-            'is_recommend' => 'Is Recommend',
-            'status' => 'Status',
-            'start_time' => 'Start Time',
-            'end_time' => 'End Time',
-            'seo_title' => 'Seo Title',
-            'seo_keywords' => 'Seo Keywords',
+            'id'             => 'ID',
+            'title'          => 'Title',
+            'logo'           => 'Logo',
+            'market_price'   => 'Market Price',
+            'sale_price'     => 'Sale Price',
+            'cate_id'        => 'Cate ID',
+            'images_list'    => 'Images',
+            'intro'          => 'Intro',
+            'is_recommend'   => 'Is Recommend',
+            'status'         => 'Status',
+            'start_time'     => 'Start Time',
+            'end_time'       => 'End Time',
+            'seo_title'      => 'Seo Title',
+            'seo_keywords'   => 'Seo Keywords',
             'seo_descpition' => 'Seo Descpition',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'create_user'    => 'Create User',
+            'create_time'    => 'Create Time',
+            'update_user'    => 'Update User',
+            'update_time'    => 'Update Time',
         ];
     }
 
@@ -82,7 +83,7 @@ class Product extends \yii\db\ActiveRecord
     {
         if (parent::beforeSave($insert)) {
             $now = time();
-            if($this->isNewRecord) {
+            if ($this->isNewRecord) {
                 $this->create_user = Common::getLoginUserInfo('username');
                 $this->create_time = $now;
             }

@@ -115,7 +115,7 @@ function deleteImg(obj){
 		<li>
 			<label>产品分类：<b>*</b></label>
 			<div class="vocation">
-				<?=$form->field($model, 'is_recommend')->dropDownList($cateArr, ['class' => 'select1','options' => [$data['is_recommend'] => ['selected' => 'selected']]])->label(false);?>
+				<?=$form->field($model, 'cate_id')->dropDownList($cateArr, ['class' => 'select1','prompt'=> '请选择分类','options' => [$data['cate_id'] => ['selected' => 'selected']]])->label(false);?>
 			</div>
 		</li>
 		<li>

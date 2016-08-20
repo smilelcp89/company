@@ -29,8 +29,8 @@ $(function(e) {
     <span>位置：</span>
     <ul class="placeul">
         <li><a href="/admin">首页</a></li>
-        <li><a href="/admin/product">产品管理</a></li>
-        <li><a href="javascript:void(0);"><?=$data['id'] ? '编辑' : '添加';?>产品分类</a></li>
+        <li><a href="/admin/news">新闻管理</a></li>
+        <li><a href="javascript:void(0);"><?=$data['id'] ? '编辑' : '添加';?>新闻分类</a></li>
     </ul>
 </div>
 
@@ -38,11 +38,11 @@ $(function(e) {
 <div id="usual1" class="usual">
 <div class="itab">
   	<ul> 
-        <li><a href="#tab1" class="selected"><?=$data['id'] ? '编辑' : '添加';?>产品分类</a></a></li> 
+        <li><a href="#tab1" class="selected"><?=$data['id'] ? '编辑' : '添加';?>新闻分类</a></a></li> 
   	</ul>
 </div> 
 <div id="tab1" class="tabson">
-	<?php $form = ActiveForm::begin(['id' => 'product-form', 'options' => ['method' => 'post']]);?>
+	<?php $form = ActiveForm::begin(['id' => 'news-form', 'options' => ['method' => 'post']]);?>
     <ul class="forminfo">
 		<li>
 			<label>分类名称：<b>*</b></label>

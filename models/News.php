@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\components\Common;
 use Yii;
 
 /**
@@ -9,13 +10,15 @@ use Yii;
  *
  * @property integer $id
  * @property string $title
- * @property string $logo
  * @property integer $cate_id
- * @property string $intro
+ * @property string $content
+ * @property integer $status
+ * @property integer $is_recommend
+ * @property integer $is_delete
  * @property string $create_user
- * @property string $create_time
+ * @property integer $create_time
  * @property string $update_user
- * @property string $update_time
+ * @property integer $update_time
  */
 class News extends \yii\db\ActiveRecord
 {
@@ -33,11 +36,9 @@ class News extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cate_id', 'create_time', 'update_time'], 'integer'],
-            [['intro'], 'required'],
-            [['intro'], 'string'],
-            [['title', 'logo'], 'string', 'max' => 255],
-            [['create_user', 'update_user'], 'string', 'max' => 64],
+            [['title', 'content'], 'required', 'message' => '必须填写'],
+            [['title'], 'string', 'max' => 255, 'message' => '输入不能超过255个字符'],
+            [['status', 'cate_id', 'is_recommend'], 'safe'],
         ];
     }
 
@@ -47,15 +48,33 @@ class News extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'title' => 'Title',
-            'logo' => 'Logo',
-            'cate_id' => 'Cate ID',
-            'intro' => 'Intro',
-            'create_user' => 'Create User',
-            'create_time' => 'Create Time',
-            'update_user' => 'Update User',
-            'update_time' => 'Update Time',
+            'id'           => 'ID',
+            'title'        => 'Title',
+            'cate_id'      => 'Cate ID',
+            'content'      => 'Content',
+            'status'       => 'Status',
+            'is_recommend' => 'Is Recommend',
+            'is_delete'    => 'Is Delete',
+            'create_user'  => 'Create User',
+            'create_time'  => 'Create Time',
+            'update_user'  => 'Update User',
+            'update_time'  => 'Update Time',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $now = time();
+            if ($this->isNewRecord) {
+                $this->create_user = Common::getLoginUserInfo('username');
+                $this->create_time = $now;
+            }
+            $this->update_user = Common::getLoginUserInfo('username');
+            $this->update_time = $now;
+            return true;
+        } else {
+            return false;
+        }
     }
 }

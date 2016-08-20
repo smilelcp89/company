@@ -71,7 +71,7 @@ class GuestbookController extends BaseController
             $model->attributes = $this->requests->post('Guestbook');
             if ($model->validate()) {
                 if ($model->save()) {
-                    Common::message('success', '保存成功');
+                    Common::message('success', '保存成功', '/admin/guestbook/index');
                 } else {
                     Common::message('error', '保存失败');
                 }
@@ -94,22 +94,22 @@ class GuestbookController extends BaseController
         }
         $model = new Guestbook();
         if ($this->isPost) {
-            $form                = $this->requests->post('Guestbook');
-            $product             = $model->findOne(['id' => $id]);
-            $product->attributes = $form;
-            if ($product->validate()) {
-                if ($product->save()) {
-                    Common::message('success', '修改成功');
+            $form                  = $this->requests->post('Guestbook');
+            $guestbook             = $model->findOne(['id' => $id]);
+            $guestbook->attributes = $form;
+            if ($guestbook->validate()) {
+                if ($guestbook->save()) {
+                    Common::message('success', '修改成功', '/admin/guestbook/index');
                 } else {
                     Common::message('error', '修改失败');
                 }
             } else {
-                return $this->render('edit', ['model' => $product]);
+                return $this->render('edit', ['model' => $guestbook]);
             }
         } else {
             $data = $model->findOne(['id' => $id]);
             if (empty($data) || $data['is_delete'] == 1) {
-                Common::message('error', '产品分类不存在');
+                Common::message('error', '记录不存在');
             }
             return $this->render('edit', ['data' => $data, 'model' => $model]);
         }

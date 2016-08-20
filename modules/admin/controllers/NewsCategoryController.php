@@ -3,15 +3,15 @@
 namespace app\modules\admin\controllers;
 
 use app\components\Common;
-use app\models\Friendlink;
+use app\models\NewsCategory;
 use Yii;
 use yii\data\Pagination;
 use yii\helpers\Html;
 
 /**
- * 友情链接控制器
+ * 新闻分类控制器
  */
-class FriendlinkController extends BaseController
+class NewsCategoryController extends BaseController
 {
 
     public function init()
@@ -20,27 +20,24 @@ class FriendlinkController extends BaseController
     }
 
     /*
-     * 列表
+     * 新闻分类列表
      */
     public function actionIndex()
     {
-        $pageSize = 10;
-        $query    = Friendlink::find();
-        $query->where(['=', 'is_delete', 0]);
         $title = trim(Html::encode($this->requests->get('title')));
+
+        $pageSize = 10;
+        $query    = NewsCategory::find();
+        $query->where(['=', 'is_delete', 0]);
         if ($title) {
             $query->andWhere(['like', 'title', $title]);
-        }
-        $status = $this->requests->get('status', 0);
-        if ($status) {
-            $query->andWhere(['=', 'status', $status]);
         }
         //分页
         $pagination = new Pagination([
             'defaultPageSize' => $pageSize,
             'totalCount'      => $query->count(),
         ]);
-        $data = $query->select('id,title,logo,url,status,create_user,create_time')
+        $data = $query->select('id,title,create_user,create_time')
             ->orderBy('id desc')
             ->limit($pagination->limit)
             ->offset($pagination->offset)
@@ -56,16 +53,17 @@ class FriendlinkController extends BaseController
     }
 
     /*
-     * 添加友链
+     * 添加新闻分类
      */
     public function actionCreate()
     {
-        $model = new Friendlink();
+        $model = new NewsCategory();
         if ($this->isPost) {
-            $model->attributes = $this->requests->post('Friendlink');
+            $model->attributes          = $this->requests->post('NewsCategory');
+            $model->attributes['title'] = trim($model->attributes['title']);
             if ($model->validate()) {
                 if ($model->save()) {
-                    Common::message('success', '保存成功', '/admin/friendlink/index');
+                    Common::message('success', '保存成功', '/admin/news-category/index');
                 } else {
                     Common::message('error', '保存失败');
                 }
@@ -78,22 +76,22 @@ class FriendlinkController extends BaseController
     }
 
     /*
-     * 更新友链
+     * 更新新闻分类
      */
     public function actionEdit()
     {
         $id = (int) $this->requests->get('id');
         if ($id <= 0) {
-            Common::message('', '无效ID');
+            Common::message('', '无效新闻分类ID');
         }
-        $model = new Friendlink();
+        $model = new NewsCategory();
         if ($this->isPost) {
-            $form                = $this->requests->post('Friendlink');
+            $form                = $this->requests->post('NewsCategory');
             $product             = $model->findOne(['id' => $id]);
             $product->attributes = $form;
             if ($product->validate()) {
                 if ($product->save()) {
-                    Common::message('success', '修改成功', '/admin/friendlink/index');
+                    Common::message('success', '修改成功', '/admin/news-category/index');
                 } else {
                     Common::message('error', '修改失败');
                 }
@@ -103,14 +101,14 @@ class FriendlinkController extends BaseController
         } else {
             $data = $model->findOne(['id' => $id]);
             if (empty($data) || $data['is_delete'] == 1) {
-                Common::message('error', '记录不存在');
+                Common::message('error', '新闻分类不存在');
             }
             return $this->render('edit', ['data' => $data, 'model' => $model]);
         }
     }
 
     /*
-     * 删除友链
+     * 删除新闻
      */
     public function actionDelete()
     {
@@ -120,29 +118,10 @@ class FriendlinkController extends BaseController
         }
         //更新的数据
         $data = ['is_delete' => 1];
-        if (Friendlink::updateAll($data, 'id in (' . $ids . ')') !== false) {
+        if (NewsCategory::updateAll($data, 'id in (' . $ids . ')') !== false) {
             Common::echoJson(1000, '删除成功');
         } else {
             Common::echoJson(1002, '删除失败');
-        }
-    }
-
-    /*
-     * 改变状态
-     */
-    public function actionChangestatus()
-    {
-        $ids    = $this->requests->post('ids');
-        $status = (int) $this->requests->post('status');
-        if (empty($ids) || !in_array($status, [1, 2])) {
-            Common::echoJson(1001, '无效参数');
-        }
-        //更新的数据
-        $data = ['status' => $status];
-        if (Friendlink::updateAll($data, 'id in (' . $ids . ')') !== false) {
-            Common::echoJson(1000, '操作成功');
-        } else {
-            Common::echoJson(1002, '操作失败');
         }
     }
 }

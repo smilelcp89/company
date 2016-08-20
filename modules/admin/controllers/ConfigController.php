@@ -62,11 +62,11 @@ class ConfigController extends BaseController
     {
         $model = new Config();
         if ($this->isPost) {
-            $model->scenario = 'create';
+            $model->scenario   = 'create';
             $model->attributes = $this->requests->post('Config');
             if ($model->validate()) {
                 if ($model->save()) {
-                    Common::message('success', '保存成功');
+                    Common::message('success', '保存成功', '/admin/config/index');
                 } else {
                     Common::message('error', '保存失败');
                 }
@@ -89,13 +89,13 @@ class ConfigController extends BaseController
         }
         $model = new Config();
         if ($this->isPost) {
-            $form = $this->requests->post('Config');
-            $product = $model->findOne(['id' => $id]);
-            $product->scenario = 'update';
+            $form                = $this->requests->post('Config');
+            $product             = $model->findOne(['id' => $id]);
+            $product->scenario   = 'update';
             $product->attributes = $form;
             if ($product->validate()) {
                 if ($product->save()) {
-                    Common::message('success', '修改成功');
+                    Common::message('success', '修改成功', '/admin/config/index');
                 } else {
                     Common::message('error', '修改失败');
                 }

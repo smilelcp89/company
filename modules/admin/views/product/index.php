@@ -137,7 +137,7 @@ $(function(){
             <td><img style='margin:5px;' src="<?=$row['logo'];?>" width="80" height="80"/></td>
             <td><?=$row['title'];?></td>
             <td>￥<?=$row['sale_price'];?></td>
-            <td><?=$row['catet_id'];?></td>
+            <td><?=$cateList[$row['cate_id']]['title'];?></td>
             <td><?=($row['status']==1 ? '上架' : '下架');?></td>
             <td><?=($row['is_recommend']==1 ? '是' : '否');?></td>
             <td>
