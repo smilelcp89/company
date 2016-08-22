@@ -57,7 +57,7 @@
 	</ul>
 </div>
 <div class="foot">
-	<div class="copyright">Powered By phpok.com 版权所有 © 2004-2014, All right reserved.</div>
+	<div class="copyright">xxxx 版权所有 &copy; 2016-, All right reserved.</div>
 	<div id="right-float-box" class="im_floatonline">
 		<div class="float-box-content">
 			<div class="toptitle">在线客服</div>

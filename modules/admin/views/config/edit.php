@@ -2,6 +2,24 @@
 use \yii\helpers\Html;
 use \yii\widgets\ActiveForm;
 ?>
+
+<?php if(isset($data['flag']) && $data['flag'] == 'company_intro'):?>
+<link href="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/themes/default/default.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/kindeditor-min.js"></script>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+    var editor;
+	var uploadUrl = '<?=Yii::$app->params['domain'];?>backend/kindeditor/php/upload_json.php';
+    KindEditor.ready(function(K) {
+        editor = K.create('#content', {
+            allowFileManager : true,
+            uploadJson : uploadUrl,
+            fileManagerJson : '<?=Yii::$app->params['domain'];?>backend/kindeditor/php/file_manager_json.php',
+        });
+    });
+</script>
+<?php endif;?>
+
 <script type="text/javascript">
 $(function(e) {
     $(".select1").uedSelect({
@@ -25,7 +43,7 @@ $(function(e) {
 		
 		<li>
             <label>设置内容：<b>*</b></label>
-			<?=$form->field($model, 'content')->textarea(['class' => 'textinput','value'=>Html::decode($data['content'])])->label(false);?>
+			<?=$form->field($model, 'content')->textarea(['id' => 'content','class' => 'textinput','value'=>Html::decode($data['content'])])->label(false);?>
         </li>
 		<li><label>设置描述：</label><?=$form->field($model, 'intro')->textInput(['class' => 'dfinput','value'=>$data['intro']])->label(false);?></li>
 		<?=$form->field($model, 'id')->hiddenInput(['value'=>$data['id']])->label(false);?>

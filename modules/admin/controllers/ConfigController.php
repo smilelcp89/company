@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\components\Common;
+use app\constants\CacheConst;
 use app\models\Config;
 use Yii;
 use yii\data\Pagination;
@@ -66,6 +67,8 @@ class ConfigController extends BaseController
             $model->attributes = $this->requests->post('Config');
             if ($model->validate()) {
                 if ($model->save()) {
+                    //删除缓存
+                    $this->cache->delete(CacheConst::WEBSITE_CONFIG);
                     Common::message('success', '保存成功', '/admin/config/index');
                 } else {
                     Common::message('error', '保存失败');
@@ -95,6 +98,8 @@ class ConfigController extends BaseController
             $product->attributes = $form;
             if ($product->validate()) {
                 if ($product->save()) {
+                    //删除缓存
+                    $this->cache->delete(CacheConst::WEBSITE_CONFIG);
                     Common::message('success', '修改成功', '/admin/config/index');
                 } else {
                     Common::message('error', '修改失败');
@@ -123,6 +128,8 @@ class ConfigController extends BaseController
         //更新的数据
         $data = ['is_delete' => 1];
         if (Config::updateAll($data, 'id in (' . $ids . ')') !== false) {
+            //删除缓存
+            $this->cache->delete(CacheConst::WEBSITE_CONFIG);
             Common::echoJson(1000, '删除成功');
         } else {
             Common::echoJson(1002, '删除失败');

@@ -17,5 +17,6 @@
 </head>
 <body>
 <?=$content;?>
+<div style="height:80px;"></div>
 </body>
 </html>

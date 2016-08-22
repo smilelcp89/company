@@ -49,7 +49,7 @@ $(function(){
             <th><input onclick="selectAll(this,'checkbox_opt');" type="checkbox"/></th>
             <th>序号<!--<i class="sort"><img src="<?=Yii::$app->params['imgHost'];?>backend/images/px.gif" /></i>--></th>
             <th>设置标识</th>
-            <th>设置内容</th>
+            <th width="30%">设置内容</th>
             <th>设置描述</th>
             <th>创建者</th>
             <th>创建时间</th>
@@ -63,7 +63,7 @@ $(function(){
             <td><input class="checkbox_opt" name="data[]" type="checkbox" value="<?=$row['id'];?>" /></td>
             <td><?=($pageSize*($pageIndex-1)+$key+1)?></td>
             <td><?=$row['flag'];?></td>
-            <td><?=$row['content'];?></td>
+            <td><?=\app\components\Common::truncate($row['content'],30);?></td>
             <td><?=$row['intro'];?></td>
             <td><?=$row['create_user'];?></td>
             <td><?=$row['create_time'] ? date('Y-m-d H:i:s',$row['create_time']) : '暂无';?></td>

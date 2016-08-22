@@ -4,7 +4,7 @@
 
 namespace app\constants;
 
-class Cookie
+class CookieConst
 {
 
 }
