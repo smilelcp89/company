@@ -23,10 +23,10 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            ['verifyCode', 'required'],
+            ['verifyCode', 'required', 'message' => '验证不能为空'],
             ['verifyCode', 'captcha', 'captchaAction' => '/admin/public/captcha', 'message' => '验证码错误'],
             // username and password are both required
-            [['username', 'password'], 'required','message' => '用户名或密码不能为空'],
+            [['username', 'password'], 'required', 'message' => '用户名或密码不能为空'],
             ['username', 'validateUser'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
@@ -63,12 +63,12 @@ class LoginForm extends Model
             $userInfo = \app\models\User::find(['username' => $this->username])->select('id,username,password,email,mobile,status')->asArray()->one();
             if (empty($userInfo)) {
                 $this->addError($attribute, '用户名不存在');
-            }else if($userInfo['status'] == '2'){
+            } else if ($userInfo['status'] == '2') {
                 $this->addError($attribute, '该用户已被禁用');
-            }else{
+            } else {
                 $this->loginUserInfo = $userInfo;
             }
         }
     }
-    
+
 }

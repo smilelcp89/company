@@ -1,106 +1,73 @@
 <div class="banner" style="background-image:url(<?=Yii::$app->params['imgHost'];?>front/images/auto_1139.jpg)"></div>
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#postform").submit(function(){
-		if(!$("#title").val()){
-			$.dialog.alert('请填写留言主题');
-			return false;
-		}
-		if(!$("#fullname").val()){
-			$.dialog.alert('请填写您的姓名');
-			return false;
-		}
-		if(!$("#email").val() && !$("#mobile").val()){
-			$.dialog.alert('请留下您的联系方式，邮箱或者手机');
-			return false;
-		}
-		if(!$("#content").val()){
-			$.dialog.alert('请填写您要咨询的内容');
-			return false;
-		}
-		$(this).ajaxSubmit({
-			'url':api_url('post','save'),
-			'type':'post',
-			'dataType':'json',
-			'success':function(rs){
-				if(rs.status == 'ok'){
-					$.dialog.alert('感觉您提交的留言，我们会尽快处理您的留言',function(){
-						$.phpok.reload();
-					},'succeed');
-				}else{
-					$.dialog.alert(rs.content);
-					return false;
-				}
-			}
-		});
-		return false;
-	});
-});
-</script>
+<?php
+use \yii\helpers\Html;
+use \yii\widgets\ActiveForm;
+?>
+<style>
+	.help-block{color:red;}
+</style>
 <div class="main clearfix">
 	<div class="left">
-		<div class="pfw">
-	<div class="title"><h3>联系我们</h3></div>
-	<div class="info contact_info">
-		<h4>深圳市锟铻科技有限公司</h4>
-		<ul>
-			<li><i>联系人：</i>苏先生</li>
-			<li><i>电　话：</i>15818533971</li>
-			<li><i>邮　箱：</i>admin@phpok.com</li>
-		</ul>
+		<?=\app\widgets\ContactWidget::widget();?>
 	</div>
-</div>	</div>
 	<div class="right">
 		<div class="pfw">
 			<div class="title">
-				<h3>在线留言</h3>
+				<h3>留言反馈</h3>
 				<span class="breadcrumbs">
 					您现在的位置：
-					<a href="http://company.local.com/" title="第一">首页</a>
-					<span class="arrow">&gt;</span> <a href="http://company.local.com/message.html" title="在线留言">在线留言</a>
+					<a href="/" title="首页">首页</a>
+					<span class="arrow">&gt;</span> 留言反馈
 				</span>
 			</div>
 			<div class="message_post">
-		<form method="post" class="form" id="postform">
-			<input type="hidden" name="id" value="message">
-			<div class="table clearfix" id="form_title">
-				<div class="l">留言主题：</div>
-				<div class="r"><input type="text" id="title" class="inp inp_title" name="title" style="width:300px" value="" placeholder="">
-				</div>
-			</div>
-			<div class="table clearfix" id="form_fullname">
-				<div class="l">姓名：</div>
-				<div class="r"><input type="text" id="fullname" class="inp inp_fullname" name="fullname" style="width:300px" value="" placeholder="">
-				</div>
-			</div>
-			<div class="table clearfix" id="form_mobile">
-				<div class="l">手机号：</div>
-				<div class="r"><input type="text" id="mobile" class="inp inp_mobile" name="mobile" style="width:300px" value="" placeholder="">
-				</div>
-			</div>
-			<div class="table clearfix" id="form_email">
-				<div class="l">邮箱：</div>
-				<div class="r"><input type="text" id="email" class="inp inp_email" name="email" style="width:300px" value="" placeholder="">
-				</div>
-			</div>
-			<div class="table clearfix" id="form_content">
-				<div class="l">内容：</div>
-				<div class="r"><table style="border:0;margin:0;padding:0" cellpadding="0" cellspacing="0"><tbody><tr><td><textarea name="content" id="content" phpok_id="textarea" style=";width:500px;height:200px" placeholder=""></textarea></td></tr></tbody></table></div>
-			</div>
-			<div class="table clearfix">
-				<div class="l">验证码：</div>
-				<div class="r">
-					<input class="vcode" type="text" name="_chkcode" id="_chkcode">
-					<img src="#" border="0" align="absmiddle" id="vcode" class="hand">
-				</div>
-			</div>
+				<?php $form = ActiveForm::begin(['id' => 'form', 'options' => ['method' => 'post', 'class' => 'form']]);?>
+					<input type="hidden" name="id" value="message">
+					<div class="table clearfix" id="form_title">
+						<div class="l"><label style="color:red;">*</label> 留言主题：</div>
+						<div class="r"><?=$form->field($model, 'title')->textInput(['class' => 'inp inp_title', 'placeholder' => '不能超过30个字符长度'])->label(false);?>
+						</div>
+					</div>
+					<div class="table clearfix" id="form_fullname">
+						<div class="l"><label style="color:red;">*</label> 姓名：</div>
+						<div class="r"><?=$form->field($model, 'username')->textInput(['class' => 'inp inp_title', 'placeholder' => '不能超过5个字符长度'])->label(false);?>
+						</div>
+					</div>
+					<div class="table clearfix" id="form_mobile">
+						<div class="l"><label style="color:red;">*</label> 手机号：</div>
+						<div class="r"><?=$form->field($model, 'mobile')->textInput(['class' => 'inp inp_title', 'placeholder' => '必须填写11位手机号码'])->label(false);?>
+						</div>
+					</div>
+					<div class="table clearfix" id="form_email">
+						<div class="l"><label style="color:red;">*</label> 邮箱：</div>
+						<div class="r"><?=$form->field($model, 'email')->textInput(['class' => 'inp inp_title', 'placeholder' => '必须为邮箱格式'])->label(false);?>
+						</div>
+					</div>
+					<div class="table clearfix" id="form_content">
+						<div class="l"><label style="color:red;">*</label> 内容：</div>
+						<div class="r">
+							<?=$form->field($model, 'content')->textarea(['style' => 'width:400px;height:100px;'])->label(false);?>
+						</div>
+					</div>
+					<div class="table clearfix">
+						<div class="l"><label style="color:red;">*</label> 验证码：</div>
+						<div class="r">
+							<?=$form->field($model, 'captcha')->widget(yii\captcha\Captcha::className()
+    , ['captchaAction' => 'public/captcha',
+        'imageOptions'     => ['alt' => '点击换图', 'title' => '点击换图', 'style' => 'cursor:pointer;vertical-align:bottom;']])->label(false);?>
+							<!--<img src="/public/captcha" border="0" align="absmiddle" class="hand" id="vcode" style='width:100px;' title='点击切换验证码' onclick="this.src=this.src+'?'+Math.random();"/>
+							<input class="vcode" type="text" name="verifyCode" id="verifyCode">-->
+						</div>
+					</div>
 
-			<div class="table clearfix">
-				<div class="l">&nbsp;</div>
-				<div class="r"><input type="submit" value="提交" class="large button blue"></div>
-			</div>
-		</form>
+					<div class="table clearfix">
+						<div class="l">&nbsp;</div>
+						<div class="r">
+							<?=Html::submitButton('保存', ['class' => 'large button blue', 'name' => 'submit-button']);?>
+						</div>
+					</div>
+				<?php ActiveForm::end();?>
 			</div>
 		</div>
-				</div>
+	</div>
 </div>

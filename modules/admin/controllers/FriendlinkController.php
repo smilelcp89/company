@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\components\Common;
+use app\constants\CacheConst;
 use app\models\Friendlink;
 use Yii;
 use yii\data\Pagination;
@@ -65,6 +66,7 @@ class FriendlinkController extends BaseController
             $model->attributes = $this->requests->post('Friendlink');
             if ($model->validate()) {
                 if ($model->save()) {
+                    Yii::$app->cache->delete(CacheConst::FRIENDLINK_CACHE);
                     Common::message('success', '保存成功', '/admin/friendlink/index');
                 } else {
                     Common::message('error', '保存失败');
@@ -93,6 +95,7 @@ class FriendlinkController extends BaseController
             $product->attributes = $form;
             if ($product->validate()) {
                 if ($product->save()) {
+                    Yii::$app->cache->delete(CacheConst::FRIENDLINK_CACHE);
                     Common::message('success', '修改成功', '/admin/friendlink/index');
                 } else {
                     Common::message('error', '修改失败');
@@ -121,6 +124,7 @@ class FriendlinkController extends BaseController
         //更新的数据
         $data = ['is_delete' => 1];
         if (Friendlink::updateAll($data, 'id in (' . $ids . ')') !== false) {
+            Yii::$app->cache->delete(CacheConst::FRIENDLINK_CACHE);
             Common::echoJson(1000, '删除成功');
         } else {
             Common::echoJson(1002, '删除失败');
@@ -140,6 +144,7 @@ class FriendlinkController extends BaseController
         //更新的数据
         $data = ['status' => $status];
         if (Friendlink::updateAll($data, 'id in (' . $ids . ')') !== false) {
+            Yii::$app->cache->delete(CacheConst::FRIENDLINK_CACHE);
             Common::echoJson(1000, '操作成功');
         } else {
             Common::echoJson(1002, '操作失败');
