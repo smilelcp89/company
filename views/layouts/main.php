@@ -7,9 +7,9 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
 	<meta http-equiv="Pragma" content="no-cache">
 	<meta http-equiv="Cache-control" content="no-cache,no-store,must-revalidate,max-age=3">
-	<meta name="keywords" content="<?=\app\services\CacheService::getConfigsFromCache('seo_keywords');?>">
-	<meta name="description" content="<?=\app\services\CacheService::getConfigsFromCache('seo_description');?>">
-	<title><?=\app\services\CacheService::getConfigsFromCache('seo_title');?></title>
+	<meta name="keywords" content="<?=isset($this->params['seo_keywords']) ? $this->params['seo_keywords'] : \app\services\CacheService::getConfigsFromCache('seo_keywords');?>">
+	<meta name="description" content="<?=isset($this->params['seo_description']) ? $this->params['seo_description'] : \app\services\CacheService::getConfigsFromCache('seo_description');?>">
+	<title><?=isset($this->params['seo_title']) ? $this->params['seo_title'] : \app\services\CacheService::getConfigsFromCache('seo_title');?></title>
 	<link rel="icon" href="/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?=$imgHost;?>front/css/style.css">
 	<script type="text/javascript" src="<?=$imgHost;?>front/js/public.js" charset="utf-8"></script>
@@ -27,8 +27,8 @@
 			<a href="javascript:add_fav();">收藏本页</a> |
 			<a href="<?=Url::to(['public/guestbook']);?>">留言反馈</a>
 		</nav>
-		<form method="post" class="search" action="<?=Url::to(['product/product']);?>" onsubmit="return top_search();">
-			<input name="keywords" value="" id="top_keywords" type="text" class="topsearch" placeholder="请输入产品名字" />
+		<form method="get" class="search" action="<?=Url::to(['product/index']);?>" onsubmit="return top_search();">
+			<input name="keywords" value="<?php isset($this->params['searchKeywords']) ? $this->params['searchKeywords'] : '';?>" id="top_keywords" type="text" class="topsearch" placeholder="请输入产品名字" />
 			<input type="submit" class="submit" value="" />
 		</form>
 	</div>

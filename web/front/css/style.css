@@ -54,7 +54,7 @@ header .top{height:26px; line-height:26px; text-align:right; color:#666;display:
 header .logo{float:left;}
 header .right{float:right;}
 header .right form.search{background:url('../images/search.png') left center no-repeat;height:26px;width:207px;overflow:hidden;}
-header .right input.topsearch{border:0;margin:5px 0 0 19px;height:20px;line-height:20px;padding:0;background:none;}
+header .right input.topsearch{border:0;margin:4px 0 0 10px;height:20px;line-height:20px;padding:0;background:none;}
 header .right input.submit{background:none;position:absolute;left:180px;top:5px;height:20px;border:0;}
 
 nav.menu{height:35px; background:#3375b9 url('../images/menubg.png') left center repeat-x;z-index:9;margin:0 auto;width:980px;}

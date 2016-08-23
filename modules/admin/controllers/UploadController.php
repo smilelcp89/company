@@ -60,7 +60,7 @@ class UploadController extends Controller
                 'product' => [
                     ['width' => '400', 'height' => '400', 'size' => 'big'],
                     ['width' => '250', 'height' => '250', 'size' => 'middle'],
-                    ['width' => '50', 'height' => '50', 'size' => 'small'],
+                    ['width' => '80', 'height' => '80', 'size' => 'small'],
                 ],
             ];
             if ($thumbArr[$type]) {
