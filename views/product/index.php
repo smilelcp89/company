@@ -40,7 +40,7 @@
 						<?php endforeach;?>
 						<?php endif;?>
 					</div>
-					<h4><a href="<?=Url::to(['product/detail','id'=>$item['id']])?>" title="<?=$item['title']?>"><?=$item['title']?></a></h4>
+					<h4><a href="<?=Url::to(['product/detail','id'=>$item['id']])?>" title="<?=$item['title']?>"><?=\app\components\Common::truncate($item['title'],30)?></a></h4>
 				</li>	
 				<?php endforeach;?>
 				<?php endif;?>

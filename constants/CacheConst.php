@@ -14,4 +14,6 @@ class CacheConst
     const PRODUCT_CATEGORY_CACHE = 'cy_cache_product_category';
     //新闻分类缓存名
     const NEWS_CATEGORY_CACHE = 'cy_cache_news_category';
+    //新闻分类缓存名
+    const AD_CACHE = 'cy_cache_ad';
 }

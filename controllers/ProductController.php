@@ -4,8 +4,8 @@ namespace app\controllers;
 
 use app\models\Product;
 use app\services\CacheService;
+use app\services\ProductService;
 use Yii;
-use yii\data\Pagination;
 use yii\helpers\Html;
 
 class ProductController extends FrontBaseController
@@ -18,40 +18,18 @@ class ProductController extends FrontBaseController
      */
     public function actionIndex()
     {
-        $title  = trim(Html::encode(Yii::$app->request->get('keywords')));
-        $cateId = (int) Yii::$app->request->get('cateId', 0);
-
-        $pageSize = 6;
-        $query    = Product::find();
-        $query->where(['=', 'is_delete', 0]);
-        $query->andWhere(['=', 'status', 1]);
+        $title     = trim(Html::encode(Yii::$app->request->get('keywords')));
+        $cateId    = (int) Yii::$app->request->get('cateId', 0);
+        $pageIndex = (int) Yii::$app->request->get('page', 1);
+        $where[]   = 'is_delete = 0 and status = 1';
         if ($title) {
-            $query->andWhere(['like', 'title', $title]);
+            $where[] = 'title like "$title%"';
         }
         if ($cateId) {
-            $query->andWhere(['=', 'cate_id', $cateId]);
+            $where[] = 'cate_id = ' . $cateId;
         }
-        $data  = $pagination  = null;
-        $count = $query->count();
-        if ($count > 0) {
-            //分页
-            $pagination = new Pagination([
-                'defaultPageSize' => $pageSize,
-                'totalCount'      => $query->count(),
-            ]);
-            //获取产品
-            $data = $query->select('id,title,logo,images_list,sale_price')
-                ->orderBy('is_recommend asc,id desc')
-                ->limit($pagination->limit)
-                ->offset($pagination->offset)
-                ->asArray()
-                ->all();
-            if (!empty($data)) {
-                foreach ($data as $key => $row) {
-                    $data[$key]['images_list'] = !empty($row['images_list']) ? explode(',', $row['images_list']) : [];
-                }
-            }
-        }
+        $result = ProductService::getProductsByCondition(implode(',', $where), [], 'id,title,logo,images_list,sale_price', 'is_recommend asc,id desc', $pageIndex, 6);
+
         //将变量传到layout中
         $view                           = Yii::$app->view;
         $view->params['searchKeywords'] = $title;
@@ -60,8 +38,8 @@ class ProductController extends FrontBaseController
         //当前搜索分类名
         $cateName = !empty($cateId) ? $productCategoryList[$cateId]['title'] : '';
         return $this->render('index', [
-            'data'                => $data,
-            'pagination'          => $pagination,
+            'data'                => $result['data'],
+            'pagination'          => $result['pagination'],
             'productCategoryList' => $productCategoryList,
             'params'              => Yii::$app->request->get(),
             'cateName'            => $cateName,

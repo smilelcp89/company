@@ -138,8 +138,8 @@ $(function(){
             <td><?=$row['title'];?></td>
             <td>￥<?=$row['sale_price'];?></td>
             <td><?=$cateList[$row['cate_id']]['title'];?></td>
-            <td><?=($row['status']==1 ? '上架' : '下架');?></td>
-            <td><?=($row['is_recommend']==1 ? '是' : '否');?></td>
+            <td><?=($row['status']==1 ? '<b style="color:green;">上架</b>' : '下架');?></td>
+            <td><?=($row['is_recommend']==1 ? '<b style="color:red;">是</b>' : '否');?></td>
             <td>
                 <a href="<?=\yii\helpers\Url::to(['product/edit?id='.$row['id']])?>" class="tablelink">编辑</a>
 				<?php if($row['status'] == 1):?>

@@ -8,6 +8,7 @@
 namespace app\services;
 
 use app\constants\CacheConst;
+use app\models\Ad;
 use app\models\Config;
 use app\models\Friendlink;
 use app\models\ProductCategory;
@@ -18,7 +19,7 @@ class CacheService
     const CACHE_VALID_TIME = 3600; //缓存有效时间
 
     //从缓存中获取配置列表
-    public static function getConfigsFromCache($field = '')
+    public static function getConfigsFromCache($field = '', $filterImg = false)
     {
         $data = Yii::$app->cache->get(CacheConst::WEBSITE_CONFIG);
         if (empty($data)) {
@@ -26,7 +27,14 @@ class CacheService
             Yii::$app->cache->set(CacheConst::WEBSITE_CONFIG, $data, self::CACHE_VALID_TIME);
         }
         if (!empty($field)) {
-            return isset($field) ? $data[$field]['content'] : null;
+            if (isset($field)) {
+                if ($filterImg) {
+                    $data[$field]['content'] = preg_replace('/<img.*?\/>/i', '', $data[$field]['content']);
+                }
+                return $data[$field]['content'];
+            } else {
+                return null;
+            }
         }
         return $data;
     }
@@ -52,6 +60,17 @@ class CacheService
         }
         if (!empty($data) && !empty($indexBy)) {
             return array_column($data, null, $indexBy);
+        }
+        return $data;
+    }
+
+    //从缓存中获取广告列表
+    public static function getAdsFromCache()
+    {
+        $data = Yii::$app->cache->get(CacheConst::AD_CACHE);
+        if (empty($data)) {
+            $data = Ad::find()->where(['=', 'is_delete', 0])->andWhere(['=', 'status', 1])->select('id,title,logo,url')->orderBy('id desc')->asArray()->all();
+            Yii::$app->cache->set(CacheConst::AD_CACHE, $data, self::CACHE_VALID_TIME);
         }
         return $data;
     }
