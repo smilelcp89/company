@@ -134,7 +134,7 @@ $(function(){
         <tr>
             <td><input class="checkbox_opt" name="data[]" type="checkbox" value="<?=$row['id'];?>" /></td>
             <td><?=($pageSize*($pageIndex-1)+$key+1)?></td>
-            <td><img style='margin:5px;' src="<?=$row['logo'];?>" width="80" height="80"/></td>
+            <td><img style='margin:5px;' src="<?=$row['logo'];?>" width="50" height="50"/></td>
             <td><?=$row['title'];?></td>
             <td>￥<?=$row['sale_price'];?></td>
             <td><?=$cateList[$row['cate_id']]['title'];?></td>

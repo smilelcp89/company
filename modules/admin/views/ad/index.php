@@ -91,9 +91,9 @@ $(function(){
         <tr>
             <td><input class="checkbox_opt" name="data[]" type="checkbox" value="<?=$row['id'];?>" /></td>
             <td><?=($pageSize*($pageIndex-1)+$key+1)?></td>
-            <td><img style='margin:5px;' src="<?=$row['logo'];?>" width="100"/></td>
+            <td><img style='margin:5px;' src="<?=str_replace('_middle','_small',$row['logo']);?>" width="192"/></td>
             <td><?=$row['title'];?></td>
-            <td><?=$row['url'];?></td>
+            <td><a href="<?=$row['url'];?>" target="_blank"><?=$row['url'];?></a></td>
             <td><?=($row['status']==\app\models\User::NORMAL_STATUS ? '<font color="green">启用</font>' : '不启用');?></td>
             <td><?=$row['create_user'];?></td>
             <td><?=$row['create_time'] ? date('Y-m-d H:i:s',$row['create_time']) : '暂无';?></td>

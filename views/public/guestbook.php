@@ -54,7 +54,7 @@ use \yii\widgets\ActiveForm;
 						<div class="r">
 							<?=$form->field($model, 'captcha')->widget(yii\captcha\Captcha::className()
     , ['captchaAction' => 'public/captcha',
-        'imageOptions'     => ['alt' => '点击换图', 'title' => '点击换图', 'style' => 'cursor:pointer;vertical-align:bottom;']])->label(false);?>
+        'imageOptions'     => ['alt' => '点击换图', 'title' => '点击换图', 'style' => 'cursor:pointer;vertical-align:bottom;', 'onclick' => "this.src=this.src+'?'+Math.random();"]])->label(false);?>
 							<!--<img src="/public/captcha" border="0" align="absmiddle" class="hand" id="vcode" style='width:100px;' title='点击切换验证码' onclick="this.src=this.src+'?'+Math.random();"/>
 							<input class="vcode" type="text" name="verifyCode" id="verifyCode">-->
 						</div>

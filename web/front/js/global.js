@@ -10,21 +10,31 @@ function top_search()
 {
 	var keywords = $("#top_keywords").val();
 	if(!keywords){
-		$.dialog.alert('请输入要搜索的关键字');
 		return false;
 	}
 	return true;
 }
 
-function add_fav(sTitle,sURL) 
+function add_fav()
 {
-	try {
-		window.external.addFavorite(sURL, sTitle);
-	} catch (e) {
-		try {
-			window.sidebar.addPanel(sTitle, sURL, "");
-		} catch (e) {
-			$.dialog.alert("加入收藏失败，请使用Ctrl+D进行添加");
-		}
-	}
+    var url = window.location.href;
+    var title = document.title;
+    var ua = navigator.userAgent.toLowerCase();
+    var msg = "您的浏览器不支持,请按 Ctrl+D 手动收藏!";
+    if (ua.indexOf("360se") > -1) {
+        alert(msg);
+    }
+    else if (document.all) {
+        try{
+            window.external.addFavorite(url, title);
+        }catch(e){
+            alert(msg);
+        }
+    }
+    else if (window.sidebar) {
+        window.sidebar.addPanel(title, url, "");
+    }
+    else {
+        alert(msg);
+    }
 }

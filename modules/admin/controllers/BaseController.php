@@ -30,11 +30,11 @@ class BaseController extends Controller
             //根据是否为ajax，返回错误提示信息
             if (Yii::$app->request->isAjax) {
                 die(json_encode([
-                'code'    => Code::NOT_LOGINED,
-                'message' => Code::$messages[Code::NOT_LOGINED],
+                    'code'    => Code::NOT_LOGINED,
+                    'message' => Code::$messages[Code::NOT_LOGINED],
                 ]));
             } else {
-                $this->redirect('admin/public/login');
+                $this->redirect('public/login');
             }
         }
         $this->loginUserInfo = $loginUserInfo;
@@ -45,12 +45,12 @@ class BaseController extends Controller
     //简化变量
     private function initVars()
     {
-        $this->requests = Yii::$app->request;
-        $this->isAjax   = Yii::$app->request->isAjax;
-        $this->isPost   = Yii::$app->request->isPost;
-        $this->cache    = Yii::$app->cache;
-        $this->session  = Yii::$app->session;
-        $this->cookies  = Yii::$app->request->cookies;
+        $this->requests        = Yii::$app->request;
+        $this->isAjax          = Yii::$app->request->isAjax;
+        $this->isPost          = Yii::$app->request->isPost;
+        $this->cache           = Yii::$app->cache;
+        $this->session         = Yii::$app->session;
+        $this->cookies         = Yii::$app->request->cookies;
         $this->loginUserId     = $this->loginUserInfo['id'];
         $this->loginUserName   = $this->loginUserInfo['username'];
         $this->loginUserStatus = $this->loginUserInfo['status'];

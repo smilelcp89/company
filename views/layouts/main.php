@@ -1,7 +1,7 @@
-<?php use yii\helpers\Url; ?>
-<?php $imgHost = Yii::$app->params['imgHost']; ?>
+<?php use yii\helpers\Url;?>
+<?php $imgHost = Yii::$app->params['imgHost'];?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html lang="<?=Yii::$app->language;?>">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
@@ -12,10 +12,8 @@
 	<title><?=\app\services\CacheService::getConfigsFromCache('seo_title');?></title>
 	<link rel="icon" href="/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?=$imgHost;?>front/css/style.css">
-	<link rel="stylesheet" type="text/css" href="<?=$imgHost;?>front/css/artdialog.css">
 	<script type="text/javascript" src="<?=$imgHost;?>front/js/public.js" charset="utf-8"></script>
 	<script type="text/javascript" src="<?=$imgHost;?>front/js/global.js" charset="utf-8"></script>
-	<script type="text/javascript" src="<?=$imgHost;?>front/js/jquery.artdialog.js" charset="utf-8"></script>
 	<!--[if IE]>
 	<script type="text/javascript" src="<?=$imgHost;?>front/js/html5.js" charset="utf-8"></script>
 	<![endif]-->
@@ -25,8 +23,8 @@
 	<div class="logo"><a href="/" title="网站首页"><img src="<?=Yii::$app->params['domain'];?>front/images/128631859541c31c.png" alt="网站首页"></a></div>
 	<div class="right">
 		<nav class="top">
-			<a href="/" title="网站首页">网站首页</a> | 
-			<a href="javascript:add_fav('网站名称','<?=Yii::$app->params['domain'];?>');void(0);">收藏本页</a> | 
+			<a href="/" title="网站首页">网站首页</a> |
+			<a href="javascript:add_fav();">收藏本页</a> |
 			<a href="<?=Url::to(['public/guestbook']);?>">留言反馈</a>
 		</nav>
 		<form method="post" class="search" action="<?=Url::to(['product/product']);?>" onsubmit="return top_search();">
@@ -37,24 +35,24 @@
 </header>
 <nav class="menu">
 	<ul>
-		<li style="margin-left:4px;" <?=empty(Yii::$app->controller->id) || (Yii::$app->controller->id == 'index' && Yii::$app->controller->action->id == 'index') ? 'class="current"' : '' ?>><a href="/" title="首页">首　页</a></li>
-		<li <?=(Yii::$app->controller->id == 'product') ? 'class="current"' : '' ?>><a href="<?=Url::to(['product/index']);?>" title="产品展示">产品展示</a></li>
-		<li <?=(Yii::$app->controller->id == 'news') ? 'class="current"' : '' ?>><a href="<?=Url::to(['news/index']);?>" title="新闻中心">新闻中心</a></li>
-		<li <?=(Yii::$app->controller->id == 'public' && Yii::$app->controller->action->id == 'guestbook') ? 'class="current"' : '' ?>><a href="<?=Url::to(['public/guestbook']);?>" title="留言反馈">留言反馈</a></li>
-		<li <?=(Yii::$app->controller->id == 'public' && Yii::$app->controller->action->id == 'about') ? 'class="current"' : '' ?>><a href="<?=Url::to(['public/about']);?>" title="关于我们">关于我们</a></li>
-		<li <?=(Yii::$app->controller->id == 'public' && Yii::$app->controller->action->id == 'contact') ? 'class="current"' : '' ?>><a href="<?=Url::to(['public/contact']);?>" title="联系我们">联系我们</a></li>
+		<li style="margin-left:4px;" <?=empty(Yii::$app->controller->id) || (Yii::$app->controller->id == 'index' && Yii::$app->controller->action->id == 'index') ? 'class="current"' : '';?>><a href="/" title="首页">首　页</a></li>
+		<li <?=(Yii::$app->controller->id == 'product') ? 'class="current"' : '';?>><a href="<?=Url::to(['product/index']);?>" title="产品展示">产品展示</a></li>
+		<li <?=(Yii::$app->controller->id == 'news') ? 'class="current"' : '';?>><a href="<?=Url::to(['news/index']);?>" title="新闻中心">新闻中心</a></li>
+		<li <?=(Yii::$app->controller->id == 'public' && Yii::$app->controller->action->id == 'guestbook') ? 'class="current"' : '';?>><a href="<?=Url::to(['public/guestbook']);?>" title="留言反馈">留言反馈</a></li>
+		<li <?=(Yii::$app->controller->id == 'public' && Yii::$app->controller->action->id == 'about') ? 'class="current"' : '';?>><a href="<?=Url::to(['public/about']);?>" title="关于我们">关于我们</a></li>
+		<li <?=(Yii::$app->controller->id == 'public' && Yii::$app->controller->action->id == 'contact') ? 'class="current"' : '';?>><a href="<?=Url::to(['public/contact']);?>" title="联系我们">联系我们</a></li>
 	</ul>
 </nav>
-<?= $content ?>
+<?=$content;?>
 <div class="link">
 	<ul class="clearfix">
 		<li class="title">友情链接：</li>
 		<?php $friendlinkArr = \app\services\CacheService::getFriendlinksFromCache();?>
-		<?php if(!empty($friendlinkArr)):?>
-			<?php foreach($friendlinkArr as $item):?>
-			<li><a href="<?=$item['url']?>" target="_blank" title="<?=$item['title']?>"><?=$item['title']?></a></li>
+		<?php if (!empty($friendlinkArr)): ?>
+			<?php foreach ($friendlinkArr as $item): ?>
+			<li><a href="<?=$item['url'];?>" target="_blank" title="<?=$item['title'];?>"><?=$item['title'];?></a></li>
 			<?php endforeach;?>
-		<?php endif?>
+		<?php endif;?>
 	</ul>
 </div>
 <div class="foot">

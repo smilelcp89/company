@@ -18,10 +18,10 @@ use \yii\widgets\ActiveForm;
 		var uploadbutton = K.uploadbutton({
 			button : K('#file_upload')[0],
 			fieldName : 'imgFile',
-			url : uploadUrl,
+			url : '/admin/upload',
 			afterUpload : function(data) {
-				if (data.error === 0) {
-					var imgContent = '<p><img src="'+data.url+'" width="150" height="150"/><input type="hidden" value="'+data.url+'" name="productImgs[]" /><input type="button" class="ibtn" value="删除" onclick="deleteImg(this)" /></p>';
+				if (data.code == 1000) {
+					var imgContent = '<p><img src="'+data.content.url+'" width="150" height="150"/><input type="hidden" value="'+data.content.url+'" name="productImgs[]" /><input type="button" class="ibtn" value="删除" onclick="deleteImg(this)" /></p>';
 					$(".upload-pic").append(imgContent);
 				} else {
 					$.dialog.alert(data.message);
