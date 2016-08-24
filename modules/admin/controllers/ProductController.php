@@ -4,9 +4,9 @@ namespace app\modules\admin\controllers;
 
 use app\components\Common;
 use app\models\Product;
-use app\models\ProductCategory;
+use app\services\CacheService;
+use app\services\ProductService;
 use Yii;
-use yii\data\Pagination;
 use yii\helpers\Html;
 
 /**
@@ -29,39 +29,33 @@ class ProductController extends BaseController
         $isRecommend = trim(Html::encode($this->requests->get('isRecommend')));
         $cateId      = intval($this->requests->get('cateId', 0));
         $status      = intval($this->requests->get('status', 0));
-
-        $pageSize = 10;
-        $query    = Product::find();
-        $query->where(['=', 'is_delete', 0]);
+        $pageIndex   = intval($this->requests->get('page', 1));
+        $pageSize    = 10;
+        $where[]     = 'is_delete = 0';
+        $params      = [];
         if ($title) {
-            $query->andWhere(['like', 'title', $title]);
-        }
-        if ($isRecommend) {
-            $query->andWhere(['=', 'is_recommend', $isRecommend]);
+            $where[]          = 'title like ":title%"';
+            $params[':title'] = $title;
         }
         if ($cateId) {
-            $query->andWhere(['=', 'cate_id', $cateId]);
+            $where[]           = 'cate_id = :cateId';
+            $params[':cateId'] = $cateId;
         }
         if ($status) {
-            $query->andWhere(['=', 'status', $status]);
+            $where[]           = 'status = :status';
+            $params[':status'] = $status;
         }
-        //分页
-        $pagination = new Pagination([
-            'defaultPageSize' => $pageSize,
-            'totalCount'      => $query->count(),
-        ]);
-        $data = $query->select('id,title,logo,sale_price,status,cate_id,is_recommend')
-            ->orderBy('id desc')
-            ->limit($pagination->limit)
-            ->offset($pagination->offset)
-            ->asArray()
-            ->all();
+        if ($status) {
+            $where[]                 = 'is_recommend = :is_recommend';
+            $params[':is_recommend'] = $isRecommend;
+        }
+        $result = ProductService::getProductsByCondition(implode(' and ', $where), $params, 'id,title,logo,sale_price,status,cate_id,is_recommend', $pageIndex, $pageSize, null, 'id desc');
         //获取产品分类
-        $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->indexBy('id')->asArray()->all();
+        $cateList = CacheService::getProductCategorysFromCache('id');
         return $this->render('index', [
-            'data'       => $data,
-            'pagination' => $pagination,
-            'pageIndex'  => $pagination->getPage() + 1,
+            'data'       => $result['data'],
+            'pagination' => $result['pages'],
+            'pageIndex'  => $pageIndex,
             'pageSize'   => $pageSize,
             'cateList'   => $cateList,
             'params'     => Yii::$app->request->get(),
@@ -95,14 +89,9 @@ class ProductController extends BaseController
             }
         } else {
             //获取产品分类
-            $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
-            $cateArr  = [];
-            if (!empty($cateList)) {
-                foreach ($cateList as $cate) {
-                    $cateArr[$cate['id']] = $cate['title'];
-                }
-            }
-            return $this->render('edit', ['model' => $model, 'cateArr' => $cateArr]);
+            $cateList = CacheService::getProductCategorysFromCache('id');
+            $cateList = array_column($cateList, 'title', 'id');
+            return $this->render('edit', ['model' => $model, 'cateList' => $cateList]);
         }
     }
 
@@ -118,6 +107,7 @@ class ProductController extends BaseController
         $model = new Product();
         if ($this->isPost) {
             $form                = $this->requests->post('Product');
+            $form['intro']       = Html::encode($form['intro']);
             $product             = $model->findOne(['id' => $userId]);
             $product->attributes = $form;
             if ($product->validate()) {
@@ -140,14 +130,9 @@ class ProductController extends BaseController
                 $data['images_list'] = [$data['logo']];
             }
             //获取产品分类
-            $cateList = ProductCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
-            $cateArr  = [];
-            if (!empty($cateList)) {
-                foreach ($cateList as $cate) {
-                    $cateArr[$cate['id']] = $cate['title'];
-                }
-            }
-            return $this->render('edit', ['data' => $data, 'model' => $model, 'cateArr' => $cateArr]);
+            $cateList = CacheService::getProductCategorysFromCache('id');
+            $cateList = array_column($cateList, 'title', 'id');
+            return $this->render('edit', ['data' => $data, 'model' => $model, 'cateList' => $cateList]);
         }
     }
 

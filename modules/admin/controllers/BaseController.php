@@ -27,6 +27,7 @@ class BaseController extends Controller
         $loginUserInfo = Yii::$app->session->get(SessionConst::LOGIN_USER_INFO);
         //判断用户是否登录
         if (empty($loginUserInfo)) {
+
             //根据是否为ajax，返回错误提示信息
             if (Yii::$app->request->isAjax) {
                 die(json_encode([
@@ -34,7 +35,7 @@ class BaseController extends Controller
                     'message' => Code::$messages[Code::NOT_LOGINED],
                 ]));
             } else {
-                $this->redirect('public/login');
+                header("Location: /admin/public/login");exit();
             }
         }
         $this->loginUserInfo = $loginUserInfo;

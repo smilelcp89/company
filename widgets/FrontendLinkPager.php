@@ -6,11 +6,21 @@ namespace app\widgets;
 
 class FrontendLinkPager extends \yii\widgets\LinkPager
 {
+    public function init()
+    {
+        if ($this->pagination === null) {
+            return false;
+        }
+    }
+
     protected function renderPageButtons()
     {
+        if ($this->pagination === null) {
+            return null;
+        }
         $pageCount = $this->pagination->getPageCount();
         if ($pageCount < 2) {
-            return '';
+            return null;
         }
         //当前页
         $currentPage = $this->pagination->getPage() + 1;

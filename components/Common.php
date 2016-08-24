@@ -4,6 +4,7 @@ namespace app\components;
 
 //公共方法类
 use app\constants\Session;
+use yii\base\Exception;
 
 class Common
 {
@@ -133,29 +134,45 @@ EOT;
         $result = '';
         $string = html_entity_decode(trim(strip_tags($string)), ENT_QUOTES, 'UTF-8');
         $strlen = strlen($string);
-        for ($i = 0; (($i < $strlen) && ($length > 0)); $i++)
-        {
-            if ($number = strpos(str_pad(decbin(ord(substr($string, $i, 1))), 8, '0', STR_PAD_LEFT), '0'))
-            {
-                if ($length < 1.0)
-                {
+        for ($i = 0; (($i < $strlen) && ($length > 0)); $i++) {
+            if ($number = strpos(str_pad(decbin(ord(substr($string, $i, 1))), 8, '0', STR_PAD_LEFT), '0')) {
+                if ($length < 1.0) {
                     break;
                 }
                 $result .= substr($string, $i, $number);
                 $length -= 1.0;
                 $i += $number - 1;
-            }
-            else
-            {
+            } else {
                 $result .= substr($string, $i, 1);
                 $length -= 0.5;
             }
         }
         $result = htmlspecialchars($result, ENT_QUOTES, 'UTF-8');
-        if ($i < $strlen)
-        {
+        if ($i < $strlen) {
             $result .= $etc;
         }
         return $result;
+    }
+
+    public static function httpGet($url)
+    {
+        $curl = curl_init();
+        try {
+
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+            // 为保证第三方服务器与微信服务器之间数据传输的安全性，所有微信接口采用https方式调用，必须使用下面2行代码打开ssl安全校验。
+            // 如果在部署过程中代码在此处验证失败，请到 http://curl.haxx.se/ca/cacert.pem 下载新的证书判别文件。
+            //curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+            //curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($curl, CURLOPT_URL, $url);
+
+            $res = curl_exec($curl);
+            curl_close($curl);
+            return $res;
+        } catch (Exception $e) {
+            echo $e->getMessage() . '<br/>';
+            echo curl_error($curl);
+        }
     }
 }

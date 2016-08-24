@@ -4,9 +4,9 @@ namespace app\modules\admin\controllers;
 
 use app\components\Common;
 use app\models\News;
-use app\models\NewsCategory;
+use app\services\CacheService;
+use app\services\NewsService;
 use Yii;
-use yii\data\Pagination;
 use yii\helpers\Html;
 
 /**
@@ -28,36 +28,34 @@ class NewsController extends BaseController
         $title       = trim(Html::encode($this->requests->get('title')));
         $isRecommend = trim(Html::encode($this->requests->get('isRecommend')));
         $cateId      = intval($this->requests->get('cateId', 0));
-
-        $pageSize = 10;
-        $query    = News::find();
-        $query->where(['=', 'is_delete', 0]);
+        $status      = intval($this->requests->get('status', 0));
+        $pageIndex   = intval($this->requests->get('page', 1));
+        $pageSize    = 10;
+        $where[]     = 'is_delete = 0';
+        $params      = [];
         if ($title) {
-            $query->andWhere(['like', 'title', $title]);
-        }
-        if ($isRecommend) {
-            $query->andWhere(['=', 'is_recommend', $isRecommend]);
+            $where[]          = 'title like ":title%"';
+            $params[':title'] = $title;
         }
         if ($cateId) {
-            $query->andWhere(['=', 'cate_id', $cateId]);
+            $where[]           = 'cate_id = :cateId';
+            $params[':cateId'] = $cateId;
         }
-        //分页
-        $pagination = new Pagination([
-            'defaultPageSize' => $pageSize,
-            'totalCount'      => $query->count(),
-        ]);
-        $data = $query->select('id,title,cate_id,status,is_recommend,create_user,create_time')
-            ->orderBy('id desc')
-            ->limit($pagination->limit)
-            ->offset($pagination->offset)
-            ->asArray()
-            ->all();
-        //获取新闻分类
-        $cateList = NewsCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->indexBy('id')->asArray()->all();
+        if ($status) {
+            $where[]           = 'status = :status';
+            $params[':status'] = $status;
+        }
+        if ($status) {
+            $where[]                 = 'is_recommend = :is_recommend';
+            $params[':is_recommend'] = $isRecommend;
+        }
+        $result = NewsService::getNewsByCondition(implode(' and ', $where), $params, 'id,title,cate_id,status,is_recommend,create_user,create_time', $pageIndex, $pageSize, null, 'id desc');
+        //获取广告分类
+        $cateList = CacheService::getNewsCategorysFromCache('id');
         return $this->render('index', [
-            'data'       => $data,
-            'pagination' => $pagination,
-            'pageIndex'  => $pagination->getPage() + 1,
+            'data'       => $result['data'],
+            'pagination' => $result['pages'],
+            'pageIndex'  => $pageIndex,
             'pageSize'   => $pageSize,
             'cateList'   => $cateList,
             'params'     => Yii::$app->request->get(),
@@ -71,9 +69,9 @@ class NewsController extends BaseController
     {
         $model = new News();
         if ($this->isPost) {
-            $News              = $this->requests->post('News');
-            $model->attributes = $News;
-            $model->content    = Html::encode($News['content']);
+            $news              = $this->requests->post('News');
+            $model->attributes = $news;
+            $model->content    = Html::encode($news['content']);
             if ($model->validate()) {
                 if ($model->save()) {
                     Common::message('success', '保存成功', '/admin/news/index');
@@ -85,14 +83,9 @@ class NewsController extends BaseController
             }
         } else {
             //获取新闻分类
-            $cateList = NewsCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
-            $cateArr  = [];
-            if (!empty($cateList)) {
-                foreach ($cateList as $cate) {
-                    $cateArr[$cate['id']] = $cate['title'];
-                }
-            }
-            return $this->render('edit', ['model' => $model, 'cateArr' => $cateArr]);
+            $cateList = CacheService::getNewsCategorysFromCache('id');
+            $cateList = array_column($cateList, 'title', 'id');
+            return $this->render('edit', ['model' => $model, 'cateList' => $cateList]);
         }
     }
 
@@ -108,16 +101,17 @@ class NewsController extends BaseController
         $model = new News();
         if ($this->isPost) {
             $form             = $this->requests->post('News');
-            $News             = $model->findOne(['id' => $userId]);
-            $News->attributes = $form;
-            if ($News->validate()) {
-                if ($News->save()) {
+            $form['content']  = Html::encode($form['content']);
+            $news             = $model->findOne(['id' => $userId]);
+            $news->attributes = $form;
+            if ($news->validate()) {
+                if ($news->save()) {
                     Common::message('success', '修改成功', '/admin/news/index');
                 } else {
                     Common::message('error', '修改失败');
                 }
             } else {
-                return $this->render('edit', ['model' => $News]);
+                return $this->render('edit', ['model' => $news]);
             }
         } else {
             $data = $model->findOne(['id' => $userId]);
@@ -125,14 +119,9 @@ class NewsController extends BaseController
                 Common::message('error', '新闻不存在');
             }
             //获取新闻分类
-            $cateList = NewsCategory::find()->where(['is_delete' => 0])->select('id,title')->orderBy('id asc')->asArray()->all();
-            $cateArr  = [];
-            if (!empty($cateList)) {
-                foreach ($cateList as $cate) {
-                    $cateArr[$cate['id']] = $cate['title'];
-                }
-            }
-            return $this->render('edit', ['data' => $data, 'model' => $model, 'cateArr' => $cateArr]);
+            $cateList = CacheService::getNewsCategorysFromCache('id');
+            $cateList = array_column($cateList, 'title', 'id');
+            return $this->render('edit', ['data' => $data, 'model' => $model, 'cateList' => $cateList]);
         }
     }
 

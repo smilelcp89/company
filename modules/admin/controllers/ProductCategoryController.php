@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\components\Common;
+use app\constants\CacheConst;
 use app\models\ProductCategory;
 use Yii;
 use yii\data\Pagination;
@@ -63,6 +64,8 @@ class ProductCategoryController extends BaseController
             $model->attributes['title'] = trim($model->attributes['title']);
             if ($model->validate()) {
                 if ($model->save()) {
+                    //删除缓存
+                    $this->cache->delete(CacheConst::PRODUCT_CATEGORY_CACHE);
                     Common::message('success', '保存成功', '/admin/product-category/index');
                 } else {
                     Common::message('error', '保存失败');
@@ -91,6 +94,8 @@ class ProductCategoryController extends BaseController
             $product->attributes = $form;
             if ($product->validate()) {
                 if ($product->save()) {
+                    //删除缓存
+                    $this->cache->delete(CacheConst::PRODUCT_CATEGORY_CACHE);
                     Common::message('success', '修改成功', '/admin/product-category/index');
                 } else {
                     Common::message('error', '修改失败');
@@ -119,6 +124,8 @@ class ProductCategoryController extends BaseController
         //更新的数据
         $data = ['is_delete' => 1];
         if (ProductCategory::updateAll($data, 'id in (' . $ids . ')') !== false) {
+            //删除缓存
+            $this->cache->delete(CacheConst::PRODUCT_CATEGORY_CACHE);
             Common::echoJson(1000, '删除成功');
         } else {
             Common::echoJson(1002, '删除失败');

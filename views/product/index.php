@@ -3,8 +3,9 @@
 <div class="main clearfix">
 	<div class="left">
 		<div class="pfw">
-		<div class="title"><h3>产品展示</h3></div>
+		<div class="title"><h3>产品类别</h3></div>
 			<ul class="artlist">
+				<li><a href="<?=Url::to(['product/index'])?>">全部</a></li>
 				<?php if(!empty($productCategoryList)):?>
 				<?php foreach($productCategoryList as $row):?>
 				<li><a href="<?=Url::to(['product/index','cateId'=>$row['id']])?>"><?=$row['title']?></a></li>
@@ -43,6 +44,8 @@
 					<h4><a href="<?=Url::to(['product/detail','id'=>$item['id']])?>" title="<?=$item['title']?>"><?=\app\components\Common::truncate($item['title'],30)?></a></h4>
 				</li>	
 				<?php endforeach;?>
+				<?php else:?>
+				<li><h3>抱歉，暂无相关产品</h3></li>
 				<?php endif;?>
 			</ul>
 		</div>

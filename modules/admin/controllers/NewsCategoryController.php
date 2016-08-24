@@ -3,6 +3,7 @@
 namespace app\modules\admin\controllers;
 
 use app\components\Common;
+use app\constants\CacheConst;
 use app\models\NewsCategory;
 use Yii;
 use yii\data\Pagination;
@@ -63,6 +64,8 @@ class NewsCategoryController extends BaseController
             $model->attributes['title'] = trim($model->attributes['title']);
             if ($model->validate()) {
                 if ($model->save()) {
+                    //删除缓存
+                    $this->cache->delete(CacheConst::NEWS_CATEGORY_CACHE);
                     Common::message('success', '保存成功', '/admin/news-category/index');
                 } else {
                     Common::message('error', '保存失败');
@@ -91,6 +94,8 @@ class NewsCategoryController extends BaseController
             $product->attributes = $form;
             if ($product->validate()) {
                 if ($product->save()) {
+                    //删除缓存
+                    $this->cache->delete(CacheConst::NEWS_CATEGORY_CACHE);
                     Common::message('success', '修改成功', '/admin/news-category/index');
                 } else {
                     Common::message('error', '修改失败');
@@ -108,7 +113,7 @@ class NewsCategoryController extends BaseController
     }
 
     /*
-     * 删除新闻
+     * 删除新闻分类
      */
     public function actionDelete()
     {
@@ -119,6 +124,8 @@ class NewsCategoryController extends BaseController
         //更新的数据
         $data = ['is_delete' => 1];
         if (NewsCategory::updateAll($data, 'id in (' . $ids . ')') !== false) {
+            //删除缓存
+            $this->cache->delete(CacheConst::NEWS_CATEGORY_CACHE);
             Common::echoJson(1000, '删除成功');
         } else {
             Common::echoJson(1002, '删除失败');

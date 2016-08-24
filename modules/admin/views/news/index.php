@@ -14,7 +14,7 @@ $(function(){
 		var data = [];
 		$(".checkbox_opt:checked").each(function(){
 			data.push($(this).val());
-		});		
+		});
 		updateByIds('/admin/news/changestatus',{ids: data.join(","),status: status},'确定要'+message+'已选择的项吗');
     });
 
@@ -32,7 +32,7 @@ $(function(){
 		var data = [];
 		$(".checkbox_opt:checked").each(function(){
 			data.push($(this).val());
-		});		
+		});
 		updateByIds('/admin/news/isrecommend',{ids: data.join(","),isRecommend: status},'确定要'+message+'已选择的项吗');
     });
 
@@ -45,7 +45,7 @@ $(function(){
 		var data = [];
 		$(".checkbox_opt:checked").each(function(){
 			data.push($(this).val());
-		});		
+		});
 		updateByIds('/admin/user/delete',{ids: data.join(","),status: status},'确定要删除已选择的项吗');
     });
 
@@ -68,14 +68,20 @@ $(function(){
     <div class="rightinfo">
 	<form>
     <ul class="seachform">
-        <li><label>新闻名</label><input name="title" value="<?=$params['title']?>" type="text" class="scinput" /></li>
+        <li><label>新闻名</label><input name="title" value="<?=$params['title'];?>" type="text" class="scinput" /></li>
 		<li>
             <label>新闻状态</label>
             <div class="vocation">
                 <select class="uedselect" name="status">
                     <option value='0'>全部</option>
-                    <option value="1" <?php if($params['status'] == 1) echo "selected";?>>发布</option>
-                    <option value="2"  <?php if($params['status'] == 2) echo "selected";?>>不发布</option>
+                    <option value="1" <?php if ($params['status'] == 1) {
+    echo "selected";
+}
+?>>发布</option>
+                    <option value="2"  <?php if ($params['status'] == 2) {
+    echo "selected";
+}
+?>>不发布</option>
                 </select>
             </div>
         </li>
@@ -84,8 +90,14 @@ $(function(){
             <div class="vocation">
                 <select class="uedselect" name="isRecommend">
                     <option value='0'>全部</option>
-                    <option value="1" <?php if($params['isRecommend'] == 1) echo "selected";?>>是</option>
-                    <option value="2"  <?php if($params['isRecommend'] == 2) echo "selected";?>>否</option>
+                    <option value="1" <?php if ($params['isRecommend'] == 1) {
+    echo "selected";
+}
+?>>是</option>
+                    <option value="2"  <?php if ($params['isRecommend'] == 2) {
+    echo "selected";
+}
+?>>否</option>
                 </select>
             </div>
         </li>
@@ -94,9 +106,12 @@ $(function(){
             <div class="vocation">
                 <select class="uedselect" name="cateId">
                     <option>全部</option>
-					<?php if(!empty($cateList)):?>
-					<?php foreach($cateList as $cate):?>
-						<option value="<?=$cate['id']?>" <?php if($params['cateId'] == $cate['id']) echo "selected";?>><?=$cate['title']?></option>
+					<?php if (!empty($cateList)): ?>
+					<?php foreach ($cateList as $cate): ?>
+						<option value="<?=$cate['id'];?>" <?php if ($params['cateId'] == $cate['id']) {
+    echo "selected";
+}
+?>><?=$cate['title'];?></option>
 					<?php endforeach;?>
 					<?php endif;?>
                 </select>
@@ -129,40 +144,40 @@ $(function(){
         </tr>
         </thead>
         <tbody>
-        <?php if(!empty($data)):?>
-        <?php foreach($data as $key => $row):?>
+        <?php if (!empty($data)): ?>
+        <?php foreach ($data as $key => $row): ?>
         <tr>
             <td><input class="checkbox_opt" name="data[]" type="checkbox" value="<?=$row['id'];?>" /></td>
-            <td><?=($pageSize*($pageIndex-1)+$key+1)?></td>
+            <td><?=($pageSize * ($pageIndex - 1) + $key + 1);?></td>
             <td><?=$row['title'];?></td>
             <td><?=$cateList[$row['cate_id']]['title'];?></td>
-            <td><?=($row['status']==1 ? '发布' : '不发布');?></td>
-            <td><?=($row['is_recommend']==1 ? '是' : '否');?></td>
+            <td><?=($row['status'] == 1 ? '<b style="color:green;">发布</b>' : '不发布');?></td>
+            <td><?=($row['is_recommend'] == 1 ? '<b style="color:red;">是</b>' : '否');?></td>
             <td><?=$row['create_user'];?></td>
-            <td><?=date('Y-m-d H:i:s',$row['create_time']);?></td>
+            <td><?=date('Y-m-d H:i:s', $row['create_time']);?></td>
             <td>
-                <a href="<?=\yii\helpers\Url::to(['news/edit?id='.$row['id']])?>" class="tablelink">编辑</a>
-				<?php if($row['status'] == 1):?>
-				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/changestatus',{status:2,ids:<?=$row['id']?>},'确定不发布【<?=$row['title'];?>】吗？')">　不发布</a>
-				<?php else:?>
-				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/changestatus',{status:1,ids:<?=$row['id']?>},'确定发布【<?=$row['title'];?>】吗？')">　发布</a>
-				<?php endif;?>	
+                <a href="<?=\yii\helpers\Url::to(['news/edit?id=' . $row['id']]);?>" class="tablelink">编辑</a>
+				<?php if ($row['status'] == 1): ?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/changestatus',{status:2,ids:<?=$row['id'];?>},'确定不发布【<?=$row['title'];?>】吗？')">　不发布</a>
+				<?php else: ?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/changestatus',{status:1,ids:<?=$row['id'];?>},'确定发布【<?=$row['title'];?>】吗？')">　发布</a>
+				<?php endif;?>
 
-				<?php if($row['is_recommend'] == 1):?>
-				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/isrecommend',{isRecommend:2,ids:<?=$row['id']?>},'确定取消推荐【<?=$row['title'];?>】吗？')">　取消推荐</a>
-				<?php else:?>
-				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/isrecommend',{isRecommend:1,ids:<?=$row['id']?>},'确定推荐【<?=$row['title'];?>】吗？')">　推荐</a>
-				<?php endif;?>	
+				<?php if ($row['is_recommend'] == 1): ?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/isrecommend',{isRecommend:2,ids:<?=$row['id'];?>},'确定取消推荐【<?=$row['title'];?>】吗？')">　取消推荐</a>
+				<?php else: ?>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/isrecommend',{isRecommend:1,ids:<?=$row['id'];?>},'确定推荐【<?=$row['title'];?>】吗？')">　推荐</a>
+				<?php endif;?>
 
-				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/delete',{ids:<?=$row['id']?>},'确定删除【<?=$row['title'];?>】吗？')">　删除</a>
+				<a href="javascript:;" class="tablelink" onclick="updateByIds('/admin/news/delete',{ids:<?=$row['id'];?>},'确定删除【<?=$row['title'];?>】吗？')">　删除</a>
             </td>
         </tr>
         <?php endforeach;?>
-        <?php else:?>
+        <?php else: ?>
         <tr><td colspan="9">数据为空</td></tr>
         <?php endif;?>
         </tbody>
     </table>
-    <?=\app\widgets\BackendLinkPager::widget(['pagination' => $pagination]) ?>
+    <?=\app\widgets\BackendLinkPager::widget(['pagination' => null]);?>
 	<br/>
 	<br/>

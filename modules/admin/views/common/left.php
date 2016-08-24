@@ -26,7 +26,7 @@ $(function(){
     <span><img src="<?=Yii::$app->params['imgHost'];?>backend/images/leftico01.png" /></span>管理后台
     </div>
     	<ul class="menuson">
-			<li class="active"><cite></cite><a href="/admin/default/right" target="rightFrame">首页</a><i></i></li>
+			<li class="active"><cite></cite><a href="/admin/default/right" target="rightFrame">后台首页</a><i></i></li>
         <!--<li class="active"><cite></cite><a href="/admin/default/right" target="rightFrame">首页模版</a><i></i></li>
         <li><cite></cite><a href="/admin/default/list" target="rightFrame">数据列表</a><i></i></li>
         <li><cite></cite><a href="/admin/default/list2" target="rightFrame">图片数据表</a><i></i></li>

@@ -63,7 +63,7 @@ use \yii\widgets\ActiveForm;
 					<div class="table clearfix">
 						<div class="l">&nbsp;</div>
 						<div class="r">
-							<?=Html::submitButton('保存', ['class' => 'large button blue', 'name' => 'submit-button']);?>
+							<?=Html::submitButton('提交留言', ['class' => 'large button blue', 'name' => 'submit-button']);?>
 						</div>
 					</div>
 				<?php ActiveForm::end();?>

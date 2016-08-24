@@ -12,8 +12,7 @@
 	<title><?=isset($this->params['seo_title']) ? $this->params['seo_title'] : \app\services\CacheService::getConfigsFromCache('seo_title');?></title>
 	<link rel="icon" href="/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?=$imgHost;?>front/css/style.css">
-	<script type="text/javascript" src="<?=$imgHost;?>front/js/public.js" charset="utf-8"></script>
-	<script type="text/javascript" src="<?=$imgHost;?>front/js/global.js" charset="utf-8"></script>
+	<script type="text/javascript" src="<?=$imgHost;?>static/js/jquery.js" charset="utf-8"></script>
 	<!--[if IE]>
 	<script type="text/javascript" src="<?=$imgHost;?>front/js/html5.js" charset="utf-8"></script>
 	<![endif]-->
@@ -70,4 +69,5 @@
 	</div>
 </div>
 </body>
+<script type="text/javascript" src="<?=$imgHost;?>front/js/global.js" charset="utf-8"></script>
 </html>

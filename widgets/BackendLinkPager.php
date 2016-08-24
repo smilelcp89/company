@@ -6,11 +6,21 @@ namespace app\widgets;
 
 class BackendLinkPager extends \yii\widgets\LinkPager
 {
+    public function init()
+    {
+        if ($this->pagination === null) {
+            return false;
+        }
+    }
+
     protected function renderPageButtons()
     {
+        if ($this->pagination === null) {
+            return null;
+        }
         $pageCount = $this->pagination->getPageCount();
         if ($pageCount < 2) {
-            return '';
+            return null;
         }
         //总条数
         $totalCount = $this->pagination->totalCount;

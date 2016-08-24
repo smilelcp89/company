@@ -3,8 +3,9 @@
 <div class="main clearfix">
 	<div class="left">
 		<div class="pfw">
-		<div class="title"><h3>产品展示</h3></div>
+		<div class="title"><h3>产品类别</h3></div>
 			<ul class="artlist">
+				<li><a href="<?=Url::to(['product/index'])?>">全部</a></li>
 				<?php if(!empty($productCategoryList)):?>
 				<?php foreach($productCategoryList as $row):?>
 				<li><a href="<?=Url::to(['product/index','cateId'=>$row['id']])?>"><?=$row['title']?></a></li>
@@ -20,7 +21,7 @@
 				<h3>产品展示</h3>
 				<span class="breadcrumbs">您现在的位置：<a href="/" title="首页">首页</a>
 					<span class="arrow">&gt;</span> <a href="<?=Url::to(['product/index'])?>" title="产品展示">产品展示</a>
-					<span class="arrow">&gt;</span> <?=$product['title']?>
+					<span class="arrow">&gt;</span> <?=\app\components\Common::truncate($product['title'],10)?>
 				</span>
 			</div>
 			<div class="product clearfix">
@@ -28,14 +29,14 @@
 					<ul class="list" style="position: relative; width: 400px; height: 400px;">
 						<?php if(!empty($product['images_list'])):?>
 						<?php foreach($product['images_list'] as $key => $img):?>
-							<li style="position: absolute; width: 400px; left: 0px; top: 0px; display: list-item;"><img src="<?=$img?>" border="0" alt="<?=$product['title']?>"></li>
+							<li style="position: absolute; width: 400px; left: 0px; top: 0px; display: list-item;"><img class="lazy" data-original="<?=$img?>" border="0" alt="<?=$product['title']?>"></li>
 						<?php endforeach;?>
 						<?php endif;?>
 					</ul>
 					<ul class="thumb_list">
 						<?php if(!empty($product['images_list'])):?>
 						<?php foreach($product['images_list'] as $key => $img):?>
-							<li class="<?=$key==0 ? 'on' : ''?>"><img src="<?=str_replace('_big','_small',$img)?>" border="0"></li>
+							<li class="<?=$key==0 ? 'on' : ''?>"><img class="lazy" data-original="<?=str_replace('_big','_small',$img)?>" border="0"></li>
 						<?php endforeach;?>
 						<?php endif;?>
 					</ul>
@@ -44,7 +45,7 @@
 				<div class="info">
 					<h1><?=$product['title']?></h1>
 					<p>发布时间：<?=date('Y-m-d',$product['create_time'])?></p>
-					<p>产品分类：<?=$product['cate_name']?></p>
+					<p>产品分类：<?=$productCategoryList[$product['cate_id']]['title']?></p>
 					<?php if($product['is_recommend'] == '1'):?>
 					<p>推　　荐：站长推荐</p>
 					<?php endif;?>
@@ -65,6 +66,8 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>static/js/jquery.lazyload.min.js"></script>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>front/js/slide.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#product_img").slide({
@@ -73,6 +76,10 @@
 			'autoPlay':true,
 			'switchLoad':"_src",
 			'effect':"fold"
+		});
+		//懒加载图片
+		$("img.lazy").lazyload({
+			effect : "fadeIn"
 		});
 	});
 </script>

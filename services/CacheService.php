@@ -11,6 +11,7 @@ use app\constants\CacheConst;
 use app\models\Ad;
 use app\models\Config;
 use app\models\Friendlink;
+use app\models\NewsCategory;
 use app\models\ProductCategory;
 use Yii;
 
@@ -71,6 +72,20 @@ class CacheService
         if (empty($data)) {
             $data = Ad::find()->where(['=', 'is_delete', 0])->andWhere(['=', 'status', 1])->select('id,title,logo,url')->orderBy('id desc')->asArray()->all();
             Yii::$app->cache->set(CacheConst::AD_CACHE, $data, self::CACHE_VALID_TIME);
+        }
+        return $data;
+    }
+
+    //从缓存中获取广告分类列表
+    public static function getNewsCategorysFromCache($indexBy = '')
+    {
+        $data = Yii::$app->cache->get(CacheConst::NEWS_CATEGORY_CACHE);
+        if (empty($data)) {
+            $data = NewsCategory::find()->where(['=', 'is_delete', 0])->select('id,title,pid,path')->asArray()->all();
+            Yii::$app->cache->set(CacheConst::NEWS_CATEGORY_CACHE, $data, self::CACHE_VALID_TIME);
+        }
+        if (!empty($data) && !empty($indexBy)) {
+            return array_column($data, null, $indexBy);
         }
         return $data;
     }

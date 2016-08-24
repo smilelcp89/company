@@ -7,7 +7,7 @@
 <link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
 <link href="<?=Yii::$app->params['imgHost'];?>backend/css/select.css" rel="stylesheet" type="text/css" />
 <link href="<?=Yii::$app->params['imgHost'];?>backend/css/artdialog.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js"></script>
+<script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>static/js/jquery.js"></script>
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/select-ui.min.js"></script>
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.artdialog.js"></script>
 <script type="text/javascript" src="<?=Yii::$app->params['imgHost'];?>backend/js/public.js"></script>

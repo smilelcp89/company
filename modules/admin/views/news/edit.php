@@ -16,11 +16,11 @@ use \yii\widgets\ActiveForm;
         });
     });
 </script>
-  
+
 <script type="text/javascript">
 $(function(e) {
     $(".select1").uedSelect({
-		width : 150			  
+		width : 150
 	});
 });
 </script>
@@ -37,28 +37,28 @@ $(function(e) {
 <div class="formbody">
 <div id="usual1" class="usual">
 <div class="itab">
-  	<ul> 
-        <li><a href="#tab1" class="selected"><?=$data['id'] ? '编辑' : '添加';?>新闻</a></a></li> 
+  	<ul>
+        <li><a href="#tab1" class="selected"><?=$data['id'] ? '编辑' : '添加';?>新闻</a></a></li>
   	</ul>
-</div> 
+</div>
 <div id="tab1" class="tabson">
     <div class="formtext">新闻信息</div>
 	<?php $form = ActiveForm::begin(['id' => 'news-form', 'options' => ['method' => 'post']]);?>
     <ul class="forminfo">
 		<li>
 			<label>新闻名称：<b>*</b></label>
-			<?=$form->field($model, 'title')->textInput(['class' => 'dfinput','value'=>$data['title']])->label(false);?>
+			<?=$form->field($model, 'title')->textInput(['class' => 'dfinput', 'value' => $data['title']])->label(false);?>
 		</li>
 		<li>
 			<label>新闻分类：<b>*</b></label>
 			<div class="vocation">
-				<?=$form->field($model, 'cate_id')->dropDownList($cateArr, ['class' => 'select1','prompt'=> '请选择分类','options' => [$data['cate_id'] => ['selected' => 'selected']]])->label(false);?>
+				<?=$form->field($model, 'cate_id')->dropDownList($cateList, ['class' => 'select1', 'prompt' => '请选择分类', 'options' => [$data['cate_id'] => ['selected' => 'selected']]])->label(false);?>
 			</div>
 		</li>
 		<li>
 			<label>是否推荐：<b>*</b></label>
 			<div class="vocation">
-				<?=$form->field($model, 'is_recommend')->dropDownList(['2' => '否', '1' => '是'], ['class' => 'select1','options' => [$data['is_recommend'] => ['selected' => 'selected']]])->label(false);?>
+				<?=$form->field($model, 'is_recommend')->dropDownList(['2' => '否', '1' => '是'], ['class' => 'select1', 'options' => [$data['is_recommend'] => ['selected' => 'selected']]])->label(false);?>
 			</div>
 		</li>
 		<li>
@@ -69,13 +69,13 @@ $(function(e) {
 		</li>
         <li>
             <label>新闻内容：<b>*</b></label>
-			<?=$form->field($model, 'content')->textarea(['id' => 'content' ,'class' => 'content','value'=>Html::decode($data['content'])])->label(false);?>
+			<?=$form->field($model, 'content')->textarea(['id' => 'content', 'class' => 'content', 'value' => Html::decode($data['content'])])->label(false);?>
         </li>
         <li>
-            <?=$form->field($model, 'id')->hiddenInput(['value'=>$data['id']])->label(false);?>
+            <?=$form->field($model, 'id')->hiddenInput(['value' => $data['id']])->label(false);?>
             <label>&nbsp;</label><?=Html::submitButton('保存发布', ['class' => 'btn', 'name' => 'submit-button']);?>
 		</li>
     </ul>
 	<?php ActiveForm::end();?>
-    </div> 
-</div> 
+    </div>
+</div>
