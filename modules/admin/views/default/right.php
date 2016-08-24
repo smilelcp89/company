@@ -28,9 +28,9 @@
 	<li><span>快速进行发布产品管理</span><a href="/admin/news" class="ibtn">产品管理</a></li>
 	<li><span>快速进行账户设置管理</span><a href="/admin/user" class="ibtn">账户管理</a></li>
 </ul>
-<div class="xline"></div>
-<div class="uimakerinfo"><b>如果修改了网站首页里面的内容信息，请重新生成首页（网站首页现为静态页面，加快页面加载速度）</b></div>
-<ul class="infolist">
-	<li><a href="javascript:;" class="ibtn">生成静态首页</a></li>
-</ul>
+<!--<div class="xline"></div>-->
+<!--<div class="uimakerinfo"><b>如果修改了网站首页里面的内容信息，请重新生成首页（网站首页现为静态页面，加快页面加载速度）</b></div>-->
+<!--<ul class="infolist">-->
+<!--	<li><a href="javascript:;" class="ibtn">生成静态首页</a></li>-->
+<!--</ul>-->
 </div>

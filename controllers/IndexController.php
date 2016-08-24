@@ -21,7 +21,6 @@ class IndexController extends FrontBaseController
      */
     public function actionIndex()
     {
-        echo 123;die;
         //获取推荐6个产品
         $recommendResult = ProductService::getProductsByCondition('status=1 and is_delete=0 and is_recommend=1', [], 'id,title,logo,images_list,sale_price', 1, 6);
         //获取最新8个产品

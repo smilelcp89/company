@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>欢迎登录后台管理系统</title>
 <link href="<?=Yii::$app->params['imgHost'];?>backend/css/style.css" rel="stylesheet" type="text/css" />
-<script src="<?=Yii::$app->params['imgHost'];?>backend/js/jquery.js" type="text/javascript"></script>
+<script src="<?=Yii::$app->params['imgHost'];?>static/js/jquery.js" type="text/javascript"></script>
 
 <script language="javascript">
 $(function(){

@@ -23,7 +23,7 @@
 	<div class="left">
 			<div class="pfw">
 			<div class="title"><h3>新闻中心</h3><a class="more" href="<?=Url::to(['news/index']);?>">更多</a></div>
-			<ul class="artlist">
+			<ul class="artlist" style="height:295px;">
 				<?php if (!empty($newsList)): ?>
 				<?php foreach ($newsList as $key => $item): ?>
 				<li><a href="<?=Url::to(['news/detail', 'id' => $item['id']]);?>" title="<?=$item['title'];?>"><?=\app\components\Common::truncate($item['title'], 15);?></a><?=$item['is_recommend'] == 1 ? ' <label style="color:red;">[荐]<label>' : '';?></li>

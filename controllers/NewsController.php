@@ -23,7 +23,7 @@ class NewsController extends FrontBaseController
             $where[]           = 'cate_id = :cateId';
             $params[':cateId'] = $cateId;
         }
-        $result = NewsService::getNewsByCondition(implode(' and ', $where), $params, 'id,title,cate_id,content,create_time', $pageIndex, 10, null, 'is_recommend asc,id desc');
+        $result = NewsService::getNewsByCondition(implode(' and ', $where), $params, 'id,title,cate_id,content,create_time', $pageIndex, 6, null, 'is_recommend asc,id desc');
 
         //获取广告分类
         $newsCategoryList = CacheService::getNewsCategorysFromCache('id');

@@ -24,8 +24,8 @@ class PublicController extends Controller
         return [
             'captcha' => [
                 'class'     => 'yii\captcha\CaptchaAction',
-                'maxLength' => 5,
-                'minLength' => 5,
+                'maxLength' => 4,
+                'minLength' => 4,
                 'width'     => 100,
                 'height'    => 50,
             ],
